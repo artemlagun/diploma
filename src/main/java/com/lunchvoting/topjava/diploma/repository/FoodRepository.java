@@ -1,21 +1,22 @@
 package com.lunchvoting.topjava.diploma.repository;
 
 import com.lunchvoting.topjava.diploma.model.Food;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
-@Repository
-public interface FoodRepository {
+@Transactional(readOnly = true)
+public interface FoodRepository extends JpaRepository<Food, Integer> {
 
-    Food save(Food food, int restaurantId);
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Food f WHERE f.id=:id AND f.restaurant.id=:restaurantId")
+    int delete(@Param("id") int id, @Param("restaurantId") int restaurantId);
 
-    boolean delete(int id, int restaurantId);
-
-    Food get(int id, int restaurantId);
-
-    List<Food> getAll(int restaurantId);
-
-    List<Food> getAllByDate(int restaurantId, LocalDate date);
+    @Query("SELECT f FROM Food f WHERE f.restaurant.id=:restaurantId ORDER BY f.voteDate DESC")
+    List<Food> getAll(@Param("restaurantId") int restaurantId);
 }

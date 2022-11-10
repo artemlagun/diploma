@@ -2,6 +2,7 @@ package com.lunchvoting.topjava.diploma.service;
 
 import com.lunchvoting.topjava.diploma.model.Food;
 import com.lunchvoting.topjava.diploma.model.Restaurant;
+import com.lunchvoting.topjava.diploma.repository.FoodRepository;
 import com.lunchvoting.topjava.diploma.repository.RestaurantRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -15,15 +16,15 @@ import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNotFoundW
 public class RestaurantService {
 
     private final RestaurantRepository repository;
-    private final FoodService foodService;
+    private final FoodRepository foodRepository;
 
-    public RestaurantService(RestaurantRepository repository, FoodService foodService) {
+    public RestaurantService(RestaurantRepository repository, FoodRepository foodRepository) {
         this.repository = repository;
-        this.foodService = foodService;
+        this.foodRepository = foodRepository;
     }
 
     public Restaurant get(int id) {
-        return checkNotFoundWithId(repository.get(id), id);
+        return checkNotFoundWithId(repository.findById(id).orElse(null), id);
     }
 
     public void delete(int id) {
@@ -31,12 +32,16 @@ public class RestaurantService {
     }
 
     public List<Restaurant> getAll() {
-        return repository.getAll();
+        return repository.findAll();
     }
 
     public Restaurant getMenuOfDay(int id) {
-        Restaurant restaurant = checkNotFoundWithId(repository.get(id),id);
-        List<Food> menuOfDay = foodService.getAllByDate(id, LocalDate.now());
+        Restaurant restaurant = checkNotFoundWithId(repository.findById(id).orElse(null),id);
+        Assert.notNull(restaurant, "restaurant shouldn't be null");
+        List<Food> menuOfDay = foodRepository.getAll(id)
+                .stream()
+                .filter(all -> all.getDate().isEqual(LocalDate.now()))
+                .toList();
         restaurant.setMenu(menuOfDay);
         return restaurant;
     }

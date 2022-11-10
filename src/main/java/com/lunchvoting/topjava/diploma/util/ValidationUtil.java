@@ -47,7 +47,7 @@ public class ValidationUtil {
 
     public static void votingTimeVerification() {
         if (LocalTime.now().isAfter(LocalTime.of(11, 0, 0))) {
-            throw new OutOfTimeException(LocalTime.now() + " sorry voting time expired. You could vote till 11-00");
+            throw new OutOfTimeException(LocalTime.now() + " sorry voting time expired. You could vote till 11:00");
         }
     }
 }

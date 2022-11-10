@@ -1,35 +1,62 @@
 package com.lunchvoting.topjava.diploma.model;
 
+import org.hibernate.validator.constraints.Range;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "foods", uniqueConstraints = {@UniqueConstraint(columnNames =
+        {"restaurant_id", "vote_date", "description"}, name = "food_unique_restaurant_vote_date_description_idx")})
 public class Food extends AbstractBaseEntity {
 
-    private LocalDate date;
+    @Column(name = "vote_date", nullable = false)
+    @NotNull
+    private LocalDate voteDate;
+
+    @Column(name = "description", nullable = false)
+    @NotBlank
+    @Size(min = 2, max = 120)
     private String description;
+
+    @Column(name = "price", nullable = false)
+    @Range(min = 0, max = 1000)
     private BigDecimal price;
+
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
     public Food() {
     }
 
-    public Food(LocalDate date, String description, BigDecimal price) {
-        this(null, date, description, price);
+    public Food(LocalDate voteDate, String description, BigDecimal price, Restaurant restaurant) {
+        this(null, voteDate, description, price, restaurant);
     }
 
-    public Food(Integer id, LocalDate date, String description, BigDecimal price) {
+    public Food(Integer id, LocalDate voteDate, String description, BigDecimal price, Restaurant restaurant) {
         super(id);
-        this.date = date;
+        this.voteDate = voteDate;
         this.description = description;
         this.price = price;
+        this.restaurant = restaurant;
+    }
+
+    public Food(Food f) {
+        this(f.id, f.voteDate, f.description, f.price, f.restaurant);
     }
 
     public LocalDate getDate() {
-        return date;
+        return voteDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDate(LocalDate voteDate) {
+        this.voteDate = voteDate;
     }
 
     public String getDescription() {
@@ -60,7 +87,7 @@ public class Food extends AbstractBaseEntity {
     public String toString() {
         return "Food{" +
                 "id=" + id +
-                ", date=" + date +
+                ", voteDate=" + voteDate +
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 '}';

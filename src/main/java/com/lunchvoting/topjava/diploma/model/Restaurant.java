@@ -1,10 +1,17 @@
 package com.lunchvoting.topjava.diploma.model;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "restaurants", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "restaurant_unique_idx")})
 public class Restaurant extends AbstractNamedEntity {
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     private List<Food> menu;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    @OrderBy("voteDate DESC")
     private List<Vote> votes;
 
     public Restaurant() {

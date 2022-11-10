@@ -1,25 +1,29 @@
 package com.lunchvoting.topjava.diploma.repository;
 
 import com.lunchvoting.topjava.diploma.model.Vote;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Repository
-public interface VoteRepository {
+@Transactional(readOnly = true)
+public interface VoteRepository extends JpaRepository<Vote, Integer> {
 
-    Vote save(Vote vote);
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Vote v WHERE v.id=:id")
+    int delete(@Param("id") int id);
 
-    boolean delete(int id);
+    @Query("SELECT v FROM Vote v WHERE v.user.id=:userId AND v.voteDate=:voteDate ORDER BY v.voteDate DESC")
+    Vote getByUserAndDate(@Param("userId") int userId, @Param("voteDate") LocalDate voteDate);
 
-    Vote get(int id);
+    @Query("SELECT v FROM Vote v WHERE v.voteDate=:voteDate ORDER BY v.voteDate DESC")
+    List<Vote> getAllByDate(@Param("voteDate") LocalDate voteDate);
 
-    Vote getByUserAndDate(int userId, LocalDate date);
-
-    List<Vote> getAll();
-
-    List<Vote> getAllByDate(LocalDate date);
-
-    List<Vote> getByRestaurantAndDate(int restaurantId, LocalDate date);
+    @Query("SELECT v FROM Vote v WHERE v.restaurant.id=:restaurantId AND v.voteDate=:voteDate ORDER BY v.voteDate DESC")
+    List<Vote> getByRestaurantAndDate(@Param("restaurantId") int restaurantId, @Param("voteDate") LocalDate voteDate);
 }
