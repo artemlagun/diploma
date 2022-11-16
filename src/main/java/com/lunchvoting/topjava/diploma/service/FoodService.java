@@ -41,7 +41,7 @@ public class FoodService {
 
     public List<Food> getAllByDate(int restaurantId, LocalDate voteDate) {
         Assert.notNull(voteDate, "voteDate shouldn't be null");
-        return repository.getAll(restaurantId).stream().filter(food -> food.getDate().isEqual(voteDate)).toList();
+        return repository.getAllByDate(restaurantId, voteDate);
     }
 
     public void update(Food food, int restaurantId) {

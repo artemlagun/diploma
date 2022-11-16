@@ -4,6 +4,7 @@ import com.lunchvoting.topjava.diploma.model.Vote;
 import com.lunchvoting.topjava.diploma.repository.RestaurantRepository;
 import com.lunchvoting.topjava.diploma.repository.UserRepository;
 import com.lunchvoting.topjava.diploma.repository.VoteRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -12,10 +13,11 @@ import java.util.List;
 
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNotFound;
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNotFoundWithId;
-import static com.lunchvoting.topjava.diploma.util.ValidationUtil.votingTimeVerification;
 
 @Service
 public class VoteService {
+
+    private static final Sort SORT_DATE = Sort.by(Sort.Direction.DESC, "voteDate", "id");
 
     private final VoteRepository repository;
     private final RestaurantRepository restaurantRepository;
@@ -32,11 +34,11 @@ public class VoteService {
     }
 
     public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id), id);
+        checkNotFoundWithId(repository.delete(id) != 0, id);
     }
 
     public List<Vote> getAll() {
-        return repository.findAll();
+        return repository.findAll(SORT_DATE);
     }
 
     public Vote getByUserAndDate(int userId, LocalDate voteDate) {
@@ -56,7 +58,6 @@ public class VoteService {
 
     public Vote create(Vote vote, int userId, int restaurantId) {
         Assert.notNull(vote, "vote shouldn't be null");
-        votingTimeVerification();
         vote.setUser(userRepository.findById(userId).orElse(null));
         vote.setRestaurant(restaurantRepository.findById(restaurantId).orElse(null));
         return repository.save(vote);
@@ -64,7 +65,6 @@ public class VoteService {
 
     public void update(Vote vote, int userId, int restaurantId) {
         Assert.notNull(vote, "vote shouldn't be null");
-        votingTimeVerification();
         vote.setUser(userRepository.findById(userId).orElse(null));
         vote.setRestaurant(restaurantRepository.findById(restaurantId).orElse(null));
         checkNotFoundWithId(repository.save(vote), vote.id());

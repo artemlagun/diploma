@@ -12,14 +12,14 @@ import static com.lunchvoting.topjava.diploma.model.AbstractBaseEntity.START_SEQ
 public class UserTestData {
     public static final MatcherFactory.Matcher<User> USER_MATCHER = MatcherFactory.usingIgnoringFieldsComparator("registered", "roles", "votes");
 
-    public static final int FIRST_USER_ID = START_SEQ;
-    public static final int SECOND_USER_ID = START_SEQ + 1;
+    public static final int USER1_ID = START_SEQ;
+    public static final int USER2_ID = START_SEQ + 1;
     public static final int ADMIN_ID = START_SEQ + 2;
 
     public static final int NOT_FOUND = 10;
 
-    public static final User firstUser = new User(FIRST_USER_ID, "Eva Hester", "evahester@gmail.com", "password", Role.USER);
-    public static final User secondUser = new User(SECOND_USER_ID, "Bryan Terry", "bryanterry@gmail.com", "password", Role.USER);
+    public static final User firstUser = new User(USER1_ID, "Eva Hester", "evahester@gmail.com", "password", Role.USER);
+    public static final User secondUser = new User(USER2_ID, "Bryan Terry", "bryanterry@gmail.com", "password", Role.USER);
     public static final User admin = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", Role.ADMIN);
 
 

@@ -66,8 +66,6 @@ public class Vote extends AbstractBaseEntity {
         return "Vote{" +
                 "id=" + id +
                 ", voteDate=" + voteDate +
-                ", user=" + user +
-                ", restaurant=" + restaurant +
                 '}';
     }
 }

@@ -47,10 +47,6 @@ public class Food extends AbstractBaseEntity {
         this.restaurant = restaurant;
     }
 
-    public Food(Food f) {
-        this(f.id, f.voteDate, f.description, f.price, f.restaurant);
-    }
-
     public LocalDate getDate() {
         return voteDate;
     }

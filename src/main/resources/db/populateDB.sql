@@ -38,9 +38,9 @@ VALUES (today(), 'Beef tips with rice', 5.75, 100003),
        (today(), 'Cappuccino', 2.45, 100005);
 
 INSERT INTO votes (vote_date, user_id, restaurant_id)
-VALUES (now(), 100000, 100003),
-       (now(), 100001, 100005),
-       (now(), 100002, 100003);
+VALUES (today(), 100000, 100003),
+       (today(), 100001, 100005),
+       (today(), 100002, 100003);
 
 
 

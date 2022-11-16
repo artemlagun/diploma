@@ -35,8 +35,8 @@ public class UserServiceTest extends AbstractBaseServiceTest {
 
     @Test
     public void delete() {
-        service.delete(FIRST_USER_ID);
-        assertThrows(NotFoundException.class, () -> service.get(FIRST_USER_ID));
+        service.delete(USER1_ID);
+        assertThrows(NotFoundException.class, () -> service.get(USER1_ID));
     }
 
     @Test
@@ -46,7 +46,7 @@ public class UserServiceTest extends AbstractBaseServiceTest {
 
     @Test
     public void get() {
-        User user = service.get(FIRST_USER_ID);
+        User user = service.get(USER1_ID);
         USER_MATCHER.assertMatch(user, firstUser);
     }
 
@@ -65,7 +65,7 @@ public class UserServiceTest extends AbstractBaseServiceTest {
     public void update() {
         User updated = getUpdated();
         service.update(updated);
-        USER_MATCHER.assertMatch(service.get(FIRST_USER_ID), getUpdated());
+        USER_MATCHER.assertMatch(service.get(USER1_ID), getUpdated());
     }
 
     @Test

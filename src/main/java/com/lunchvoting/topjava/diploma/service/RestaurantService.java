@@ -4,16 +4,22 @@ import com.lunchvoting.topjava.diploma.model.Food;
 import com.lunchvoting.topjava.diploma.model.Restaurant;
 import com.lunchvoting.topjava.diploma.repository.FoodRepository;
 import com.lunchvoting.topjava.diploma.repository.RestaurantRepository;
+import org.hsqldb.lib.Collection;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class RestaurantService {
+
+    private static final Sort SORT_NAME = Sort.by(Sort.Direction.ASC, "name");
 
     private final RestaurantRepository repository;
     private final FoodRepository foodRepository;
@@ -28,11 +34,11 @@ public class RestaurantService {
     }
 
     public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id), id);
+        checkNotFoundWithId(repository.delete(id) != 0, id);
     }
 
     public List<Restaurant> getAll() {
-        return repository.findAll();
+        return repository.findAll(SORT_NAME);
     }
 
     public Restaurant getMenuOfDay(int id) {

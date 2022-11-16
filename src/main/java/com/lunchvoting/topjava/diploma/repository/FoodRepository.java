@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Transactional(readOnly = true)
@@ -19,4 +20,7 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
 
     @Query("SELECT f FROM Food f WHERE f.restaurant.id=:restaurantId ORDER BY f.voteDate DESC")
     List<Food> getAll(@Param("restaurantId") int restaurantId);
+
+    @Query("SELECT f FROM Food f WHERE f.restaurant.id=:restaurantId AND f.voteDate=:voteDate ORDER BY f.voteDate, f.id")
+    List<Food> getAllByDate(@Param("restaurantId") int restaurantId, @Param("voteDate") LocalDate voteDate);
 }

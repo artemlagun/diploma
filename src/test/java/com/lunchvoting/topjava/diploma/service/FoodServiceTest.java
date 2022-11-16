@@ -1,12 +1,7 @@
 package com.lunchvoting.topjava.diploma.service;
 
 import com.lunchvoting.topjava.diploma.model.Food;
-import com.lunchvoting.topjava.diploma.model.Role;
-import com.lunchvoting.topjava.diploma.model.User;
-import com.lunchvoting.topjava.diploma.testdata.FoodTestData;
-import com.lunchvoting.topjava.diploma.testdata.RestaurantTestData;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -17,7 +12,6 @@ import java.util.List;
 
 import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.RESTAURANT1_ID;
 import static com.lunchvoting.topjava.diploma.testdata.FoodTestData.*;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
 public class FoodServiceTest extends AbstractBaseServiceTest {
