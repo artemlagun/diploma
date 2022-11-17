@@ -1,21 +1,32 @@
 package com.lunchvoting.topjava.diploma.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "restaurants", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "restaurant_unique_idx")})
+@NoArgsConstructor
+@Getter
+@Setter
 public class Restaurant extends AbstractNamedEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @BatchSize(size = 7)
     private List<Food> menu;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("voteDate DESC")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @BatchSize(size = 200)
     private List<Vote> votes;
-
-    public Restaurant() {
-    }
 
     public Restaurant(String name) {
         this(null, name);
@@ -27,35 +38,11 @@ public class Restaurant extends AbstractNamedEntity {
     }
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Food> getMenu() {
-        return menu;
-    }
-
-    public void setMenu(List<Food> menu) {
-        this.menu = menu;
-    }
-
-    public List<Vote> getVotes() {
-        return votes;
-    }
-
-    public void setVotes(List<Vote> votes) {
-        this.votes = votes;
-    }
-
-    @Override
     public String toString() {
         return "Restaurant{" +
                 "id=" + id +
+                ", menu=" + menu +
+                ", votes=" + votes +
                 ", name='" + name + '\'' +
                 '}';
     }

@@ -4,15 +4,12 @@ import com.lunchvoting.topjava.diploma.model.Food;
 import com.lunchvoting.topjava.diploma.model.Restaurant;
 import com.lunchvoting.topjava.diploma.repository.FoodRepository;
 import com.lunchvoting.topjava.diploma.repository.RestaurantRepository;
-import org.hsqldb.lib.Collection;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNotFoundWithId;
 
@@ -46,7 +43,7 @@ public class RestaurantService {
         Assert.notNull(restaurant, "restaurant shouldn't be null");
         List<Food> menuOfDay = foodRepository.getAll(id)
                 .stream()
-                .filter(all -> all.getDate().isEqual(LocalDate.now()))
+                .filter(all -> all.getVoteDate().isEqual(LocalDate.now()))
                 .toList();
         restaurant.setMenu(menuOfDay);
         return restaurant;

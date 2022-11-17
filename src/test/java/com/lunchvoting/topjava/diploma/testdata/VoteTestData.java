@@ -10,8 +10,6 @@ import static com.lunchvoting.topjava.diploma.model.AbstractBaseEntity.START_SEQ
 import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.*;
 import static com.lunchvoting.topjava.diploma.testdata.UserTestData.*;
 
-
-
 public class VoteTestData {
 
     public static final MatcherFactory.Matcher<Vote> VOTE_MATCHER = MatcherFactory.usingIgnoringFieldsComparator("user", "restaurant");
@@ -39,7 +37,7 @@ public class VoteTestData {
         restaurant1.setVotes(List.of(votes));
         return restaurant1.getVotes()
                 .stream()
-                .filter(vote -> vote.getDate().isEqual(LocalDate.now()))
+                .filter(vote -> vote.getVoteDate().isEqual(LocalDate.now()))
                 .toList();
     }
 }

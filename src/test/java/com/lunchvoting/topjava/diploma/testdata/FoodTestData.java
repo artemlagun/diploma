@@ -44,6 +44,6 @@ public class FoodTestData {
     }
 
     public static Food getUpdated() {
-        return new Food(FOOD1_ID, food1.getDate().plusDays(1), "Updated food", new BigDecimal("6.75"), food1.getRestaurant());
+        return new Food(FOOD1_ID, food1.getVoteDate().plusDays(1), "Updated food", new BigDecimal("6.75"), food1.getRestaurant());
     }
 }

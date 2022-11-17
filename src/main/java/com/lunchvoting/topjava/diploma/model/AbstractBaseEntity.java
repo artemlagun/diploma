@@ -1,5 +1,6 @@
 package com.lunchvoting.topjava.diploma.model;
 
+import org.springframework.data.util.ProxyUtils;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -48,7 +49,7 @@ public abstract class AbstractBaseEntity {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || !getClass().equals(ProxyUtils.getUserClass(o))) {
             return false;
         }
         AbstractBaseEntity that = (AbstractBaseEntity) o;

@@ -1,5 +1,6 @@
 package com.lunchvoting.topjava.diploma.model;
 
+import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -12,6 +13,9 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "foods", uniqueConstraints = {@UniqueConstraint(columnNames =
         {"restaurant_id", "vote_date", "description"}, name = "food_unique_restaurant_vote_date_description_idx")})
+@NoArgsConstructor
+@Getter
+@Setter
 public class Food extends AbstractBaseEntity {
 
     @Column(name = "vote_date", nullable = false)
@@ -27,13 +31,9 @@ public class Food extends AbstractBaseEntity {
     @Range(min = 0, max = 1000)
     private BigDecimal price;
 
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
-
-    public Food() {
-    }
 
     public Food(LocalDate voteDate, String description, BigDecimal price, Restaurant restaurant) {
         this(null, voteDate, description, price, restaurant);
@@ -47,38 +47,6 @@ public class Food extends AbstractBaseEntity {
         this.restaurant = restaurant;
     }
 
-    public LocalDate getDate() {
-        return voteDate;
-    }
-
-    public void setDate(LocalDate voteDate) {
-        this.voteDate = voteDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
-
     @Override
     public String toString() {
         return "Food{" +
@@ -86,6 +54,7 @@ public class Food extends AbstractBaseEntity {
                 ", voteDate=" + voteDate +
                 ", description='" + description + '\'' +
                 ", price=" + price +
+                ", restaurant=" + restaurant +
                 '}';
     }
 }
