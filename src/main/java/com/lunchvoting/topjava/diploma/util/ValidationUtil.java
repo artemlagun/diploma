@@ -3,6 +3,8 @@ package com.lunchvoting.topjava.diploma.util;
 import com.lunchvoting.topjava.diploma.model.AbstractBaseEntity;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
 import com.lunchvoting.topjava.diploma.util.exception.OutOfTimeException;
+import org.springframework.core.NestedExceptionUtils;
+import org.springframework.lang.NonNull;
 
 import java.time.*;
 
@@ -49,5 +51,11 @@ public class ValidationUtil {
         if (LocalTime.now().isAfter(LocalTime.of(11, 0, 0))) {
             throw new OutOfTimeException(LocalTime.now() + " sorry voting time expired. You could vote till 11:00");
         }
+    }
+
+    @NonNull
+    public static Throwable getRootCause(@NonNull Throwable t) {
+        Throwable rootCause = NestedExceptionUtils.getRootCause(t);
+        return rootCause != null ? rootCause : t;
     }
 }

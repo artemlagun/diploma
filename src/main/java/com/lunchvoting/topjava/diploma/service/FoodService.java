@@ -5,6 +5,8 @@ import com.lunchvoting.topjava.diploma.repository.FoodRepository;
 import com.lunchvoting.topjava.diploma.repository.RestaurantRepository;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -31,10 +33,12 @@ public class FoodService {
         return food != null && food.getRestaurant().getId() == restaurantId ? food : null;
     }
 
+    @CacheEvict(value = "foods", allEntries = true)
     public void delete(int id, int restaurantId) {
         checkNotFoundWithId(repository.delete(id, restaurantId) != 0, id);
     }
 
+    @Cacheable("foods")
     public List<Food> getAll(int restaurantId) {
         return repository.getAll(restaurantId);
     }
@@ -44,12 +48,14 @@ public class FoodService {
         return repository.getAllByDate(restaurantId, voteDate);
     }
 
+    @CacheEvict(value = "foods", allEntries = true)
     public void update(Food food, int restaurantId) {
         Assert.notNull(food, "food shouldn't be null");
         food.setRestaurant(restaurantRepository.findById(restaurantId).orElse(null));
         checkNotFoundWithId(repository.save(food), food.id());
     }
 
+    @CacheEvict(value = "foods", allEntries = true)
     public Food create(Food food, int restaurantId) {
         Assert.notNull(food, "food shouldn't be null");
         food.setRestaurant(restaurantRepository.findById(restaurantId).orElse(null));

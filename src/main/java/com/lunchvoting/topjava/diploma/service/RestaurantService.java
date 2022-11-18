@@ -4,6 +4,8 @@ import com.lunchvoting.topjava.diploma.model.Food;
 import com.lunchvoting.topjava.diploma.model.Restaurant;
 import com.lunchvoting.topjava.diploma.repository.FoodRepository;
 import com.lunchvoting.topjava.diploma.repository.RestaurantRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -30,10 +32,12 @@ public class RestaurantService {
         return checkNotFoundWithId(repository.findById(id).orElse(null), id);
     }
 
+    @CacheEvict(value = "restaurants", allEntries = true)
     public void delete(int id) {
         checkNotFoundWithId(repository.delete(id) != 0, id);
     }
 
+    @Cacheable("restaurants")
     public List<Restaurant> getAll() {
         return repository.findAll(SORT_NAME);
     }
@@ -49,11 +53,13 @@ public class RestaurantService {
         return restaurant;
     }
 
+    @CacheEvict(value = "restaurants", allEntries = true)
     public Restaurant create(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant shouldn't be null");
         return repository.save(restaurant);
     }
 
+    @CacheEvict(value = "restaurants", allEntries = true)
     public void update(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant shouldn't be null");
         checkNotFoundWithId(repository.save(restaurant), restaurant.id());

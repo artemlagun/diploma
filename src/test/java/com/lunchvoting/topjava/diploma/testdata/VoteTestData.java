@@ -19,8 +19,8 @@ public class VoteTestData {
     public static final int VOTE2_ID = START_SEQ + 22;
     public static final int VOTE3_ID = START_SEQ + 23;
 
-    public static final Vote vote1 = new Vote(VOTE1_ID, LocalDate.now(), firstUser, restaurant1);
-    public static final Vote vote2 = new Vote(VOTE2_ID, LocalDate.now(), secondUser, restaurant3);
+    public static final Vote vote1 = new Vote(VOTE1_ID, LocalDate.now(), user1, restaurant1);
+    public static final Vote vote2 = new Vote(VOTE2_ID, LocalDate.now(), user2, restaurant3);
     public static final Vote vote3 = new Vote(VOTE3_ID, LocalDate.now(), admin, restaurant1);
 
     public static final List<Vote> votes = List.of(vote3, vote2, vote1);
@@ -30,7 +30,7 @@ public class VoteTestData {
     }
 
     public static Vote getUpdated() {
-        return new Vote(VOTE1_ID, LocalDate.now(), firstUser, RestaurantTestData.getUpdated());
+        return new Vote(VOTE1_ID, LocalDate.now(), user1, RestaurantTestData.getUpdated());
     }
 
     public static List<Vote> getVotesByRestaurantAndDate(Vote... votes) {

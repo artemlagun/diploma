@@ -5,15 +5,18 @@ import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.util.List;
 
 import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.RESTAURANT1_ID;
+import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.restaurant1;
 import static com.lunchvoting.topjava.diploma.testdata.UserTestData.USER1_ID;
+import static com.lunchvoting.topjava.diploma.testdata.UserTestData.user1;
 import static com.lunchvoting.topjava.diploma.testdata.VoteTestData.*;
 import static org.junit.Assert.assertThrows;
 
-public class VoteServiceTest extends AbstractBaseServiceTest {
+public class VoteServiceTest extends AbstractServiceTest {
 
     @Autowired
     private VoteService service;
@@ -78,5 +81,15 @@ public class VoteServiceTest extends AbstractBaseServiceTest {
     public void getByRestaurantAndDate() {
         List<Vote> votesByRestaurantAndDate = service.getByRestaurantAndDate(RESTAURANT1_ID, LocalDate.now());
         VOTE_MATCHER.assertMatch(votesByRestaurantAndDate, getVotesByRestaurantAndDate(vote1, vote3));
+    }
+
+    @Test
+    public void createWithException() throws Exception {
+        validateRootCause(ConstraintViolationException.class,
+                () -> service.create(new Vote(null, null, user1, restaurant1), USER1_ID, RESTAURANT1_ID));
+        validateRootCause(ConstraintViolationException.class,
+                () -> service.create(new Vote(null, LocalDate.now(), null, restaurant1), 0, RESTAURANT1_ID));
+        validateRootCause(ConstraintViolationException.class,
+                () -> service.create(new Vote(null, LocalDate.now(), user1, null), USER1_ID, 0));
     }
 }

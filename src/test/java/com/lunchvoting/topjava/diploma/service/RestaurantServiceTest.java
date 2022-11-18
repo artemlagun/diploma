@@ -4,19 +4,31 @@ import com.lunchvoting.topjava.diploma.model.Food;
 import com.lunchvoting.topjava.diploma.model.Restaurant;
 import com.lunchvoting.topjava.diploma.testdata.FoodTestData;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Objects;
 
 import static com.lunchvoting.topjava.diploma.testdata.FoodTestData.FOOD_MATCHER;
 import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.*;
 import static org.junit.Assert.assertThrows;
 
-public class RestaurantServiceTest extends AbstractBaseServiceTest {
+public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Autowired
     protected RestaurantService service;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    @Before
+    public void setUp() {
+        Objects.requireNonNull(cacheManager.getCache("restaurants")).clear();
+    }
 
     @Test
     public void create() {
@@ -66,5 +78,10 @@ public class RestaurantServiceTest extends AbstractBaseServiceTest {
     public void getMenuOfDay() {
         List<Food> restaurantMenuOfDay = service.getMenuOfDay(RESTAURANT2_ID).getMenu();
         FOOD_MATCHER.assertMatch(restaurantMenuOfDay, FoodTestData.menuOfDay);
+    }
+
+    @Test
+    public void createWithException() throws Exception {
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new Restaurant(null, "  ")));
     }
 }

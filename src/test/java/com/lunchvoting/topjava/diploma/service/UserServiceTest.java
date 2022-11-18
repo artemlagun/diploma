@@ -7,12 +7,14 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Set;
 
 import static com.lunchvoting.topjava.diploma.testdata.UserTestData.*;
 import static org.junit.Assert.assertThrows;
 
-public class UserServiceTest extends AbstractBaseServiceTest {
+public class UserServiceTest extends AbstractServiceTest {
 
     @Autowired
     protected UserService service;
@@ -30,7 +32,7 @@ public class UserServiceTest extends AbstractBaseServiceTest {
     @Test
     public void duplicateMailCreate() {
         assertThrows(DataAccessException.class, () ->
-                service.create(new User(null, "Duplicate", firstUser.getEmail(), "newPass", Role.USER)));
+                service.create(new User(null, "Duplicate", user1.getEmail(), "newPass", Role.USER)));
     }
 
     @Test
@@ -47,7 +49,7 @@ public class UserServiceTest extends AbstractBaseServiceTest {
     @Test
     public void get() {
         User user = service.get(USER1_ID);
-        USER_MATCHER.assertMatch(user, firstUser);
+        USER_MATCHER.assertMatch(user, user1);
     }
 
     @Test
@@ -71,6 +73,14 @@ public class UserServiceTest extends AbstractBaseServiceTest {
     @Test
     public void getAll() {
         List<User> all = service.getAll();
-        USER_MATCHER.assertMatch(all, admin, secondUser, firstUser);
+        USER_MATCHER.assertMatch(all, admin, user2, user1);
+    }
+
+    @Test
+    public void createWithException() throws Exception {
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "  ", "newuser@gmail.com", "password", Role.USER)));
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "New User", "  ", "password", Role.USER)));
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "New User", "evahester@gmail.com", "  ", Role.USER)));
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "New User", "evahester@gmail.com", "password", true, null, Set.of())));
     }
 }

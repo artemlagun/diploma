@@ -2,22 +2,35 @@ package com.lunchvoting.topjava.diploma.service;
 
 import com.lunchvoting.topjava.diploma.model.Food;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 
+import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.RESTAURANT1_ID;
 import static com.lunchvoting.topjava.diploma.testdata.FoodTestData.*;
+import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.restaurant1;
 import static org.junit.Assert.assertThrows;
 
-public class FoodServiceTest extends AbstractBaseServiceTest {
+public class FoodServiceTest extends AbstractServiceTest {
 
     @Autowired
     protected FoodService service;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    @Before
+    public void setUp() {
+        Objects.requireNonNull(cacheManager.getCache("foods")).clear();
+    }
 
     @Test
     public void create() {
@@ -74,5 +87,17 @@ public class FoodServiceTest extends AbstractBaseServiceTest {
     @Test
     public void getAll() {
         FOOD_MATCHER.assertMatch(service.getAll(RESTAURANT1_ID), foods);
+    }
+
+    @Test
+    public void createWithException() throws Exception {
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new Food( null, null,
+                "New Food", new BigDecimal("9.99"), restaurant1), RESTAURANT1_ID));
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new Food( null, LocalDate.now(),
+                "  ", new BigDecimal("9.99"), restaurant1), RESTAURANT1_ID));
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new Food( null, LocalDate.now(),
+                "New Food", new BigDecimal("-1.0"), restaurant1), RESTAURANT1_ID));
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new Food( null, LocalDate.now(),
+                "New Food", new BigDecimal("10001.0"), restaurant1), RESTAURANT1_ID));
     }
 }
