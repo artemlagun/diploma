@@ -8,16 +8,19 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
-import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNotFound;
-import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNotFoundWithId;
+import static com.lunchvoting.topjava.diploma.util.ValidationUtil.*;
 
 @Service
 public class VoteService {
 
     private static final Sort SORT_DATE = Sort.by(Sort.Direction.DESC, "voteDate", "id");
+
+    private Clock clock = Clock.system(ZoneId.systemDefault());
 
     private final VoteRepository repository;
     private final RestaurantRepository restaurantRepository;
@@ -27,6 +30,10 @@ public class VoteService {
         this.repository = repository;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
+    }
+
+    public void setClock(Clock clock) {
+        this.clock = clock;
     }
 
     public Vote get(int id) {
@@ -58,6 +65,7 @@ public class VoteService {
 
     public Vote create(Vote vote, int userId, int restaurantId) {
         Assert.notNull(vote, "vote shouldn't be null");
+//        votingTimeVerification(clock);
         vote.setUser(userRepository.findById(userId).orElse(null));
         vote.setRestaurant(restaurantRepository.findById(restaurantId).orElse(null));
         return repository.save(vote);
@@ -65,6 +73,7 @@ public class VoteService {
 
     public void update(Vote vote, int userId, int restaurantId) {
         Assert.notNull(vote, "vote shouldn't be null");
+        votingTimeVerification(clock);
         vote.setUser(userRepository.findById(userId).orElse(null));
         vote.setRestaurant(restaurantRepository.findById(restaurantId).orElse(null));
         checkNotFoundWithId(repository.save(vote), vote.id());

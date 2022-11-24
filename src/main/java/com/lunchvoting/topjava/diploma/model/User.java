@@ -53,6 +53,7 @@ public class User extends AbstractNamedEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @OrderBy("voteDate DESC")
     @BatchSize(size = 20)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Vote> votes;
 
     @SuppressWarnings("all")

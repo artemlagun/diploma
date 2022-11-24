@@ -1,12 +1,17 @@
 package com.lunchvoting.topjava.diploma.service;
 
 import com.lunchvoting.topjava.diploma.model.Vote;
+import com.lunchvoting.topjava.diploma.util.ValidationUtil;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
+import com.lunchvoting.topjava.diploma.util.exception.OutOfTimeException;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.event.annotation.BeforeTestExecution;
 
 import javax.validation.ConstraintViolationException;
-import java.time.LocalDate;
+import java.time.*;
 import java.util.List;
 
 import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.RESTAURANT1_ID;
@@ -18,8 +23,19 @@ import static org.junit.Assert.assertThrows;
 
 public class VoteServiceTest extends AbstractServiceTest {
 
+    private final LocalDateTime testTime = LocalDateTime.of(2022, 11, 23, 10, 30);
+    private final LocalDateTime outOfTestTime = LocalDateTime.of(2022, 11, 23, 11, 1);
+    private final ZoneId zoneId = ZoneId.systemDefault();
+    private final Clock fixedClock = Clock.fixed(testTime.atZone(zoneId).toInstant(), zoneId);
+    private final Clock fixedOutOfTimeClock = Clock.fixed(outOfTestTime.atZone(zoneId).toInstant(), zoneId);
+
     @Autowired
     private VoteService service;
+
+    @Before
+    public void setUp() {
+        service.setClock(fixedClock);
+    }
 
     @Test
     public void create() {
@@ -29,6 +45,12 @@ public class VoteServiceTest extends AbstractServiceTest {
         newVote.setId(newId);
         VOTE_MATCHER.assertMatch(created, newVote);
         VOTE_MATCHER.assertMatch(service.get(newId), newVote);
+    }
+
+    @Test
+    public void createOutOfTime() {
+        service.setClock(fixedOutOfTimeClock);
+        assertThrows(OutOfTimeException.class, () -> service.create(getNew(), USER1_ID, RESTAURANT1_ID));
     }
 
     @Test
@@ -58,6 +80,12 @@ public class VoteServiceTest extends AbstractServiceTest {
         Vote updated = getUpdated();
         service.update(updated, USER1_ID, RESTAURANT1_ID);
         VOTE_MATCHER.assertMatch(service.get(VOTE1_ID), getUpdated());
+    }
+
+    @Test
+    public void updateOutOfTime() {
+        service.setClock(fixedOutOfTimeClock);
+        assertThrows(OutOfTimeException.class, () -> service.update(getUpdated(), USER1_ID, RESTAURANT1_ID));
     }
 
     @Test

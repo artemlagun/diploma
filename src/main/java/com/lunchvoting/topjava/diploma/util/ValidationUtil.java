@@ -7,6 +7,7 @@ import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 public class ValidationUtil {
 
@@ -47,9 +48,10 @@ public class ValidationUtil {
         }
     }
 
-    public static void votingTimeVerification() {
-        if (LocalTime.now().isAfter(LocalTime.of(11, 0, 0))) {
-            throw new OutOfTimeException(LocalTime.now() + " sorry voting time expired. You could vote till 11:00");
+    public static void votingTimeVerification(Clock clock) {
+        if (LocalTime.now(clock).isAfter(LocalTime.of(11, 0, 0))) {
+            throw new OutOfTimeException("Now " + LocalTime.now(clock).format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+                    + ", sorry voting time expired. You could vote till 11:00:00");
         }
     }
 
