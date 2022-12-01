@@ -65,7 +65,7 @@ public class VoteService {
 
     public Vote create(Vote vote, int userId, int restaurantId) {
         Assert.notNull(vote, "vote shouldn't be null");
-//        votingTimeVerification(clock);
+        votingTimeVerification(clock);
         vote.setUser(userRepository.findById(userId).orElse(null));
         vote.setRestaurant(restaurantRepository.findById(restaurantId).orElse(null));
         return repository.save(vote);

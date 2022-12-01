@@ -4,10 +4,10 @@ import com.lunchvoting.topjava.diploma.model.Food;
 import com.lunchvoting.topjava.diploma.model.Vote;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -17,15 +17,11 @@ public class RestaurantTo {
     private Integer id;
 
     @Size(min = 2, max = 120)
+    @NotBlank
     private String name;
 
-    private List<Food> menu;
-
-    private List<Vote> votes;
-
-    public RestaurantTo(Integer id, String name, List<Food> menu) {
+    public RestaurantTo(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.menu = menu;
     }
 }

@@ -10,7 +10,7 @@ import java.util.Date;
 import static com.lunchvoting.topjava.diploma.model.AbstractBaseEntity.START_SEQ;
 
 public class UserTestData {
-    public static final MatcherFactory.Matcher<User> USER_MATCHER = MatcherFactory.usingIgnoringFieldsComparator("registered", "roles", "votes");
+    public static final MatcherFactory.Matcher<User> USER_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(User.class, "registered", "roles", "votes");
 
     public static final int USER1_ID = START_SEQ;
     public static final int USER2_ID = START_SEQ + 1;

@@ -15,6 +15,7 @@ public class FoodUtil {
     }
 
     public static FoodTo createTo (Food food) {
-        return new FoodTo(food.getId(), food.getVoteDate(), food.getDescription(), food.getPrice(), food.getRestaurant());
+        return new FoodTo(food.getId(), food.getVoteDate(), food.getDescription(),
+                food.getPrice(), food.getRestaurant().getId());
     }
 }

@@ -2,6 +2,7 @@ package com.lunchvoting.topjava.diploma.testdata;
 
 import com.lunchvoting.topjava.diploma.MatcherFactory;
 import com.lunchvoting.topjava.diploma.model.Food;
+import com.lunchvoting.topjava.diploma.to.FoodTo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,7 +14,9 @@ import static com.lunchvoting.topjava.diploma.model.AbstractBaseEntity.START_SEQ
 
 public class FoodTestData {
 
-    public static final MatcherFactory.Matcher<Food> FOOD_MATCHER = MatcherFactory.usingIgnoringFieldsComparator("restaurant");
+    public static final MatcherFactory.Matcher<Food> FOOD_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Food.class, "restaurant");
+
+    public static final MatcherFactory.Matcher<FoodTo> FOOD_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(FoodTo.class, "restaurant");
 
     public static final int NOT_FOUND = 10;
     public static final int FOOD1_ID = START_SEQ + 6;

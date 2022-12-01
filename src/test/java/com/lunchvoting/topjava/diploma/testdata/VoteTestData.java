@@ -12,7 +12,7 @@ import static com.lunchvoting.topjava.diploma.testdata.UserTestData.*;
 
 public class VoteTestData {
 
-    public static final MatcherFactory.Matcher<Vote> VOTE_MATCHER = MatcherFactory.usingIgnoringFieldsComparator("user", "restaurant");
+    public static final MatcherFactory.Matcher<Vote> VOTE_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Vote.class, "user", "restaurant");
 
     public static final int NOT_FOUND = 10;
     public static final int VOTE1_ID = START_SEQ + 21;

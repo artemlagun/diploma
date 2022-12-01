@@ -27,12 +27,6 @@ public class FoodTo {
     @Range(min = 0, max = 1000)
     private BigDecimal price;
 
-    private Restaurant restaurant;
-
-    public FoodTo(Integer id, LocalDate voteDate, String description, BigDecimal price) {
-        this.id = id;
-        this.voteDate = voteDate;
-        this.description = description;
-        this.price = price;
-    }
+    @NotNull
+    private Integer restaurantId;
 }

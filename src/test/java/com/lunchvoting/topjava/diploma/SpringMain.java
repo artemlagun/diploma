@@ -15,7 +15,8 @@ import java.util.Arrays;
 
 public class SpringMain {
     public static void main(String[] args) {
-        try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml")) {
+        try (ConfigurableApplicationContext appCtx =
+                     new ClassPathXmlApplicationContext("spring/spring-mvc.xml", "spring/spring-db.xml")) {
 
             VoteService voteService = appCtx.getBean(VoteService.class);
             UserService userService = appCtx.getBean(UserService.class);
