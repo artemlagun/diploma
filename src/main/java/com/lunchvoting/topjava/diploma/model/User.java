@@ -1,5 +1,6 @@
 package com.lunchvoting.topjava.diploma.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,7 +34,7 @@ public class User extends AbstractNamedEntity {
     @Size(min = 5, max = 128)
     private String password;
 
-    @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
+    @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
 
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
@@ -54,6 +55,7 @@ public class User extends AbstractNamedEntity {
     @OrderBy("voteDate DESC")
     @BatchSize(size = 20)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonManagedReference
     private List<Vote> votes;
 
     @SuppressWarnings("all")

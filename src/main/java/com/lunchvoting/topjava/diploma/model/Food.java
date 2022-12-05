@@ -1,5 +1,6 @@
 package com.lunchvoting.topjava.diploma.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
@@ -33,6 +34,7 @@ public class Food extends AbstractBaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
+    @JsonBackReference()
     private Restaurant restaurant;
 
     public Food(LocalDate voteDate, String description, BigDecimal price, Restaurant restaurant) {

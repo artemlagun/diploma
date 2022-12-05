@@ -1,9 +1,9 @@
-package com.lunchvoting.topjava.diploma.web.food;
+package com.lunchvoting.topjava.diploma.web.restaurant;
 
-import com.lunchvoting.topjava.diploma.model.Food;
-import com.lunchvoting.topjava.diploma.service.FoodService;
-import com.lunchvoting.topjava.diploma.to.FoodTo;
-import com.lunchvoting.topjava.diploma.util.FoodUtil;
+import com.lunchvoting.topjava.diploma.model.Restaurant;
+import com.lunchvoting.topjava.diploma.service.RestaurantService;
+import com.lunchvoting.topjava.diploma.to.RestaurantTo;
+import com.lunchvoting.topjava.diploma.util.RestaurantUtil;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
 import com.lunchvoting.topjava.diploma.web.AbstractControllerTest;
 import com.lunchvoting.topjava.diploma.web.json.JsonUtil;
@@ -13,81 +13,84 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.List;
-
-import static com.lunchvoting.topjava.diploma.testdata.FoodTestData.*;
-import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.RESTAURANT1_ID;
+import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class FoodRestControllerTest extends AbstractControllerTest {
+class RestaurantAdminRestControllerTest extends AbstractControllerTest {
 
-    static final String REST_URL = "/api/admin/foods/" + RESTAURANT1_ID + '/';
+    static final String REST_URL = "/api/admin/restaurants/";
 
     @Autowired
-    private FoodService service;
+    private RestaurantService service;
 
     @Test
     void getAll() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(FOOD_TO_MATCHER.contentJson(FoodUtil.getTos(foods)));
+                .andExpect(RESTAURANT_TO_MATCHER.contentJson(RestaurantUtil.getTos(restaurants)));
+    }
+
+    @Test
+    void getAllWithMenu() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + "/with-menu"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(RESTAURANT_MATCHER.contentJson(service.getAll()));
     }
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + FOOD1_ID))
+        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(FOOD_TO_MATCHER.contentJson(FoodUtil.createTo(food1)));
-
+                .andExpect(RESTAURANT_TO_MATCHER.contentJson(RestaurantUtil.createTo(restaurant1)));
     }
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + FOOD1_ID))
+        perform(MockMvcRequestBuilders.delete(REST_URL + RESTAURANT1_ID))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertThrows(NotFoundException.class, () -> service.get(FOOD1_ID, RESTAURANT1_ID));
+        assertThrows(NotFoundException.class, () -> service.get(RESTAURANT1_ID));
     }
 
     @Test
-    void getAllByDate() throws Exception {
-        List<FoodTo> expected = FoodUtil.getTos(service.getAllByDate(RESTAURANT1_ID, food1.getVoteDate()));
-        perform(MockMvcRequestBuilders.get(REST_URL + "/by-date?voteDate="
-                + food1.getVoteDate()))
+    void getMenuOfDay() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID + "/menu"))
                 .andExpect(status().isOk())
+                .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(FOOD_TO_MATCHER.contentJson(expected));
+                .andExpect(RESTAURANT_MATCHER.contentJson(service.getMenuOfDay(RESTAURANT1_ID)));
     }
 
     @Test
     void createWithLocation() throws Exception {
-        Food newFood = getNew();
+        Restaurant newRestaurant = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newFood)))
+                .content(JsonUtil.writeValue(newRestaurant)))
                 .andExpect(status().isCreated());
 
-        FoodTo created = FOOD_TO_MATCHER.readFromJson(action);
+        RestaurantTo created = RESTAURANT_TO_MATCHER.readFromJson(action);
         int newId = created.getId();
-        newFood.setId(newId);
-        FOOD_TO_MATCHER.assertMatch(created, FoodUtil.createTo(newFood));
-        FOOD_MATCHER.assertMatch(service.get(newId, RESTAURANT1_ID), newFood);
+        newRestaurant.setId(newId);
+        RESTAURANT_TO_MATCHER.assertMatch(created, RestaurantUtil.createTo(newRestaurant));
+        RESTAURANT_MATCHER.assertMatch(service.get(newId), newRestaurant);
     }
 
     @Test
     void update() throws Exception {
-        Food updated = getUpdated();
+        Restaurant updated = getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
 
-        FOOD_MATCHER.assertMatch(service.get(FOOD1_ID, RESTAURANT1_ID), updated);
+        RESTAURANT_MATCHER.assertMatch(service.get(RESTAURANT1_ID), updated);
     }
 }

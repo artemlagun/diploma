@@ -1,5 +1,6 @@
 package com.lunchvoting.topjava.diploma.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class Restaurant extends AbstractNamedEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @BatchSize(size = 7)
+    @JsonManagedReference
     private List<Food> menu;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")

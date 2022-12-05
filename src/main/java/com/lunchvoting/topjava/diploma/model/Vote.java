@@ -1,5 +1,6 @@
 package com.lunchvoting.topjava.diploma.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +24,7 @@ public class Vote extends AbstractBaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @NotNull
+    @JsonBackReference
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)

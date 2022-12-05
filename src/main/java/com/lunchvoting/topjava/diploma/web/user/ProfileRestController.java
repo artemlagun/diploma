@@ -15,9 +15,9 @@ import static com.lunchvoting.topjava.diploma.web.SecurityUtil.authUserId;
 @Slf4j
 public class ProfileRestController {
 
-    private final UserService service;
-
     static final String REST_URL = "/api/profile";
+
+    private final UserService service;
 
     public ProfileRestController(UserService service) {
         this.service = service;

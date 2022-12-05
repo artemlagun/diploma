@@ -17,22 +17,17 @@
 
     <context:property-placeholder location="classpath:db/hsqldb.properties" system-properties-mode="OVERRIDE"/>
 
-    <bean class="org.springframework.beans.factory.config.MethodInvokingBean">
-        <property name="staticMethod" value="org.slf4j.bridge.SLF4JBridgeHandler.install" />
-    </bean>
-
     <jdbc:initialize-database data-source="dataSource" enabled="${database.init}">
         <jdbc:script location="${jdbc.initLocation}"/>
         <jdbc:script encoding="utf-8" location="classpath:db/data.sql"/>
     </jdbc:initialize-database>
 
     <bean id="dataSource"
-          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="${database.driverClassName}"/>
-        <property name="url" value="${database.url}"/>
-        <property name="username" value="${database.username}"/>
-        <property name="password" value="${database.password}"/>
-    </bean>
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          p:driverClassName="org.hsqldb.jdbcDriver"
+          p:url="${database.url}"
+          p:username="${database.username}"
+          p:password="${database.password}"/>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:dataSource-ref="dataSource"

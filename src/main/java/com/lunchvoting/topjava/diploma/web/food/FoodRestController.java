@@ -23,13 +23,13 @@ import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNew;
 @Slf4j
 public class FoodRestController {
 
+    static final String REST_URL = "/api/admin/foods/{restaurantId}";
+
     private final FoodService service;
 
     public FoodRestController(FoodService service) {
         this.service = service;
     }
-
-    static final String REST_URL = "/api/admin/foods/{restaurantId}";
 
     @GetMapping()
     public List<FoodTo> getAll(@PathVariable int restaurantId) {
