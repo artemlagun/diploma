@@ -2,6 +2,8 @@ package com.lunchvoting.topjava.diploma.web.user;
 
 import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.service.UserService;
+import com.lunchvoting.topjava.diploma.to.UserTo;
+import com.lunchvoting.topjava.diploma.util.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,22 +32,22 @@ public class AdminRestController {
     static final String REST_URL = "/api/admin/users";
 
     @GetMapping
-    public List<User> getAll() {
+    public List<UserTo> getAll() {
         log.info("getAll");
-        return service.getAll();
+        return UserUtil.getTos(service.getAll());
     }
 
     @GetMapping("/{id}")
-    public User get(@PathVariable int id) {
+    public UserTo get(@PathVariable int id) {
         log.info("get {}", id);
-        return service.get(id);
+        return UserUtil.createTo(service.get(id));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> createWithLocation(@RequestBody User user) {
+    public ResponseEntity<UserTo> createWithLocation(@RequestBody User user) {
         log.info("create {}", user);
         checkNew(user);
-        User created = service.create(user);
+        UserTo created = UserUtil.createTo(service.create(user));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -68,8 +70,8 @@ public class AdminRestController {
     }
 
     @GetMapping("/by-email")
-    public User getByEmail(@RequestParam String email) {
+    public UserTo getByEmail(@RequestParam String email) {
         log.info("getByEmail {}", email);
-        return service.getByEmail(email);
+        return UserUtil.createTo(service.getByEmail(email));
     }
 }

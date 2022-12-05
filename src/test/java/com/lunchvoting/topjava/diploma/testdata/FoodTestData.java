@@ -15,8 +15,7 @@ import static com.lunchvoting.topjava.diploma.model.AbstractBaseEntity.START_SEQ
 public class FoodTestData {
 
     public static final MatcherFactory.Matcher<Food> FOOD_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Food.class, "restaurant");
-
-    public static final MatcherFactory.Matcher<FoodTo> FOOD_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(FoodTo.class, "restaurant");
+    public static final MatcherFactory.Matcher<FoodTo> FOOD_TO_MATCHER = MatcherFactory.usingEqualsComparator(FoodTo.class);
 
     public static final int NOT_FOUND = 10;
     public static final int FOOD1_ID = START_SEQ + 6;

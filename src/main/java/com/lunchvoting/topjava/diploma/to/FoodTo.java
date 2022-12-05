@@ -6,14 +6,15 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.beans.ConstructorProperties;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode
 public class FoodTo {
 
     private Integer id;
@@ -29,4 +30,13 @@ public class FoodTo {
 
     @NotNull
     private Integer restaurantId;
+
+    @ConstructorProperties({"id", "voteDate", "description", "price", "restaurantId"})
+    public FoodTo(Integer id, LocalDate voteDate, String description, BigDecimal price, Integer restaurantId) {
+        this.id = id;
+        this.voteDate = voteDate;
+        this.description = description;
+        this.price = price;
+        this.restaurantId = restaurantId;
+    }
 }

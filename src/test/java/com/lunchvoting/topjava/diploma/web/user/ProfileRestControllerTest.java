@@ -2,6 +2,7 @@ package com.lunchvoting.topjava.diploma.web.user;
 
 import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.service.UserService;
+import com.lunchvoting.topjava.diploma.util.UserUtil;
 import com.lunchvoting.topjava.diploma.web.AbstractControllerTest;
 import com.lunchvoting.topjava.diploma.web.json.JsonUtil;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,7 @@ class ProfileRestControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_MATCHER.contentJson(user1));
+                .andExpect(USER_TO_MATCHER.contentJson(UserUtil.createTo(user1)));
     }
 
     @Test

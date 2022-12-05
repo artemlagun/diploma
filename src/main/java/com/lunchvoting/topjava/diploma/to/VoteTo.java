@@ -3,13 +3,14 @@ package com.lunchvoting.topjava.diploma.to;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
+import java.beans.ConstructorProperties;
 import java.time.LocalDate;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode
 public class VoteTo {
 
     private Integer id;
@@ -22,4 +23,12 @@ public class VoteTo {
 
     @NotNull
     private Integer restaurantId;
+
+    @ConstructorProperties({"id", "voteDate", "userId", "restaurantId"})
+    public VoteTo(Integer id, LocalDate voteDate, Integer userId, Integer restaurantId) {
+        this.id = id;
+        this.voteDate = voteDate;
+        this.userId = userId;
+        this.restaurantId = restaurantId;
+    }
 }

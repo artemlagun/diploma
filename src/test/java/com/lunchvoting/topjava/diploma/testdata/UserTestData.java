@@ -3,6 +3,7 @@ package com.lunchvoting.topjava.diploma.testdata;
 import com.lunchvoting.topjava.diploma.MatcherFactory;
 import com.lunchvoting.topjava.diploma.model.Role;
 import com.lunchvoting.topjava.diploma.model.User;
+import com.lunchvoting.topjava.diploma.to.UserTo;
 
 import java.util.Collections;
 import java.util.Date;
@@ -11,6 +12,8 @@ import static com.lunchvoting.topjava.diploma.model.AbstractBaseEntity.START_SEQ
 
 public class UserTestData {
     public static final MatcherFactory.Matcher<User> USER_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(User.class, "registered", "roles", "votes");
+    public static final MatcherFactory.Matcher<UserTo> USER_TO_MATCHER = MatcherFactory.usingEqualsComparator(UserTo.class);
+
     public static final int USER1_ID = START_SEQ;
     public static final int USER2_ID = START_SEQ + 1;
     public static final int ADMIN_ID = START_SEQ + 2;

@@ -2,6 +2,8 @@ package com.lunchvoting.topjava.diploma.web.user;
 
 import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.service.UserService;
+import com.lunchvoting.topjava.diploma.to.UserTo;
+import com.lunchvoting.topjava.diploma.util.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,9 +26,9 @@ public class ProfileRestController {
     }
 
     @GetMapping
-    public User get() {
+    public UserTo get() {
         log.info("get {}", authUserId());
-        return service.get(authUserId());
+        return UserUtil.createTo(service.get(authUserId()));
     }
 
     @DeleteMapping
