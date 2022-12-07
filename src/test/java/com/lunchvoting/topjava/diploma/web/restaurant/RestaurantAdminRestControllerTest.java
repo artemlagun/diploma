@@ -31,7 +31,7 @@ class RestaurantAdminRestControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_TO_MATCHER.contentJson(RestaurantUtil.getTos(restaurants)));
+                .andExpect(RESTAURANT_MATCHER.contentJson(restaurants));
     }
 
     @Test
@@ -48,7 +48,7 @@ class RestaurantAdminRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_TO_MATCHER.contentJson(RestaurantUtil.createTo(restaurant1)));
+                .andExpect(RESTAURANT_MATCHER.contentJson(restaurant1));
     }
 
     @Test
@@ -76,10 +76,10 @@ class RestaurantAdminRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(newRestaurant)))
                 .andExpect(status().isCreated());
 
-        RestaurantTo created = RESTAURANT_TO_MATCHER.readFromJson(action);
+        Restaurant created = RESTAURANT_MATCHER.readFromJson(action);
         int newId = created.getId();
         newRestaurant.setId(newId);
-        RESTAURANT_TO_MATCHER.assertMatch(created, RestaurantUtil.createTo(newRestaurant));
+        RESTAURANT_MATCHER.assertMatch(created, newRestaurant);
         RESTAURANT_MATCHER.assertMatch(service.get(newId), newRestaurant);
     }
 

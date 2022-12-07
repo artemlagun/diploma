@@ -14,7 +14,15 @@ public class RestaurantUtil {
         return restaurants.stream().map(RestaurantUtil::createTo).toList();
     }
 
+    public static List<RestaurantTo> getTosWithMenu(Collection<Restaurant> restaurants) {
+        return restaurants.stream().map(RestaurantUtil::createToWithMenu).toList();
+    }
+
     public static RestaurantTo createTo(Restaurant restaurant) {
         return new RestaurantTo(restaurant.getId(), restaurant.getName());
+    }
+
+    public static RestaurantTo createToWithMenu(Restaurant restaurant) {
+        return new RestaurantTo(restaurant.getId(), restaurant.getName(), restaurant.getMenu());
     }
 }

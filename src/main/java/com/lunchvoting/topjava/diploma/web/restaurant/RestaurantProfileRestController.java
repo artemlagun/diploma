@@ -27,9 +27,9 @@ public class RestaurantProfileRestController {
     }
 
     @GetMapping("/with-menu")
-    public List<Restaurant> getAllWithMenu() {
+    public List<RestaurantTo> getAllWithMenu() {
         log.info("getAllWithMenu");
-        return service.getAll();
+        return RestaurantUtil.getTosWithMenu(service.getAll());
     }
 
     @GetMapping("/{id}")
