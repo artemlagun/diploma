@@ -15,18 +15,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class RestaurantProfileRestControllerTest extends AbstractControllerTest {
 
-    static final String REST_URL = "/api/profile/restaurants/";
+    private static final String REST_URL = "/api/profile/restaurants/";
 
     @Autowired
     private RestaurantService service;
-
-    @Test
-    void getAll() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_TO_MATCHER.contentJson(RestaurantUtil.getTos(restaurants)));
-    }
 
     @Test
     void getAllWithMenu() throws Exception {

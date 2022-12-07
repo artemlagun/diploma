@@ -1,8 +1,13 @@
-DELETE FROM votes;
-DELETE FROM foods;
-DELETE FROM restaurants;
-DELETE FROM user_roles;
-DELETE FROM users;
+DELETE
+FROM votes;
+DELETE
+FROM foods;
+DELETE
+FROM restaurants;
+DELETE
+FROM user_roles;
+DELETE
+FROM users;
 ALTER SEQUENCE global_seq RESTART WITH 100000;
 
 INSERT INTO users (name, email, password)
@@ -31,16 +36,19 @@ VALUES (today(), 'Beef tips with rice', 5.75, 100003),
        (today(), 'Dinner salad', 3.25, 100004),
        (today(), 'Americano', 2.25, 100004),
        (today(), 'Cappuccino', 2.25, 100004),
-       (today(), 'Meet lovers pizza', 11.95, 100005),
-       (today(), 'Pasta Bolognese', 10.95, 100005),
-       (today(), 'Cesar salad', 8.95, 100005),
-       (today(), 'Espresso', 1.85, 100005),
-       (today(), 'Cappuccino', 2.45, 100005);
+       ('2022-11-07', 'Meet lovers pizza', 11.95, 100005),
+       ('2022-11-07', 'Pasta Bolognese', 10.95, 100005),
+       ('2022-11-07', 'Cesar salad', 8.95, 100005),
+       ('2022-11-07', 'Espresso', 1.85, 100005),
+       ('2022-11-07', 'Cappuccino', 2.45, 100005);
 
 INSERT INTO votes (vote_date, user_id, restaurant_id)
 VALUES (today(), 100000, 100003),
        (today(), 100001, 100005),
-       (today(), 100002, 100003);
+       (today(), 100002, 100003),
+       (today() - INTERVAL '1' DAY, 100000, 100003),
+       (today() - INTERVAL '1' DAY, 100001, 100005),
+       (today() - INTERVAL '1' DAY, 100002, 100003);
 
 
 

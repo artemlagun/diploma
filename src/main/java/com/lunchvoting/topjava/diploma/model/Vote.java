@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "votes", uniqueConstraints = {@UniqueConstraint(columnNames =
-        {"user_id", "restaurant_id", "vote_date"}, name = "vote_unique_user_restaurant_vote_date_idx")})
+        {"user_id", "vote_date"}, name = "vote_unique_user_vote_date_idx")})
 @NoArgsConstructor
 @Getter
 @Setter

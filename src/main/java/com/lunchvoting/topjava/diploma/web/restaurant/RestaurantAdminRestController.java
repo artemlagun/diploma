@@ -2,9 +2,7 @@ package com.lunchvoting.topjava.diploma.web.restaurant;
 
 import com.lunchvoting.topjava.diploma.model.Restaurant;
 import com.lunchvoting.topjava.diploma.service.RestaurantService;
-import com.lunchvoting.topjava.diploma.to.FoodTo;
 import com.lunchvoting.topjava.diploma.to.RestaurantTo;
-import com.lunchvoting.topjava.diploma.util.FoodUtil;
 import com.lunchvoting.topjava.diploma.util.RestaurantUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -47,14 +45,14 @@ public class RestaurantAdminRestController {
 
     @GetMapping("/{id}")
     public RestaurantTo get(@PathVariable int id) {
-        log.info("get restaurant {}", id);
+        log.info("get {}", id);
         return RestaurantUtil.createTo(service.get(id));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
-        log.info("delete restaurant {}", id);
+        log.info("delete {}", id);
         service.delete(id);
     }
 
@@ -66,7 +64,7 @@ public class RestaurantAdminRestController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestaurantTo> createWithLocation(@RequestBody Restaurant restaurant) {
-        log.info("create restaurant {}", restaurant);
+        log.info("create {}", restaurant);
         checkNew(restaurant);
         RestaurantTo created = RestaurantUtil.createTo(service.create(restaurant));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -78,7 +76,7 @@ public class RestaurantAdminRestController {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody Restaurant restaurant) {
-        log.info("update restaurant {}", restaurant);
+        log.info("update {}", restaurant);
         assureIdConsistent(restaurant, restaurant.id());
         service.update(restaurant);
     }

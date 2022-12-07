@@ -12,6 +12,7 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNotFoundWithId;
 
@@ -30,7 +31,7 @@ public class FoodService {
     public Food get(int id, int restaurantId) {
         Food food = repository.findById(id).orElseThrow(() ->
                 new NotFoundException("Food" + id + " from restaurant " + restaurantId + "not found"));
-        return food != null && food.getRestaurant().getId() == restaurantId ? food : null;
+        return food != null && Objects.requireNonNull(food.getRestaurant().getId()) == restaurantId ? food : null;
     }
 
     @CacheEvict(value = "foods", allEntries = true)
@@ -39,7 +40,12 @@ public class FoodService {
     }
 
     @Cacheable("foods")
-    public List<Food> getAll(int restaurantId) {
+    public List<Food> getAll() {
+        return repository.findAll();
+    }
+
+    @CacheEvict(value = "foods", allEntries = true)
+    public List<Food> getAllByRestaurant(int restaurantId) {
         return repository.getAll(restaurantId);
     }
 

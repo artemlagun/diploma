@@ -5,6 +5,7 @@ import com.lunchvoting.topjava.diploma.service.FoodService;
 import com.lunchvoting.topjava.diploma.to.FoodTo;
 import com.lunchvoting.topjava.diploma.util.FoodUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNew;
 @Slf4j
 public class FoodRestController {
 
-    static final String REST_URL = "/api/admin/foods/{restaurantId}";
+    static final String REST_URL = "/api/admin/foods";
 
     private final FoodService service;
 
@@ -32,31 +33,39 @@ public class FoodRestController {
     }
 
     @GetMapping()
-    public List<FoodTo> getAll(@PathVariable int restaurantId) {
-        log.info("getAll for restaurant {}", restaurantId);
-        return FoodUtil.getTos(service.getAll(restaurantId));
+    public List<FoodTo> getAll() {
+        log.info("getAll");
+        return FoodUtil.getTos(service.getAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{restaurantId}")
+    public List<FoodTo> getAllByRestaurant(@PathVariable int restaurantId) {
+        log.info("getAll for restaurant {}", restaurantId);
+        return FoodUtil.getTos(service.getAllByRestaurant(restaurantId));
+    }
+
+    @GetMapping("/{restaurantId}/{id}")
     public FoodTo get(@PathVariable int id, @PathVariable int restaurantId) {
         log.info("get food {} for restaurant {}", id, restaurantId);
         return FoodUtil.createTo(service.get(id, restaurantId));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{restaurantId}/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id, @PathVariable int restaurantId) {
         log.info("delete food {} for restaurant {}", id, restaurantId);
         service.delete(id, restaurantId);
     }
 
-    @GetMapping("/by-date")
-    public List<FoodTo> getAllByDate(@PathVariable int restaurantId, @RequestParam("voteDate") LocalDate voteDate) {
+    @GetMapping("/{restaurantId}/by-date")
+    public List<FoodTo> getAllByDate(@PathVariable int restaurantId,
+                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                     @RequestParam LocalDate voteDate) {
         log.info("getAllByDate {} for restaurant {}", voteDate, restaurantId);
         return FoodUtil.getTos(service.getAllByDate(restaurantId, voteDate));
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FoodTo> createWithLocation(@RequestBody Food food, @PathVariable int restaurantId) {
         log.info("create food {} for restaurant {}", food, restaurantId);
         checkNew(food);
@@ -67,7 +76,7 @@ public class FoodRestController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody Food food, @PathVariable int restaurantId) {
         log.info("update food {} for restaurant {}", food, restaurantId);

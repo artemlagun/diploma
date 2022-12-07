@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.RESTAURANT1_ID;
+import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.RESTAURANT3_ID;
 import static com.lunchvoting.topjava.diploma.testdata.FoodTestData.*;
 import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.restaurant1;
 import static org.junit.Assert.assertThrows;
@@ -73,8 +74,8 @@ public class FoodServiceTest extends AbstractServiceTest {
 
     @Test
     public void getAllByDate() {
-        List<Food> allByDate = service.getAllByDate(RESTAURANT1_ID, LocalDate.now());
-        FOOD_MATCHER.assertMatch(allByDate, foods);
+        List<Food> allByDate = service.getAllByDate(RESTAURANT3_ID, LocalDate.of(2022, 11, 7));
+        FOOD_MATCHER.assertMatch(allByDate, foodsByDate);
     }
 
     @Test
@@ -86,7 +87,12 @@ public class FoodServiceTest extends AbstractServiceTest {
 
     @Test
     public void getAll() {
-        FOOD_MATCHER.assertMatch(service.getAll(RESTAURANT1_ID), foods);
+        FOOD_MATCHER.assertMatch(service.getAll(), foods);
+    }
+
+    @Test
+    public void getAllByRestaurant() {
+        FOOD_MATCHER.assertMatch(service.getAllByRestaurant(RESTAURANT1_ID), foodsByRestaurant);
     }
 
     @Test

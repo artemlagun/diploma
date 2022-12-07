@@ -4,12 +4,14 @@ import com.lunchvoting.topjava.diploma.model.Vote;
 import com.lunchvoting.topjava.diploma.repository.RestaurantRepository;
 import com.lunchvoting.topjava.diploma.repository.UserRepository;
 import com.lunchvoting.topjava.diploma.repository.VoteRepository;
+import com.lunchvoting.topjava.diploma.util.exception.OutOfTimeException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.time.Clock;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.List;
 
@@ -63,18 +65,21 @@ public class VoteService {
         return checkNotFoundWithId(repository.getByRestaurantAndDate(restaurantId, voteDate), restaurantId);
     }
 
-    public Vote create(Vote vote, int userId, int restaurantId) {
+    public Vote create(int userId, int restaurantId) {
+        Vote vote = new Vote(null, LocalDate.now(), userRepository.findById(userId).orElse(null),
+                restaurantRepository.findById(restaurantId).orElse(null));
         Assert.notNull(vote, "vote shouldn't be null");
+        checkNew(vote);
         votingTimeVerification(clock);
-        vote.setUser(userRepository.findById(userId).orElse(null));
-        vote.setRestaurant(restaurantRepository.findById(restaurantId).orElse(null));
         return repository.save(vote);
     }
 
-    public void update(Vote vote, int userId, int restaurantId) {
+    public void update(int id, int restaurantId) {
+        Vote vote = repository.findById(id).orElseThrow(() -> new OutOfTimeException("Now " + LocalTime.now() +
+                ", sorry voting time expired. You could vote till 11:00:00"));
         Assert.notNull(vote, "vote shouldn't be null");
+        assureIdConsistent(vote, vote.id());
         votingTimeVerification(clock);
-        vote.setUser(userRepository.findById(userId).orElse(null));
         vote.setRestaurant(restaurantRepository.findById(restaurantId).orElse(null));
         checkNotFoundWithId(repository.save(vote), vote.id());
     }

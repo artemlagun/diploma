@@ -26,12 +26,6 @@ public class RestaurantProfileRestController {
         this.service = service;
     }
 
-    @GetMapping()
-    public List<RestaurantTo> getAll() {
-        log.info("getAll");
-        return RestaurantUtil.getTos(service.getAll());
-    }
-
     @GetMapping("/with-menu")
     public List<Restaurant> getAllWithMenu() {
         log.info("getAllWithMenu");
@@ -40,7 +34,7 @@ public class RestaurantProfileRestController {
 
     @GetMapping("/{id}")
     public RestaurantTo get(@PathVariable int id) {
-        log.info("get restaurant {}", id);
+        log.info("get {}", id);
         return RestaurantUtil.createTo(service.get(id));
     }
 

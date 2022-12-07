@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class ProfileRestControllerTest extends AbstractControllerTest {
 
-    static final String REST_URL = "/api/profile";
+    private static final String REST_URL = "/api/profile";
 
     @Autowired
     private UserService service;

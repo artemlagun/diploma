@@ -32,13 +32,16 @@ public class FoodTestData {
     public static final Food food9 = new Food(FOOD1_ID + 8, LocalDate.now(), "Americano", new BigDecimal("2.25"), restaurant2);
     public static final Food food10 = new Food(FOOD1_ID + 9, LocalDate.now(), "Cappuccino", new BigDecimal("2.25"), restaurant2);
 
-    public static final Food food11 = new Food(FOOD1_ID + 10, LocalDate.now(), "Meet lovers pizza", new BigDecimal("11.95"), restaurant3);
-    public static final Food food12 = new Food(FOOD1_ID + 11, LocalDate.now(), "Pasta Bolognese", new BigDecimal("10.95"), restaurant3);
-    public static final Food food13 = new Food(FOOD1_ID + 12, LocalDate.now(), "Cesar salad", new BigDecimal("8.95"), restaurant3);
-    public static final Food food14 = new Food(FOOD1_ID + 13, LocalDate.now(), "Espresso", new BigDecimal("1.85"), restaurant3);
-    public static final Food food15 = new Food(FOOD1_ID + 14, LocalDate.now(), "Cappuccino", new BigDecimal("2.45"), restaurant3);
+    public static final Food food11 = new Food(FOOD1_ID + 10, LocalDate.of(2022, 11, 7), "Meet lovers pizza", new BigDecimal("11.95"), restaurant3);
+    public static final Food food12 = new Food(FOOD1_ID + 11, LocalDate.of(2022, 11, 7), "Pasta Bolognese", new BigDecimal("10.95"), restaurant3);
+    public static final Food food13 = new Food(FOOD1_ID + 12, LocalDate.of(2022, 11, 7), "Cesar salad", new BigDecimal("8.95"), restaurant3);
+    public static final Food food14 = new Food(FOOD1_ID + 13, LocalDate.of(2022, 11, 7), "Espresso", new BigDecimal("1.85"), restaurant3);
+    public static final Food food15 = new Food(FOOD1_ID + 14, LocalDate.of(2022, 11, 7), "Cappuccino", new BigDecimal("2.45"), restaurant3);
 
-    public static final List<Food> foods = List.of(food1, food2, food3, food4, food5);
+    public static final List<Food> foodsByRestaurant = List.of(food1, food2, food3, food4, food5);
+    public static final List<Food> foodsByDate = List.of(food11, food12, food13, food14, food15);
+    public static final List<Food> foods = List.of(food1, food2, food3, food4, food5, food6, food7,
+            food8, food9, food10, food11, food12, food13, food14, food15);
     public static final List<Food> menuOfDay = List.of(food6, food7, food8, food9, food10);
 
     public static Food getNew() {

@@ -13,10 +13,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.lunchvoting.topjava.diploma.testdata.FoodTestData.*;
 import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.RESTAURANT1_ID;
+import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.RESTAURANT3_ID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -24,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class FoodRestControllerTest extends AbstractControllerTest {
 
-    static final String REST_URL = "/api/admin/foods/" + RESTAURANT1_ID + '/';
+    private static final String REST_URL = "/api/admin/foods/";
 
     @Autowired
     private FoodService service;
@@ -38,8 +40,16 @@ class FoodRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void getAllByRestaurant() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(FOOD_TO_MATCHER.contentJson(FoodUtil.getTos(foodsByRestaurant)));
+    }
+
+    @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + FOOD1_ID))
+        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID + '/' + FOOD1_ID))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -49,7 +59,7 @@ class FoodRestControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + FOOD1_ID))
+        perform(MockMvcRequestBuilders.delete(REST_URL + RESTAURANT1_ID + '/' + FOOD1_ID))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         assertThrows(NotFoundException.class, () -> service.get(FOOD1_ID, RESTAURANT1_ID));
@@ -57,9 +67,10 @@ class FoodRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getAllByDate() throws Exception {
-        List<FoodTo> expected = FoodUtil.getTos(service.getAllByDate(RESTAURANT1_ID, food1.getVoteDate()));
-        perform(MockMvcRequestBuilders.get(REST_URL + "/by-date?voteDate="
-                + food1.getVoteDate()))
+        List<FoodTo> expected = FoodUtil.getTos(service.getAllByDate(RESTAURANT3_ID,
+                LocalDate.of(2022, 11, 7)));
+        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT3_ID + '/' + "by-date?voteDate="
+                + LocalDate.of(2022, 11, 7)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(FOOD_TO_MATCHER.contentJson(expected));
@@ -68,7 +79,7 @@ class FoodRestControllerTest extends AbstractControllerTest {
     @Test
     void createWithLocation() throws Exception {
         Food newFood = getNew();
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + RESTAURANT1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newFood)))
                 .andExpect(status().isCreated());
@@ -83,7 +94,7 @@ class FoodRestControllerTest extends AbstractControllerTest {
     @Test
     void update() throws Exception {
         Food updated = getUpdated();
-        perform(MockMvcRequestBuilders.put(REST_URL)
+        perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());

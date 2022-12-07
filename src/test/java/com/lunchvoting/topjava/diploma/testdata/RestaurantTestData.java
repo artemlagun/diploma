@@ -2,7 +2,6 @@ package com.lunchvoting.topjava.diploma.testdata;
 
 import com.lunchvoting.topjava.diploma.MatcherFactory;
 import com.lunchvoting.topjava.diploma.model.Restaurant;
-import com.lunchvoting.topjava.diploma.to.FoodTo;
 import com.lunchvoting.topjava.diploma.to.RestaurantTo;
 
 import java.util.List;
@@ -17,6 +16,7 @@ public class RestaurantTestData {
     public static final int NOT_FOUND = 10;
     public static final int RESTAURANT1_ID = START_SEQ + 3;
     public static final int RESTAURANT2_ID = START_SEQ + 4;
+    public static final int RESTAURANT3_ID = START_SEQ + 5;
 
     public static final Restaurant restaurant1 = new Restaurant(RESTAURANT1_ID, "Mayflower restaurant");
     public static final Restaurant restaurant2 = new Restaurant(RESTAURANT1_ID + 1, "Chaf-if restaurant");

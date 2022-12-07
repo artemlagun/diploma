@@ -26,8 +26,8 @@ public class SpringMain {
             User user2 = userService.create(new User(null,"Test Name2", "test2@gmail", "password", Role.USER));
             Restaurant restaurant1 = restaurantService.create(new Restaurant(null, "New Restaurant1"));
             Restaurant restaurant2 = restaurantService.create(new Restaurant(null, "New Restaurant2"));
-            Vote vote1 = voteService.create(new Vote(LocalDate.now(), user1, restaurant1), user1.id(), restaurant1.id());
-            Vote vote2 = voteService.create(new Vote(LocalDate.now(), user2, restaurant1), user2.id(), restaurant1.id());
+            Vote vote1 = voteService.create(user1.id(), restaurant1.id());
+            Vote vote2 = voteService.create(user2.id(), restaurant1.id());
 
             voteService.delete(vote2.id());
 
