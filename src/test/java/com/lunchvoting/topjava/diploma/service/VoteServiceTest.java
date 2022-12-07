@@ -4,7 +4,8 @@ import com.lunchvoting.topjava.diploma.model.Vote;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
 import com.lunchvoting.topjava.diploma.util.exception.OutOfTimeException;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintViolationException;
@@ -16,7 +17,7 @@ import static com.lunchvoting.topjava.diploma.testdata.UserTestData.USER1_ID;
 import static com.lunchvoting.topjava.diploma.testdata.VoteTestData.*;
 import static org.junit.Assert.assertThrows;
 
-public class VoteServiceTest extends AbstractServiceTest {
+ class VoteServiceTest extends AbstractServiceTest {
 
     private final LocalDateTime testTime = LocalDateTime.of(2022, 11, 23, 10, 30);
     private final LocalDateTime outOfTestTime = LocalDateTime.of(2022, 11, 23, 11, 1);
@@ -27,13 +28,13 @@ public class VoteServiceTest extends AbstractServiceTest {
     @Autowired
     private VoteService service;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+     void setUp() {
         service.setClock(fixedClock);
     }
 
     @Test
-    public void create() {
+     void create() {
         service.delete(VOTE1_ID);
         Vote created = service.create(USER1_ID, RESTAURANT1_ID);
         int newId = created.id();
@@ -44,71 +45,71 @@ public class VoteServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void createOutOfTime() {
+     void createOutOfTime() {
         service.setClock(fixedOutOfTimeClock);
         assertThrows(OutOfTimeException.class, () -> service.create(USER1_ID, RESTAURANT1_ID));
     }
 
     @Test
-    public void delete() {
+     void delete() {
         service.delete(VOTE1_ID);
         assertThrows(NotFoundException.class, () -> service.get(VOTE1_ID));
     }
 
     @Test
-    public void deletedNotFound() {
+     void deletedNotFound() {
         assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND));
     }
 
     @Test
-    public void get() {
+     void get() {
         Vote vote = service.get(VOTE1_ID);
         VOTE_MATCHER.assertMatch(vote, vote1);
     }
 
     @Test
-    public void getNotFound() {
+     void getNotFound() {
         assertThrows(NotFoundException.class, () -> service.get(NOT_FOUND));
     }
 
     @Test
-    public void update() {
+     void update() {
         service.update(VOTE1_ID, RESTAURANT1_ID);
         VOTE_MATCHER.assertMatch(service.get(VOTE1_ID), getUpdated());
     }
 
     @Test
-    public void updateOutOfTime() {
+     void updateOutOfTime() {
         service.setClock(fixedOutOfTimeClock);
         assertThrows(OutOfTimeException.class, () -> service.update(USER1_ID, RESTAURANT1_ID));
     }
 
     @Test
-    public void getAll() {
+     void getAll() {
         VOTE_MATCHER.assertMatch(service.getAll(), votes);
     }
 
     @Test
-    public void getByUserAndDate() {
+     void getByUserAndDate() {
         Vote userVoteByDate = service.getByUserAndDate(USER1_ID, LocalDate.now().minusDays(1));
         VOTE_MATCHER.assertMatch(userVoteByDate, vote4);
     }
 
     @Test
-    public void getAllByDate() {
+     void getAllByDate() {
         List<Vote> allByDate = service.getAllByDate(LocalDate.now().minusDays(1));
         VOTE_MATCHER.assertMatch(allByDate, votesByDate);
     }
 
     @Test
-    public void getByRestaurantAndDate() {
+     void getByRestaurantAndDate() {
         List<Vote> votesByRestaurantAndDate = service.getByRestaurantAndDate(RESTAURANT1_ID,
                 LocalDate.now().minusDays(1));
         VOTE_MATCHER.assertMatch(votesByRestaurantAndDate, votesByRestaurantAndDate);
     }
 
     @Test
-    public void createWithException() throws Exception {
+     void createWithException() throws Exception {
         validateRootCause(ConstraintViolationException.class, () -> service.create(0, RESTAURANT1_ID));
         validateRootCause(ConstraintViolationException.class, () -> service.create(USER1_ID, 0));
     }
