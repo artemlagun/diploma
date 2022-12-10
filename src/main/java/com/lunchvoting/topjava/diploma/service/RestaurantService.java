@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
@@ -42,6 +43,7 @@ public class RestaurantService {
         return repository.findAll(SORT_NAME);
     }
 
+    @Transactional
     public Restaurant getMenuOfDay(int id) {
         Restaurant restaurant = checkNotFoundWithId(repository.findById(id).orElse(null),id);
         Assert.notNull(restaurant, "restaurant shouldn't be null");

@@ -7,6 +7,7 @@ import com.lunchvoting.topjava.diploma.repository.VoteRepository;
 import com.lunchvoting.topjava.diploma.util.exception.OutOfTimeException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.Clock;
@@ -65,6 +66,7 @@ public class VoteService {
         return checkNotFoundWithId(repository.getByRestaurantAndDate(restaurantId, voteDate), restaurantId);
     }
 
+    @Transactional
     public Vote create(int userId, int restaurantId) {
         Vote vote = new Vote(null, LocalDate.now(), userRepository.findById(userId).orElse(null),
                 restaurantRepository.findById(restaurantId).orElse(null));
@@ -74,6 +76,7 @@ public class VoteService {
         return repository.save(vote);
     }
 
+    @Transactional
     public void update(int id, int restaurantId) {
         Vote vote = repository.findById(id).orElseThrow(() -> new OutOfTimeException("Now " + LocalTime.now() +
                 ", sorry voting time expired. You could vote till 11:00:00"));

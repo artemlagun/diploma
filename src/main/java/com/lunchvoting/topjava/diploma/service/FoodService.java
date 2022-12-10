@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
@@ -55,6 +56,7 @@ public class FoodService {
     }
 
     @CacheEvict(value = "foods", allEntries = true)
+    @Transactional
     public void update(Food food, int restaurantId) {
         Assert.notNull(food, "food shouldn't be null");
         food.setRestaurant(restaurantRepository.findById(restaurantId).orElse(null));
@@ -62,6 +64,7 @@ public class FoodService {
     }
 
     @CacheEvict(value = "foods", allEntries = true)
+    @Transactional
     public Food create(Food food, int restaurantId) {
         Assert.notNull(food, "food shouldn't be null");
         food.setRestaurant(restaurantRepository.findById(restaurantId).orElse(null));
