@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = RestaurantProfileRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = RestaurantRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
-public class RestaurantProfileRestController {
+public class RestaurantRestController {
 
-    static final String REST_URL = "/api/profile/restaurants";
+    static final String REST_URL = "/api/restaurants";
 
     private final RestaurantService service;
 
-    public RestaurantProfileRestController(RestaurantService service) {
+    public RestaurantRestController(RestaurantService service) {
         this.service = service;
     }
 
