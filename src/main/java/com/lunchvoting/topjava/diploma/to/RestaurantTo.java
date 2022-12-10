@@ -8,15 +8,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.beans.ConstructorProperties;
 import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
-public class RestaurantTo {
-
-    private Integer id;
+public class RestaurantTo extends BaseTo {
 
     @Size(min = 2, max = 120)
     @NotBlank
@@ -32,8 +30,21 @@ public class RestaurantTo {
 
     @ConstructorProperties({"id", "name", "menu"})
     public RestaurantTo(Integer id, String name, List<Food> menu) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.menu = menu;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RestaurantTo that = (RestaurantTo) o;
+        return name.equals(that.name) && Objects.equals(menu, that.menu);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, menu);
     }
 }

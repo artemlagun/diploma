@@ -10,16 +10,14 @@ import java.beans.ConstructorProperties;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Objects;
 
 
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
-public class UserTo {
-
-    private Integer id;
+public class UserTo extends BaseTo {
 
     @NotBlank
     @Size(min = 2, max = 128)
@@ -34,18 +32,24 @@ public class UserTo {
     @Size(min = 5, max = 128)
     private String password;
 
-    private boolean enabled = true;
-
-    @NotNull
-    private LocalDate registered = LocalDate.now(ZoneId.systemDefault());
-
-    @ConstructorProperties({"id", "name", "email", "password", "enabled", "registered"})
-    public UserTo(Integer id, String name,  String email, String password, boolean enabled, LocalDate registered) {
-        this.id = id;
+    @ConstructorProperties({"id", "name", "email", "password"})
+    public UserTo(Integer id, String name,  String email, String password) {
+        super(id);
         this.name = name;
         this.email = email;
         this.password = password;
-        this.enabled = enabled;
-        this.registered = registered;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserTo userTo = (UserTo) o;
+        return name.equals(userTo.name) && email.equals(userTo.email) && password.equals(userTo.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, email, password);
     }
 }

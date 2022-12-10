@@ -17,8 +17,6 @@ public class UserUtil {
     }
 
     public static UserTo createTo (User user) {
-        LocalDate dateConverted = user.getRegistered().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        return new UserTo(user.getId(), user.getName(), user.getEmail(), user.getPassword(),
-                user.isEnabled(), dateConverted);
+        return new UserTo(user.getId(), user.getName(), user.getEmail(), user.getPassword());
     }
 }
