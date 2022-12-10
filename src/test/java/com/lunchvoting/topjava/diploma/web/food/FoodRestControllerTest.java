@@ -85,7 +85,7 @@ class FoodRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isCreated());
 
         FoodTo created = FOOD_TO_MATCHER.readFromJson(action);
-        int newId = created.getId();
+        int newId = created.id();
         newFood.setId(newId);
         FOOD_TO_MATCHER.assertMatch(created, FoodUtil.createTo(newFood));
         FOOD_MATCHER.assertMatch(service.get(newId, RESTAURANT1_ID), newFood);

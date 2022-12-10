@@ -2,8 +2,6 @@ package com.lunchvoting.topjava.diploma.web.restaurant;
 
 import com.lunchvoting.topjava.diploma.model.Restaurant;
 import com.lunchvoting.topjava.diploma.service.RestaurantService;
-import com.lunchvoting.topjava.diploma.to.RestaurantTo;
-import com.lunchvoting.topjava.diploma.util.RestaurantUtil;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
 import com.lunchvoting.topjava.diploma.web.AbstractControllerTest;
 import com.lunchvoting.topjava.diploma.web.json.JsonUtil;
@@ -77,7 +75,7 @@ class RestaurantAdminRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isCreated());
 
         Restaurant created = RESTAURANT_MATCHER.readFromJson(action);
-        int newId = created.getId();
+        int newId = created.id();
         newRestaurant.setId(newId);
         RESTAURANT_MATCHER.assertMatch(created, newRestaurant);
         RESTAURANT_MATCHER.assertMatch(service.get(newId), newRestaurant);

@@ -1,6 +1,5 @@
 package com.lunchvoting.topjava.diploma.web.restaurant;
 
-import com.lunchvoting.topjava.diploma.model.Restaurant;
 import com.lunchvoting.topjava.diploma.service.RestaurantService;
 import com.lunchvoting.topjava.diploma.to.RestaurantTo;
 import com.lunchvoting.topjava.diploma.util.RestaurantUtil;
@@ -32,15 +31,9 @@ public class RestaurantRestController {
         return RestaurantUtil.getTosWithMenu(service.getAll());
     }
 
-    @GetMapping("/{id}")
-    public RestaurantTo get(@PathVariable int id) {
-        log.info("get {}", id);
-        return RestaurantUtil.createTo(service.get(id));
-    }
-
     @GetMapping("/{id}/menu")
-    public Restaurant getMenuOfDay(@PathVariable int id) {
+    public RestaurantTo getMenuOfDay(@PathVariable int id) {
         log.info("getMenuOfDay for restaurant {}", id);
-        return service.getMenuOfDay(id);
+        return RestaurantUtil.createToWithMenu(service.getMenuOfDay(id));
     }
 }

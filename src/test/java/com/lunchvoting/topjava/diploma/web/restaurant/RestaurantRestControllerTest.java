@@ -1,7 +1,6 @@
 package com.lunchvoting.topjava.diploma.web.restaurant;
 
 import com.lunchvoting.topjava.diploma.service.RestaurantService;
-import com.lunchvoting.topjava.diploma.util.RestaurantUtil;
 import com.lunchvoting.topjava.diploma.web.AbstractControllerTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +25,6 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(RESTAURANT_MATCHER.contentJson(service.getAll()));
-    }
-
-    @Test
-    void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_MATCHER.contentJson(restaurant1));
     }
 
     @Test

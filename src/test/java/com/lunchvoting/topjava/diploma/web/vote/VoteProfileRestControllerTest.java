@@ -60,7 +60,7 @@ class VoteProfileRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isCreated());
 
         VoteTo created = VOTE_TO_MATCHER.readFromJson(action);
-        int newId = created.getId();
+        int newId = created.id();
         newVote.setId(newId);
         VOTE_TO_MATCHER.assertMatch(created, VoteUtil.createTo(newVote));
         VOTE_MATCHER.assertMatch(service.get(newId), newVote);

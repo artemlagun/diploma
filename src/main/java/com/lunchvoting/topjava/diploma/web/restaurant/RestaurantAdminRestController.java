@@ -57,9 +57,9 @@ public class RestaurantAdminRestController {
     }
 
     @GetMapping("/{id}/menu")
-    public Restaurant getMenuOfDay(@PathVariable int id) {
+    public RestaurantTo getMenuOfDay(@PathVariable int id) {
         log.info("getMenuOfDay for restaurant {}", id);
-        return service.getMenuOfDay(id);
+        return RestaurantUtil.createToWithMenu(service.getMenuOfDay(id));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

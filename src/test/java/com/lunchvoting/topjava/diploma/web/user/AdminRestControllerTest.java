@@ -74,7 +74,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isCreated());
 
         UserTo created = USER_TO_MATCHER.readFromJson(action);
-        int newId = created.getId();
+        int newId = created.id();
         newUser.setId(newId);
         USER_TO_MATCHER.assertMatch(created, UserUtil.createTo(newUser));
         USER_MATCHER.assertMatch(service.get(newId), newUser);
