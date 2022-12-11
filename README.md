@@ -1,5 +1,7 @@
+Lunch voting system
+===================
 
-<h2>Lunch voting system<h2>
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/4d12082ec7ec4735903c1f5011a39164)](https://www.codacy.com/gh/artemlagun/diploma/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=artemlagun/diploma&amp;utm_campaign=Badge_Grade)
 
 <h3>Technical requirement:<h3/>
 
