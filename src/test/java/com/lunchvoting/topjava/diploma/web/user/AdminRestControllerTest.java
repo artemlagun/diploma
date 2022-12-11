@@ -85,6 +85,6 @@ class AdminRestControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_TO_MATCHER.contentJson(UserUtil.getTos(List.of(admin, user2, user1))));
+                .andExpect(USER_TO_MATCHER.contentJson(UserUtil.getTos(List.of(admin, user3, user2, user1))));
     }
 }

@@ -73,7 +73,7 @@ import static org.junit.Assert.assertThrows;
     @Test
      void getAll() {
         List<User> all = service.getAll();
-        USER_MATCHER.assertMatch(all, admin, user2, user1);
+        USER_MATCHER.assertMatch(all, admin, user3, user2, user1);
     }
 
     @Test

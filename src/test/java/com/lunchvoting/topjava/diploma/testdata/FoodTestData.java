@@ -18,7 +18,7 @@ public class FoodTestData {
     public static final MatcherFactory.Matcher<FoodTo> FOOD_TO_MATCHER = MatcherFactory.usingEqualsComparator(FoodTo.class);
 
     public static final int NOT_FOUND = 10;
-    public static final int FOOD1_ID = START_SEQ + 6;
+    public static final int FOOD1_ID = START_SEQ + 7;
 
     public static final Food food1 = new Food(FOOD1_ID, LocalDate.now(), "Beef tips with rice", new BigDecimal("5.75"), restaurant1);
     public static final Food food2 = new Food(FOOD1_ID + 1, LocalDate.now(), "Country fried steak", new BigDecimal("6.25"), restaurant1);

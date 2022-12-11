@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.*;
+import java.util.List;
 
 import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.RESTAURANT1_ID;
 import static com.lunchvoting.topjava.diploma.testdata.UserTestData.USER1_ID;
@@ -68,10 +69,10 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
     @Test
     void getByUserAndDate() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + "by-user-date?userId=" + USER1_ID
-                + "&voteDate=" + LocalDate.now()))
+                + "&voteDate=" + LocalDate.now().minusDays(1)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(VOTE_TO_MATCHER.contentJson(VoteUtil.createTo(vote1)));
+                .andExpect(VOTE_TO_MATCHER.contentJson(VoteUtil.createTo(vote3)));
     }
 
     @Test
@@ -80,7 +81,7 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
                 + LocalDate.now().minusDays(1)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(VOTE_TO_MATCHER.contentJson(VoteUtil.getTos(votesByDate)));
+                .andExpect(VOTE_TO_MATCHER.contentJson(VoteUtil.getTos(List.of(vote4, vote3))));
     }
 
     @Test
@@ -89,7 +90,7 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
                 + LocalDate.now().minusDays(1)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(VOTE_TO_MATCHER.contentJson(VoteUtil.getTos(votesByRestaurantAndDate)));
+                .andExpect(VOTE_TO_MATCHER.contentJson(VoteUtil.getTos(List.of(vote3))));
     }
 
     @Test

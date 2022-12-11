@@ -17,27 +17,18 @@ public class VoteTestData {
     public static final MatcherFactory.Matcher<VoteTo> VOTE_TO_MATCHER = MatcherFactory.usingEqualsComparator(VoteTo.class);
 
     public static final int NOT_FOUND = 10;
-    public static final int VOTE1_ID = START_SEQ + 21;
-    public static final int VOTE2_ID = START_SEQ + 22;
-    public static final int VOTE3_ID = START_SEQ + 23;
+    public static final int VOTE1_ID = START_SEQ + 22;
+    public static final int VOTE2_ID = START_SEQ + 23;
+    public static final int VOTE3_ID = START_SEQ + 24;
+    public static final int VOTE4_ID = START_SEQ + 25;
 
-    public static final int VOTE4_ID = START_SEQ + 24;
-    public static final int VOTE5_ID = START_SEQ + 25;
-    public static final int VOTE6_ID = START_SEQ + 26;
 
     public static final Vote vote1 = new Vote(VOTE1_ID, LocalDate.now(), user1, restaurant1);
     public static final Vote vote2 = new Vote(VOTE2_ID, LocalDate.now(), user2, restaurant3);
-    public static final Vote vote3 = new Vote(VOTE3_ID, LocalDate.now(), admin, restaurant1);
+    public static final Vote vote3 = new Vote(VOTE3_ID, LocalDate.now().minusDays(1), user1, restaurant1);
+    public static final Vote vote4 = new Vote(VOTE4_ID, LocalDate.now().minusDays(1), user2, restaurant3);
 
-    public static final Vote vote4 = new Vote(VOTE4_ID, LocalDate.now().minusDays(1), user1, restaurant1);
-    public static final Vote vote5 = new Vote(VOTE5_ID, LocalDate.now().minusDays(1), user2, restaurant3);
-    public static final Vote vote6 = new Vote(VOTE6_ID, LocalDate.now().minusDays(1), admin, restaurant1);
-
-    public static final List<Vote> votes = List.of(vote3, vote2, vote1, vote6, vote5, vote4);
-
-    public static final List<Vote> votesByDate = List.of(vote6, vote5, vote4);
-
-    public static final List<Vote> votesByRestaurantAndDate = List.of(vote6, vote4);
+    public static final List<Vote> votes = List.of(vote2, vote1, vote4, vote3);
 
     public static Vote getNew() {
         return new Vote(null, LocalDate.now(), user1, restaurant1);
