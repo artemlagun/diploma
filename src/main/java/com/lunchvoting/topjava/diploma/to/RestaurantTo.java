@@ -1,6 +1,5 @@
 package com.lunchvoting.topjava.diploma.to;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lunchvoting.topjava.diploma.model.Food;
 import lombok.*;
 

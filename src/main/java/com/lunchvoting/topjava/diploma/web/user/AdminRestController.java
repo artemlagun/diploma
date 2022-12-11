@@ -23,13 +23,13 @@ import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNew;
 @Slf4j
 public class AdminRestController {
 
+    static final String REST_URL = "/api/admin/users";
+
     private final UserService service;
 
     public AdminRestController(UserService service) {
         this.service = service;
     }
-
-    static final String REST_URL = "/api/admin/users";
 
     @GetMapping
     public List<UserTo> getAll() {

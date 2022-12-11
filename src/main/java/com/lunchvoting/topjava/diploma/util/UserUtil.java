@@ -4,8 +4,6 @@ import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.to.UserTo;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Collection;
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package com.lunchvoting.topjava.diploma.to;
 
-import com.lunchvoting.topjava.diploma.model.Restaurant;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
