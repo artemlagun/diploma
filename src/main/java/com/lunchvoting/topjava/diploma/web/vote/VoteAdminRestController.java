@@ -70,7 +70,7 @@ public class VoteAdminRestController {
         return VoteUtil.getTos(voteService.getByRestaurantAndDate(restaurantId, voteDate));
     }
 
-    @PostMapping(value = "/{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{restaurantId}")
     public ResponseEntity<VoteTo> createWithLocation(@RequestParam int userId, @PathVariable int restaurantId) {
         log.info("create vote from user {} for restaurant {}", userId, restaurantId);
         VoteTo created = VoteUtil.createTo(voteService.create(userId, restaurantId));

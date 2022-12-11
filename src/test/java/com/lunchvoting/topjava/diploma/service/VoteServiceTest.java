@@ -90,20 +90,20 @@ import static org.junit.Assert.assertThrows;
 
     @Test
      void getByUserAndDate() {
-        Vote userVoteByDate = service.getByUserAndDate(USER1_ID, LocalDate.now().minusDays(1));
+        Vote userVoteByDate = service.getByUserAndDate(USER1_ID, LocalDate.of(2022, 11, 7));
         VOTE_MATCHER.assertMatch(userVoteByDate, vote3);
     }
 
     @Test
      void getAllByDate() {
-        List<Vote> allByDate = service.getAllByDate(LocalDate.now().minusDays(1));
+        List<Vote> allByDate = service.getAllByDate(LocalDate.of(2022, 11, 7));
         VOTE_MATCHER.assertMatch(allByDate, vote4, vote3);
     }
 
     @Test
      void getByRestaurantAndDate() {
         List<Vote> votesByRestaurantAndDate = service.getByRestaurantAndDate(RESTAURANT1_ID,
-                LocalDate.now().minusDays(1));
+                LocalDate.of(2022, 11, 7));
         VOTE_MATCHER.assertMatch(votesByRestaurantAndDate, vote3);
     }
 

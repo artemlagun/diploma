@@ -25,8 +25,8 @@ public class VoteTestData {
 
     public static final Vote vote1 = new Vote(VOTE1_ID, LocalDate.now(), user1, restaurant1);
     public static final Vote vote2 = new Vote(VOTE2_ID, LocalDate.now(), user2, restaurant3);
-    public static final Vote vote3 = new Vote(VOTE3_ID, LocalDate.now().minusDays(1), user1, restaurant1);
-    public static final Vote vote4 = new Vote(VOTE4_ID, LocalDate.now().minusDays(1), user2, restaurant3);
+    public static final Vote vote3 = new Vote(VOTE3_ID, LocalDate.of(2022, 11, 7), user1, restaurant1);
+    public static final Vote vote4 = new Vote(VOTE4_ID, LocalDate.of(2022, 11, 7), user2, restaurant3);
 
     public static final List<Vote> votes = List.of(vote2, vote1, vote4, vote3);
 

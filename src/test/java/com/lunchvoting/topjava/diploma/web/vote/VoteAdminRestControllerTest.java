@@ -69,7 +69,7 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
     @Test
     void getByUserAndDate() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + "by-user-date?userId=" + USER1_ID
-                + "&voteDate=" + LocalDate.now().minusDays(1)))
+                + "&voteDate=" + LocalDate.of(2022, 11, 7)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(VOTE_TO_MATCHER.contentJson(VoteUtil.createTo(vote3)));
@@ -78,7 +78,7 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
     @Test
     void getAllByDate() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + "by-date?voteDate="
-                + LocalDate.now().minusDays(1)))
+                + LocalDate.of(2022, 11, 7)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(VOTE_TO_MATCHER.contentJson(VoteUtil.getTos(List.of(vote4, vote3))));
@@ -87,7 +87,7 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
     @Test
     void getByRestaurantAndDate() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID + "/by-date?voteDate="
-                + LocalDate.now().minusDays(1)))
+                + LocalDate.of(2022, 11, 7)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(VOTE_TO_MATCHER.contentJson(VoteUtil.getTos(List.of(vote3))));

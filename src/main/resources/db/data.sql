@@ -47,8 +47,8 @@ VALUES (today(), 'Beef tips with rice', 5.75, 100004),
 INSERT INTO votes (vote_date, user_id, restaurant_id)
 VALUES (today(), 100000, 100004),
        (today(), 100001, 100006),
-       (today() - INTERVAL '1' DAY, 100000, 100004),
-       (today() - INTERVAL '1' DAY, 100001, 100006);
+       ('2022-11-07', 100000, 100004),
+       ('2022-11-07', 100001, 100006);
 
 
 
