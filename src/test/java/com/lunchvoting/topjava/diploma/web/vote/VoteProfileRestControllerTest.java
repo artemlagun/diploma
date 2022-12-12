@@ -17,8 +17,10 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import static com.lunchvoting.topjava.diploma.TestUtil.userHttpBasic;
 import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.RESTAURANT1_ID;
 import static com.lunchvoting.topjava.diploma.testdata.UserTestData.USER1_ID;
+import static com.lunchvoting.topjava.diploma.testdata.UserTestData.user1;
 import static com.lunchvoting.topjava.diploma.testdata.VoteTestData.*;
 import static com.lunchvoting.topjava.diploma.testdata.VoteTestData.VOTE_MATCHER;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -43,7 +45,8 @@ class VoteProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL))
+        perform(MockMvcRequestBuilders.get(REST_URL)
+                .with(userHttpBasic(user1)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -55,6 +58,7 @@ class VoteProfileRestControllerTest extends AbstractControllerTest {
         Vote newVote = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + RESTAURANT1_ID
                         + "/?userId=" + USER1_ID)
+                .with(userHttpBasic(user1))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newVote)))
                 .andExpect(status().isCreated());
@@ -70,10 +74,17 @@ class VoteProfileRestControllerTest extends AbstractControllerTest {
     void update() throws Exception {
         Vote updated = getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL + VOTE1_ID + '/' + RESTAURANT1_ID)
+                .with(userHttpBasic(user1))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
 
         VOTE_MATCHER.assertMatch(service.get(VOTE1_ID), updated);
+    }
+
+    @Test
+    void getUnAuth() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL))
+                .andExpect(status().isUnauthorized());
     }
 }
