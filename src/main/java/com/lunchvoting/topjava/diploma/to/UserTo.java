@@ -6,6 +6,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.beans.ConstructorProperties;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 
@@ -13,7 +15,10 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-public class UserTo extends BaseTo {
+public class UserTo extends BaseTo implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @NotBlank
     @Size(min = 2, max = 128)

@@ -1,8 +1,13 @@
 package com.lunchvoting.topjava.diploma.service;
 
+import com.lunchvoting.topjava.diploma.AuthorizedUser;
 import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.repository.UserRepository;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -11,8 +16,9 @@ import java.util.List;
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNotFound;
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNotFoundWithId;
 
-@Service
-public class UserService {
+@Service("userService")
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class UserService implements UserDetailsService {
 
     private static final Sort SORT_NAME_EMAIL = Sort.by(Sort.Direction.ASC, "name", "email");
 
@@ -20,6 +26,15 @@ public class UserService {
 
     public UserService(UserRepository repository) {
         this.repository = repository;
+    }
+
+    @Override
+    public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = repository.getByEmail(email.toLowerCase());
+        if (user == null) {
+            throw new UsernameNotFoundException("User " + email + " is not found");
+        }
+        return new AuthorizedUser(user);
     }
 
     public void delete(int id) {

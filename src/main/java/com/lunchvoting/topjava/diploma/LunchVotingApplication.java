@@ -6,7 +6,8 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ImportResource;
 
 @SpringBootApplication
-@ImportResource(locations = {"classpath:spring/spring-db.xml"})
+@ImportResource(locations = {"classpath:spring/spring-db.xml",
+                             "classpath:spring/spring-security.xml"})
 public class LunchVotingApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
