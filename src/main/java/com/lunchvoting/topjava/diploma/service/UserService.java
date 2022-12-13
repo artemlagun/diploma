@@ -3,12 +3,15 @@ package com.lunchvoting.topjava.diploma.service;
 import com.lunchvoting.topjava.diploma.AuthorizedUser;
 import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.repository.UserRepository;
+import com.lunchvoting.topjava.diploma.to.UserTo;
+import com.lunchvoting.topjava.diploma.util.UserUtil;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
@@ -62,5 +65,12 @@ public class UserService implements UserDetailsService {
     public void update(User user) {
         Assert.notNull(user, "user shouldn't be null");
         checkNotFoundWithId(repository.save(user), user.id());
+    }
+
+    @Transactional
+    public void update(UserTo userTo) {
+        User user = get(userTo.id());
+        User updatedUser = UserUtil.updateFromTo(user, userTo);
+        repository.save(updatedUser);
     }
 }

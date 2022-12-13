@@ -2,6 +2,7 @@ package com.lunchvoting.topjava.diploma.web.user;
 
 import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.service.UserService;
+import com.lunchvoting.topjava.diploma.to.UserTo;
 import com.lunchvoting.topjava.diploma.util.UserUtil;
 import com.lunchvoting.topjava.diploma.web.AbstractControllerTest;
 import com.lunchvoting.topjava.diploma.web.json.JsonUtil;
@@ -42,14 +43,14 @@ class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void update() throws Exception {
-        User updated = getUpdated();
+        UserTo updatedTo = new UserTo(null, "newName", "user@gmail.com", "newPassword");
         perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(user1))
-                .content(JsonUtil.writeValue(updated)))
+                .content(JsonUtil.writeValue(updatedTo)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        USER_MATCHER.assertMatch(service.get(USER1_ID), updated);
+        USER_MATCHER.assertMatch(service.get(USER1_ID), UserUtil.updateFromTo(new User(user1), updatedTo));
     }
 
     @Test

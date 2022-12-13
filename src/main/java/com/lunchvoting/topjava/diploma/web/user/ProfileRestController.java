@@ -1,6 +1,5 @@
 package com.lunchvoting.topjava.diploma.web.user;
 
-import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.service.UserService;
 import com.lunchvoting.topjava.diploma.to.UserTo;
 import com.lunchvoting.topjava.diploma.util.UserUtil;
@@ -40,9 +39,9 @@ public class ProfileRestController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody User user) {
-        log.info("update {} with id={}", user, authUserId());
-        assureIdConsistent(user, authUserId());
-        service.update(user);
+    public void update(@RequestBody UserTo userTo) {
+        log.info("update {} with id={}", userTo, authUserId());
+        assureIdConsistent(userTo, authUserId());
+        service.update(userTo);
     }
 }
