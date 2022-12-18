@@ -105,8 +105,8 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
     @Test
     void createWithLocation() throws Exception {
         Vote newVote = getNew();
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + RESTAURANT1_ID
-                + "/?userId=" + USER1_ID)
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL
+                + "/?userId=" + USER1_ID + "&restaurantId=" + RESTAURANT1_ID)
                 .with(userHttpBasic(admin))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newVote)))
@@ -122,7 +122,7 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
     @Test
     void update() throws Exception {
         Vote updated = getUpdated();
-        perform(MockMvcRequestBuilders.put(REST_URL + VOTE1_ID + '/' + RESTAURANT1_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + VOTE1_ID + "?restaurantId=" + RESTAURANT1_ID)
                 .with(userHttpBasic(admin))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))

@@ -34,8 +34,8 @@ public class VoteProfileRestController {
         return VoteUtil.createTo(service.getByUserAndDate(authUserId(), LocalDate.now()));
     }
 
-    @PostMapping("/{restaurantId}")
-    public ResponseEntity<VoteTo> createWithLocation(@PathVariable int restaurantId) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<VoteTo> createWithLocation(@RequestParam int restaurantId) {
         log.info("create vote from user {} for restaurant {}", authUserId(), restaurantId);
         VoteTo created = VoteUtil.createTo(service.create(authUserId(), restaurantId));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -44,9 +44,9 @@ public class VoteProfileRestController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @PutMapping("/{id}/{restaurantId}")
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable int id, @PathVariable int restaurantId) {
+    public void update(@PathVariable int id, @RequestParam int restaurantId) {
         log.info("update vote {} for restaurant {}", id, restaurantId);
         service.update(id, restaurantId);
     }
