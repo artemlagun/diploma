@@ -1,12 +1,17 @@
 package com.lunchvoting.topjava.diploma.web.user;
 
+import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.service.UserService;
 import com.lunchvoting.topjava.diploma.to.UserTo;
 import com.lunchvoting.topjava.diploma.util.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.assureIdConsistent;
 import static com.lunchvoting.topjava.diploma.web.SecurityUtil.authUserId;
@@ -43,5 +48,14 @@ public class ProfileRestController {
         log.info("update {} with id={}", userTo, authUserId());
         assureIdConsistent(userTo, authUserId());
         service.update(userTo);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<User> register(@RequestBody UserTo userTo) {
+        User created = service.create(UserUtil.createNewFromTo(userTo));
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL).build().toUri();
+        return ResponseEntity.created(uriOfNewResource).body(created);
     }
 }

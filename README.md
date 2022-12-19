@@ -148,6 +148,12 @@ For windows use `Git Bash`
 #### get Users 100000
 `curl -s http://localhost:8080/api/profile --user evahester@gmail.com:password`
 
+#### register User
+`curl -s -X POST -d '{"name": "New User", "email": "test@gmail.com", "password": "test-password"}' -H 'Content-Type: application/json;charset=UTF-8' http://localhost:8080/api/profile`
+
+#### get Profile
+`curl -s http://localhost:8080/api/profile --user test@gmail.com:test-password`
+
 #### update Users 100001
 `curl -s -X PUT -d '{"name": "Updated user", "email": "updated_user@gmail.com", "password": "password"}' -H 'Content-Type: application/json' http://localhost:8080/api/profile --user bryanterry@gmail.com:password`
 

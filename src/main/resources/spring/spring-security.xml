@@ -7,6 +7,7 @@
     <http pattern="/api/**" use-expressions="true" name="restSecurityFilterChain" create-session="stateless">
         <http-basic/>
         <intercept-url pattern="/api/admin/**" access="hasRole('ADMIN')"/>
+        <intercept-url pattern="/api/profile" method="POST" access="isAnonymous()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
         <csrf disabled="true"/>
     </http>
