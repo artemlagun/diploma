@@ -1,6 +1,7 @@
 package com.lunchvoting.topjava.diploma.util;
 
 import com.lunchvoting.topjava.diploma.HasId;
+import com.lunchvoting.topjava.diploma.util.exception.IllegalRequestDataException;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
 import com.lunchvoting.topjava.diploma.util.exception.OutOfTimeException;
 import org.springframework.core.NestedExceptionUtils;
@@ -36,7 +37,7 @@ public class ValidationUtil {
 
     public static void checkNew(HasId bean) {
         if (!bean.isNew()) {
-            throw new IllegalArgumentException(bean + " must be new (id=null)");
+            throw new IllegalRequestDataException(bean + " must be new (id=null)");
         }
     }
 
@@ -44,7 +45,7 @@ public class ValidationUtil {
         if (bean.isNew()) {
             bean.setId(id);
         } else if (bean.id() != id) {
-            throw new IllegalArgumentException(bean + " must be with id=" + id);
+            throw new IllegalRequestDataException(bean + " must be with id=" + id);
         }
     }
 
@@ -59,5 +60,9 @@ public class ValidationUtil {
     public static Throwable getRootCause(@NonNull Throwable t) {
         Throwable rootCause = NestedExceptionUtils.getRootCause(t);
         return rootCause != null ? rootCause : t;
+    }
+
+    public static String getMessage(Throwable e) {
+        return e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getClass().getName();
     }
 }

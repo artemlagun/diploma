@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class AdminRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserTo> createWithLocation(@RequestBody User user) {
+    public ResponseEntity<UserTo> createWithLocation(@Valid @RequestBody User user) {
         log.info("create {}", user);
         checkNew(user);
         UserTo created = UserUtil.createTo(service.create(user));
@@ -63,7 +64,7 @@ public class AdminRestController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody User user, @PathVariable int id) {
+    public void update(@Valid @RequestBody User user, @PathVariable int id) {
         log.info("update {} with id={}", user, id);
         assureIdConsistent(user, id);
         service.update(user);

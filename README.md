@@ -141,6 +141,9 @@ For windows use `Git Bash`
 
 #### delete Users
 `curl -s -X DELETE http://localhost:8080/api/admin/users/100002 --user admin@gmail.com:admin`
+
+#### validate with Error
+` curl -s -X POST -d '{}' -H 'Content-Type: application/json' http://localhost:8080/api/admin/users --user admin@gmail.com:admin`
 <br>
 <br>
 >#### ProfileRestController

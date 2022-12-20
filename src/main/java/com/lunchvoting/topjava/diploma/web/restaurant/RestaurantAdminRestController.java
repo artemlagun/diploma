@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -63,7 +64,7 @@ public class RestaurantAdminRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestaurantTo> createWithLocation(@RequestBody Restaurant restaurant) {
+    public ResponseEntity<RestaurantTo> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
         log.info("create {}", restaurant);
         checkNew(restaurant);
         RestaurantTo created = RestaurantUtil.createTo(service.create(restaurant));
@@ -75,7 +76,7 @@ public class RestaurantAdminRestController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Restaurant restaurant) {
+    public void update(@Valid @RequestBody Restaurant restaurant) {
         log.info("update {}", restaurant);
         assureIdConsistent(restaurant, restaurant.id());
         service.update(restaurant);

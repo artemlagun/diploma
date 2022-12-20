@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.assureIdConsistent;
@@ -52,7 +53,7 @@ public class ProfileRestController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<User> register(@RequestBody UserTo userTo) {
+    public ResponseEntity<User> register(@Valid @RequestBody UserTo userTo) {
         User created = service.create(UserUtil.createNewFromTo(userTo));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL).build().toUri();

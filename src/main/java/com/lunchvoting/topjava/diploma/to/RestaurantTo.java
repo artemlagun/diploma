@@ -3,8 +3,6 @@ package com.lunchvoting.topjava.diploma.to;
 import com.lunchvoting.topjava.diploma.model.Food;
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.beans.ConstructorProperties;
 import java.util.List;
 import java.util.Objects;
@@ -15,8 +13,6 @@ import java.util.Objects;
 @ToString
 public class RestaurantTo extends BaseTo {
 
-    @Size(min = 2, max = 120)
-    @NotBlank
     private String name;
 
     private List<Food> menu;

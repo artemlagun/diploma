@@ -1,11 +1,7 @@
 package com.lunchvoting.topjava.diploma.to;
 
 import lombok.*;
-import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.beans.ConstructorProperties;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,18 +13,12 @@ import java.util.Objects;
 @ToString
 public class FoodTo extends BaseTo {
 
-    @NotNull
     private LocalDate voteDate;
 
-    @Size(min = 2, max = 120)
-    @NotBlank
     private String description;
 
-    @Range(min = 0, max = 1000)
-    @NotNull
     private BigDecimal price;
 
-    @NotNull
     private Integer restaurantId;
 
     @ConstructorProperties({"id", "voteDate", "description", "price", "restaurantId"})

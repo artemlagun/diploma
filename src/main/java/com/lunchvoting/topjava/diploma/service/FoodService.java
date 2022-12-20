@@ -31,7 +31,7 @@ public class FoodService {
 
     public Food get(int id, int restaurantId) {
         Food food = repository.findById(id).orElseThrow(() ->
-                new NotFoundException("Food" + id + " from restaurant " + restaurantId + "not found"));
+                new NotFoundException("Food " + id + " from restaurant " + restaurantId + " not found"));
         return food != null && Objects.requireNonNull(food.getRestaurant().getId()) == restaurantId ? food : null;
     }
 

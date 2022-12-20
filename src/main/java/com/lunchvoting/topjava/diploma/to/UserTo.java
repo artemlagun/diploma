@@ -30,7 +30,7 @@ public class UserTo extends BaseTo implements Serializable {
     private String email;
 
     @NotBlank
-    @Size(min = 5, max = 128, message = "length must be between 5 and 32 characters")
+    @Size(min = 5, max = 128)
     private String password;
 
     @ConstructorProperties({"id", "name", "email", "password"})

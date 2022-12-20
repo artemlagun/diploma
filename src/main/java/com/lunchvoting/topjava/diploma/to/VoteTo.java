@@ -2,7 +2,6 @@ package com.lunchvoting.topjava.diploma.to;
 
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
 import java.beans.ConstructorProperties;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -13,13 +12,10 @@ import java.util.Objects;
 @ToString
 public class VoteTo extends BaseTo {
 
-    @NotNull
     private LocalDate voteDate;
 
-    @NotNull
     private Integer userId;
 
-    @NotNull
     private Integer restaurantId;
 
     @ConstructorProperties({"id", "voteDate", "userId", "restaurantId"})
