@@ -1,6 +1,7 @@
 package com.lunchvoting.topjava.diploma.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,6 +33,7 @@ public class User extends AbstractNamedEntity {
     @Column(name = "password", nullable = false)
     @NotBlank
     @Size(min = 5, max = 128)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name = "enabled", nullable = false)
@@ -39,6 +41,7 @@ public class User extends AbstractNamedEntity {
 
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
     @NotNull
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date registered = new Date();
 
     @Enumerated(EnumType.STRING)
@@ -64,7 +67,7 @@ public class User extends AbstractNamedEntity {
     }
 
     public User(Integer id, String name, String email, String password, Role... roles) {
-        this(id, name, email, password,true, new Date(), Arrays.asList((roles)));
+        this(id, name, email, password, true, new Date(), Arrays.asList((roles)));
     }
 
     public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles) {

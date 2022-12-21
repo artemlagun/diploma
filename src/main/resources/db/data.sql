@@ -1,20 +1,15 @@
-DELETE
-FROM votes;
-DELETE
-FROM foods;
-DELETE
-FROM restaurants;
-DELETE
-FROM user_roles;
-DELETE
-FROM users;
+DELETE FROM votes;
+DELETE FROM foods;
+DELETE FROM restaurants;
+DELETE FROM user_roles;
+DELETE FROM users;
 ALTER SEQUENCE global_seq RESTART WITH 100000;
 
 INSERT INTO users (name, email, password)
-VALUES ('Eva Hester', 'evahester@gmail.com', 'password'),
-       ('Bryan Terry', 'bryanterry@gmail.com', 'password'),
-       ('Alice Russell', 'alicerussell@gmail.com', 'password'),
-       ('Admin', 'admin@gmail.com', 'admin');
+VALUES ('Eva Hester', 'evahester@gmail.com', '{noop}password'),
+       ('Bryan Terry', 'bryanterry@gmail.com', '{noop}password'),
+       ('Alice Russell', 'alicerussell@gmail.com', '{noop}password'),
+       ('Admin', 'admin@gmail.com', '{noop}admin');
 
 INSERT INTO user_roles (role, user_id)
 VALUES ('USER', 100000),

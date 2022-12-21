@@ -34,7 +34,7 @@ public class Food extends AbstractBaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
-    @JsonBackReference()
+    @JsonBackReference
     private Restaurant restaurant;
 
     public Food(LocalDate voteDate, String description, BigDecimal price, Restaurant restaurant) {

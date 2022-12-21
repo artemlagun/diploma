@@ -4,7 +4,10 @@ import com.lunchvoting.topjava.diploma.model.Role;
 import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.to.UserTo;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,7 +19,9 @@ public class UserUtil {
     }
 
     public static UserTo createTo(User user) {
-        return new UserTo(user.getId(), user.getName(), user.getEmail(), user.getPassword());
+        LocalDate dateConverted = user.getRegistered().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return new UserTo(user.getId(), user.getName(), user.getEmail(), user.getPassword(),
+                user.isEnabled(), dateConverted, user.getRoles());
     }
 
     public static User createNewFromTo(UserTo userTo) {
@@ -27,6 +32,12 @@ public class UserUtil {
         user.setName(userTo.getName());
         user.setEmail(userTo.getEmail());
         user.setPassword(userTo.getPassword());
+        return user;
+    }
+
+    public static User prepareToSave(User user, PasswordEncoder passwordEncoder) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setEmail(user.getEmail().toLowerCase());
         return user;
     }
 }

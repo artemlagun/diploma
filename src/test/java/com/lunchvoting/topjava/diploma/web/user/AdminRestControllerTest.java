@@ -3,11 +3,8 @@ package com.lunchvoting.topjava.diploma.web.user;
 import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.service.UserService;
 import com.lunchvoting.topjava.diploma.testdata.UserTestData;
-import com.lunchvoting.topjava.diploma.to.UserTo;
-import com.lunchvoting.topjava.diploma.util.UserUtil;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
 import com.lunchvoting.topjava.diploma.web.AbstractControllerTest;
-import com.lunchvoting.topjava.diploma.web.json.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -37,7 +34,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_TO_MATCHER.contentJson(UserUtil.createTo(admin)));
+                .andExpect(USER_MATCHER.contentJson(admin));
     }
 
     @Test
@@ -46,7 +43,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_TO_MATCHER.contentJson(UserUtil.createTo(user1)));
+                .andExpect(USER_MATCHER.contentJson(user1));
     }
 
     @Test
@@ -64,7 +61,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.put(REST_URL + USER1_ID)
                 .with(userHttpBasic(admin))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .content(jsonWithPassword(updated, updated.getPassword())))
                 .andExpect(status().isNoContent());
 
         USER_MATCHER.assertMatch(service.get(USER1_ID), updated);
@@ -74,15 +71,15 @@ class AdminRestControllerTest extends AbstractControllerTest {
     void createWithLocation() throws Exception {
         User newUser = UserTestData.getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
-                .with(userHttpBasic(admin))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newUser)))
+                .with(userHttpBasic(admin))
+                .content(jsonWithPassword(newUser, newUser.getPassword())))
                 .andExpect(status().isCreated());
 
-        UserTo created = USER_TO_MATCHER.readFromJson(action);
+        User created = USER_MATCHER.readFromJson(action);
         int newId = created.id();
         newUser.setId(newId);
-        USER_TO_MATCHER.assertMatch(created, UserUtil.createTo(newUser));
+        USER_MATCHER.assertMatch(created, newUser);
         USER_MATCHER.assertMatch(service.get(newId), newUser);
     }
 
@@ -92,7 +89,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_TO_MATCHER.contentJson(UserUtil.getTos(List.of(admin, user3, user2, user1))));
+                .andExpect(USER_MATCHER.contentJson(List.of(admin, user3, user2, user1)));
     }
 
     @Test

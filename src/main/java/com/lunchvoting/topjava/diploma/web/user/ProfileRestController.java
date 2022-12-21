@@ -1,5 +1,7 @@
 package com.lunchvoting.topjava.diploma.web.user;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.lunchvoting.topjava.diploma.View;
 import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.service.UserService;
 import com.lunchvoting.topjava.diploma.to.UserTo;
@@ -31,6 +33,7 @@ public class ProfileRestController {
     }
 
     @GetMapping
+    @JsonView(View.JsonREST.class)
     public UserTo get() {
         log.info("get {}", authUserId());
         return UserUtil.createTo(service.get(authUserId()));

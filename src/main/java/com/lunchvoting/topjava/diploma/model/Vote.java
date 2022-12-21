@@ -32,10 +32,6 @@ public class Vote extends AbstractBaseEntity {
     @NotNull
     private Restaurant restaurant;
 
-    public Vote(LocalDate voteDate, User user, Restaurant restaurant) {
-        this(null, voteDate, user, restaurant);
-    }
-
     public Vote(Integer id, LocalDate voteDate, User user, Restaurant restaurant) {
         super(id);
         this.voteDate = voteDate;

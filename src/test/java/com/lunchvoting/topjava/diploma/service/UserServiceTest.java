@@ -83,8 +83,6 @@ import static org.junit.Assert.assertThrows;
         validateRootCause(ConstraintViolationException.class, () -> service.create(
                 new User(null, "New User", "  ", "password", Role.USER)));
         validateRootCause(ConstraintViolationException.class, () -> service.create(
-                new User(null, "New User", "evahester@gmail.com", "  ", Role.USER)));
-        validateRootCause(ConstraintViolationException.class, () -> service.create(
                 new User(null, "New User", "evahester@gmail.com", "password",
                         true, null, Set.of())));
     }

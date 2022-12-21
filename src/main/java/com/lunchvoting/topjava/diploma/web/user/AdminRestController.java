@@ -1,5 +1,7 @@
 package com.lunchvoting.topjava.diploma.web.user;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.lunchvoting.topjava.diploma.View;
 import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.service.UserService;
 import com.lunchvoting.topjava.diploma.to.UserTo;
@@ -10,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -33,22 +34,24 @@ public class AdminRestController {
     }
 
     @GetMapping
+    @JsonView(View.JsonREST.class)
     public List<UserTo> getAll() {
         log.info("getAll");
         return UserUtil.getTos(service.getAll());
     }
 
     @GetMapping("/{id}")
+    @JsonView(View.JsonREST.class)
     public UserTo get(@PathVariable int id) {
         log.info("get {}", id);
         return UserUtil.createTo(service.get(id));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserTo> createWithLocation(@Valid @RequestBody User user) {
+    public ResponseEntity<User> createWithLocation(@Valid @RequestBody User user) {
         log.info("create {}", user);
         checkNew(user);
-        UserTo created = UserUtil.createTo(service.create(user));
+        User created = service.create(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -71,6 +74,7 @@ public class AdminRestController {
     }
 
     @GetMapping("/by-email")
+    @JsonView(View.JsonREST.class)
     public UserTo getByEmail(@RequestParam String email) {
         log.info("getByEmail {}", email);
         return UserUtil.createTo(service.getByEmail(email));

@@ -4,6 +4,7 @@ import com.lunchvoting.topjava.diploma.MatcherFactory;
 import com.lunchvoting.topjava.diploma.model.Role;
 import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.to.UserTo;
+import com.lunchvoting.topjava.diploma.web.json.JsonUtil;
 
 import java.util.Collections;
 import java.util.Date;
@@ -11,7 +12,8 @@ import java.util.Date;
 import static com.lunchvoting.topjava.diploma.model.AbstractBaseEntity.START_SEQ;
 
 public class UserTestData {
-    public static final MatcherFactory.Matcher<User> USER_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(User.class, "registered", "roles", "votes");
+    public static final MatcherFactory.Matcher<User> USER_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(User.class,
+            "registered", "roles", "votes", "password");
     public static final MatcherFactory.Matcher<UserTo> USER_TO_MATCHER = MatcherFactory.usingEqualsComparator(UserTo.class);
 
     public static final int USER1_ID = START_SEQ;
@@ -39,5 +41,9 @@ public class UserTestData {
         updated.setEnabled(false);
         updated.setRoles(Collections.singletonList(Role.ADMIN));
         return updated;
+    }
+
+    public static String jsonWithPassword(User user, String psd) {
+        return JsonUtil.writeAdditionProps(user, "password", psd);
     }
 }
