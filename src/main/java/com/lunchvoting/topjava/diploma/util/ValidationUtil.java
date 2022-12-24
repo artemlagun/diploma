@@ -1,12 +1,15 @@
 package com.lunchvoting.topjava.diploma.util;
 
 import com.lunchvoting.topjava.diploma.HasId;
+import com.lunchvoting.topjava.diploma.util.exception.ErrorType;
 import com.lunchvoting.topjava.diploma.util.exception.IllegalRequestDataException;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
 import com.lunchvoting.topjava.diploma.util.exception.OutOfTimeException;
+import org.slf4j.Logger;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
@@ -64,5 +67,15 @@ public class ValidationUtil {
 
     public static String getMessage(Throwable e) {
         return e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getClass().getName();
+    }
+
+    public static Throwable logAndGetRootCause(Logger log, HttpServletRequest req, Exception e, boolean logStackTrace, ErrorType errorType) {
+        Throwable rootCause = ValidationUtil.getRootCause(e);
+        if (logStackTrace) {
+            log.error(errorType + " at request " + req.getRequestURL(), rootCause);
+        } else {
+            log.warn("{} at request  {}: {}", errorType, req.getRequestURL(), rootCause.toString());
+        }
+        return rootCause;
     }
 }
