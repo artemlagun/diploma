@@ -20,8 +20,11 @@ public class UserUtil {
 
     public static UserTo createTo(User user) {
         LocalDate dateConverted = user.getRegistered().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        return new UserTo(user.getId(), user.getName(), user.getEmail(), user.getPassword(),
-                user.isEnabled(), dateConverted, user.getRoles());
+        UserTo userTo = new UserTo(user.getId(), user.getName(), user.getEmail(), user.getPassword());
+        userTo.setEnabled(user.isEnabled());
+        userTo.setRegistered(dateConverted);
+        userTo.setRoles(user.getRoles());
+        return userTo;
     }
 
     public static User createNewFromTo(UserTo userTo) {

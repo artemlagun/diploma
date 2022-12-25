@@ -50,15 +50,12 @@ public class UserTo extends BaseTo implements Serializable {
     @JsonView(View.JsonREST.class)
     private Set<Role> roles;
 
-    @ConstructorProperties({"id", "name", "email", "password", "enabled", "registered", "roles"})
-    public UserTo(Integer id, String name, String email, String password, boolean enabled, LocalDate registered, Set<Role> roles) {
+    @ConstructorProperties({"id", "name", "email", "password"})
+    public UserTo(Integer id, String name, String email, String password) {
         super(id);
         this.name = name;
         this.email = email;
         this.password = password;
-        this.enabled = enabled;
-        this.registered = registered;
-        this.roles = roles;
     }
 
     @Override
@@ -66,11 +63,15 @@ public class UserTo extends BaseTo implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserTo userTo = (UserTo) o;
-        return name.equals(userTo.name) && email.equals(userTo.email) && password.equals(userTo.password);
+        return enabled == userTo.enabled && name.equals(userTo.name)
+                && email.equals(userTo.email)
+                && password.equals(userTo.password)
+                && Objects.equals(registered, userTo.registered)
+                && Objects.equals(roles, userTo.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, email, password);
+        return Objects.hash(name, email, password, enabled, registered, roles);
     }
 }

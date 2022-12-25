@@ -134,7 +134,7 @@ For windows use `Git Bash`
 `curl -s http://localhost:8080/api/admin/users/by-email?email=evahester@gmail.com --user admin@gmail.com:admin`
 
 #### create Users
-`curl -s -X POST -d '{"name": "Created user", "email": "createduser@gmail.com", "password": "password"}' -H 'Content-Type: application/json;charset=UTF-8' http://localhost:8080/api/admin/users --user admin@gmail.com:admin`
+`curl -s -X POST -d '{"name": "Created user", "email": "createduser@gmail.com", "password": "password", "roles": ["USER"]}' -H 'Content-Type: application/json;charset=UTF-8' http://localhost:8080/api/admin/users --user admin@gmail.com:admin`
 
 #### update Users 100001
 `curl -s -X PUT -d '{"name": "Updated user", "email": "updateduser@gmail.com", "password": "password"}' -H 'Content-Type: application/json' http://localhost:8080/api/admin/users/100001 --user admin@gmail.com:admin`

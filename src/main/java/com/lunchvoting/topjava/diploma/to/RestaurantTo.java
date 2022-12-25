@@ -4,6 +4,8 @@ import com.lunchvoting.topjava.diploma.model.Food;
 import lombok.*;
 
 import java.beans.ConstructorProperties;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,7 +13,10 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-public class RestaurantTo extends BaseTo {
+public class RestaurantTo extends BaseTo implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private String name;
 
