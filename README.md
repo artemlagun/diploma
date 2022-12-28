@@ -22,6 +22,7 @@ Build a voting system for deciding where to have lunch.
 
 Each restaurant provides a new menu each day.
 
+### [Postman REST API documentation](https://documenter.getpostman.com/view/22816952/2s8Z6x4ZUC)
 ### curl samples:
 For windows use `Git Bash`
 <br>
