@@ -12,7 +12,6 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -20,7 +19,7 @@ import java.util.Map;
 
 import static com.lunchvoting.topjava.diploma.util.exception.ErrorType.*;
 
-@RestControllerAdvice(annotations = RestController.class)
+@RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
 @Slf4j
 public class ExceptionInfoHandler {
