@@ -1,9 +1,8 @@
 package com.lunchvoting.topjava.diploma.model;
 
 import com.lunchvoting.topjava.diploma.HasId;
+import jakarta.persistence.*;
 import org.hibernate.Hibernate;
-
-import javax.persistence.*;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)

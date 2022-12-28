@@ -5,18 +5,17 @@ import com.lunchvoting.topjava.diploma.util.exception.ErrorType;
 import com.lunchvoting.topjava.diploma.util.exception.IllegalRequestDataException;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
 import com.lunchvoting.topjava.diploma.util.exception.OutOfTimeException;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.experimental.UtilityClass;
 import org.slf4j.Logger;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
+@UtilityClass
 public class ValidationUtil {
-
-    private ValidationUtil() {
-    }
 
     public static <T> T checkNotFoundWithId(T object, int id) {
         checkNotFoundWithId(object != null, id);

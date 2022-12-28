@@ -4,6 +4,7 @@ import com.lunchvoting.topjava.diploma.model.Restaurant;
 import com.lunchvoting.topjava.diploma.service.RestaurantService;
 import com.lunchvoting.topjava.diploma.to.RestaurantTo;
 import com.lunchvoting.topjava.diploma.util.RestaurantUtil;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,13 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.assureIdConsistent;
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNew;
-
 
 @RestController
 @RequestMapping(value = RestaurantAdminRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -41,7 +40,7 @@ public class RestaurantAdminRestController {
     @GetMapping("/with-menu")
     public List<RestaurantTo> getAllWithMenu() {
         log.info("getAllWithMenu");
-        return RestaurantUtil.getTosWithMenu(service.getAll());
+        return RestaurantUtil.getTosWithMenu(service.getAllWithMenu());
     }
 
     @GetMapping("/{id}")

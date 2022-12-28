@@ -1,6 +1,6 @@
 package com.lunchvoting.topjava.diploma;
 
-import com.lunchvoting.topjava.diploma.web.json.JsonUtil;
+import com.lunchvoting.topjava.diploma.util.JsonUtil;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;

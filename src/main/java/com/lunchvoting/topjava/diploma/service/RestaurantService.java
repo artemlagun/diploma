@@ -43,6 +43,13 @@ public class RestaurantService {
         return repository.findAll(SORT_NAME);
     }
 
+    @Cacheable("restaurants")
+    public List<Restaurant> getAllWithMenu() {
+        List<Restaurant> restaurants = repository.findAll(SORT_NAME);
+        restaurants.forEach(restaurant -> restaurant.setMenu(foodRepository.getAll(restaurant.id())));
+        return restaurants;
+    }
+
     @Transactional
     public Restaurant getMenuOfDay(int id) {
         Restaurant restaurant = checkNotFoundWithId(repository.findById(id).orElse(null),id);

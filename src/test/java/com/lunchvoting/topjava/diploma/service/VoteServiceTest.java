@@ -3,20 +3,20 @@ package com.lunchvoting.topjava.diploma.service;
 import com.lunchvoting.topjava.diploma.model.Vote;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
 import com.lunchvoting.topjava.diploma.util.exception.OutOfTimeException;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.validation.ConstraintViolationException;
 import java.time.*;
 import java.util.List;
 
 import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.RESTAURANT1_ID;
 import static com.lunchvoting.topjava.diploma.testdata.UserTestData.USER1_ID;
 import static com.lunchvoting.topjava.diploma.testdata.VoteTestData.*;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
- class VoteServiceTest extends AbstractServiceTest {
+class VoteServiceTest extends AbstractServiceTest {
 
     private final LocalDateTime testTime = LocalDateTime.of(2022, 11, 23, 10, 30);
     private final LocalDateTime outOfTestTime = LocalDateTime.of(2022, 11, 23, 11, 1);

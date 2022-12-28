@@ -3,7 +3,7 @@ package com.lunchvoting.topjava.diploma.util;
 import com.lunchvoting.topjava.diploma.model.Role;
 import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.to.UserTo;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
@@ -11,7 +11,7 @@ import java.time.ZoneId;
 import java.util.Collection;
 import java.util.List;
 
-@NoArgsConstructor
+@UtilityClass
 public class UserUtil {
 
     public static List<UserTo> getTos(Collection<User> users) {

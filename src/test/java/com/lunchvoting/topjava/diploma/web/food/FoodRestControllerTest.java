@@ -6,7 +6,7 @@ import com.lunchvoting.topjava.diploma.to.FoodTo;
 import com.lunchvoting.topjava.diploma.util.FoodUtil;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
 import com.lunchvoting.topjava.diploma.web.AbstractControllerTest;
-import com.lunchvoting.topjava.diploma.web.json.JsonUtil;
+import com.lunchvoting.topjava.diploma.util.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class FoodRestControllerTest extends AbstractControllerTest {
 
-    private static final String REST_URL = "/api/admin/foods/";
+    private static final String REST_URL = "/api/admin/foods";
 
     @Autowired
     private FoodService service;
@@ -45,7 +45,7 @@ class FoodRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getAllByRestaurant() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID)
+        perform(MockMvcRequestBuilders.get(REST_URL + '/' +  RESTAURANT1_ID)
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -54,7 +54,7 @@ class FoodRestControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID + '/' + FOOD1_ID)
+        perform(MockMvcRequestBuilders.get(REST_URL + '/' + RESTAURANT1_ID + '/' + FOOD1_ID)
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -65,7 +65,7 @@ class FoodRestControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + RESTAURANT1_ID + '/' + FOOD1_ID)
+        perform(MockMvcRequestBuilders.delete(REST_URL + '/' + RESTAURANT1_ID + '/' + FOOD1_ID)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
@@ -76,7 +76,7 @@ class FoodRestControllerTest extends AbstractControllerTest {
     void getAllByDate() throws Exception {
         List<FoodTo> expected = FoodUtil.getTos(service.getAllByDate(RESTAURANT3_ID,
                 LocalDate.of(2022, 11, 7)));
-        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT3_ID + '/' + "by-date?voteDate="
+        perform(MockMvcRequestBuilders.get(REST_URL + '/' + RESTAURANT3_ID + '/' + "by-date?voteDate="
                 + LocalDate.of(2022, 11, 7))
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
@@ -87,7 +87,7 @@ class FoodRestControllerTest extends AbstractControllerTest {
     @Test
     void createWithLocation() throws Exception {
         Food newFood = getNew();
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + RESTAURANT1_ID)
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + '/' + RESTAURANT1_ID)
                 .with(userHttpBasic(admin))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newFood)))
@@ -103,7 +103,7 @@ class FoodRestControllerTest extends AbstractControllerTest {
     @Test
     void update() throws Exception {
         Food updated = getUpdated();
-        perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT1_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + '/' + RESTAURANT1_ID)
                 .with(userHttpBasic(admin))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))

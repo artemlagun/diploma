@@ -4,7 +4,7 @@ import com.lunchvoting.topjava.diploma.MatcherFactory;
 import com.lunchvoting.topjava.diploma.model.Role;
 import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.to.UserTo;
-import com.lunchvoting.topjava.diploma.web.json.JsonUtil;
+import com.lunchvoting.topjava.diploma.util.JsonUtil;
 
 import java.util.Collections;
 import java.util.Date;

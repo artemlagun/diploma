@@ -3,11 +3,11 @@ package com.lunchvoting.topjava.diploma.to;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lunchvoting.topjava.diploma.View;
 import com.lunchvoting.topjava.diploma.model.Role;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.beans.ConstructorProperties;
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Objects;
 import java.util.Set;
-
 
 @NoArgsConstructor
 @Getter

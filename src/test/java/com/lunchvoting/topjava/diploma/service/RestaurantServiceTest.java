@@ -5,31 +5,20 @@ import com.lunchvoting.topjava.diploma.model.Restaurant;
 import com.lunchvoting.topjava.diploma.testdata.FoodTestData;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
 
-import org.junit.jupiter.api.BeforeEach;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 
-import javax.validation.ConstraintViolationException;
 import java.util.List;
-import java.util.Objects;
 
 import static com.lunchvoting.topjava.diploma.testdata.FoodTestData.FOOD_MATCHER;
 import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.*;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
- class RestaurantServiceTest extends AbstractServiceTest {
+class RestaurantServiceTest extends AbstractServiceTest {
 
     @Autowired
     protected RestaurantService service;
-
-    @Autowired
-    private CacheManager cacheManager;
-
-    @BeforeEach
-     void setUp() {
-        Objects.requireNonNull(cacheManager.getCache("restaurants")).clear();
-    }
 
     @Test
      void create() {

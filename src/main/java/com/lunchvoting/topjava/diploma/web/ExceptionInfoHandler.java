@@ -1,10 +1,8 @@
 package com.lunchvoting.topjava.diploma.web;
 
 import com.lunchvoting.topjava.diploma.util.ValidationUtil;
-import com.lunchvoting.topjava.diploma.util.exception.ErrorInfo;
-import com.lunchvoting.topjava.diploma.util.exception.ErrorType;
-import com.lunchvoting.topjava.diploma.util.exception.IllegalRequestDataException;
-import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
+import com.lunchvoting.topjava.diploma.util.exception.*;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -17,8 +15,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-
-import javax.servlet.http.HttpServletRequest;
 
 import java.util.Map;
 
@@ -65,6 +61,12 @@ public class ExceptionInfoHandler {
     @ExceptionHandler({IllegalRequestDataException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
     public ErrorInfo illegalRequestDataError(HttpServletRequest req, Exception e) {
         return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR);
+    }
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(OutOfTimeException.class)
+    public ErrorInfo OutOfTimeRequestDataError(HttpServletRequest req, Exception e) {
+        return logAndGetErrorInfo(req, e, false, OUT_OF_TIME_ERROR);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

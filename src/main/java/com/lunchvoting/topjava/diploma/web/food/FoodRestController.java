@@ -4,6 +4,7 @@ import com.lunchvoting.topjava.diploma.model.Food;
 import com.lunchvoting.topjava.diploma.service.FoodService;
 import com.lunchvoting.topjava.diploma.to.FoodTo;
 import com.lunchvoting.topjava.diploma.util.FoodUtil;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;

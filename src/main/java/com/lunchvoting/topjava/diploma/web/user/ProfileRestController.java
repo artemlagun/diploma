@@ -1,23 +1,24 @@
 package com.lunchvoting.topjava.diploma.web.user;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.lunchvoting.topjava.diploma.AuthUser;
 import com.lunchvoting.topjava.diploma.View;
 import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.service.UserService;
 import com.lunchvoting.topjava.diploma.to.UserTo;
 import com.lunchvoting.topjava.diploma.util.UserUtil;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
 import java.net.URI;
 
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.assureIdConsistent;
-import static com.lunchvoting.topjava.diploma.web.SecurityUtil.authUserId;
 
 @RestController
 @RequestMapping(value = ProfileRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -34,23 +35,23 @@ public class ProfileRestController {
 
     @GetMapping
     @JsonView(View.JsonREST.class)
-    public UserTo get() {
-        log.info("get {}", authUserId());
-        return UserUtil.createTo(service.get(authUserId()));
+    public UserTo get(@AuthenticationPrincipal AuthUser authUser) {
+        log.info("get {}", authUser.id());
+        return UserUtil.createTo(service.get(authUser.id()));
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete() {
-        log.info("delete {}", authUserId());
-        service.delete(authUserId());
+    public void delete(@AuthenticationPrincipal AuthUser authUser) {
+        log.info("delete {}", authUser.id());
+        service.delete(authUser.id());
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody UserTo userTo) {
-        log.info("update {} with id={}", userTo, authUserId());
-        assureIdConsistent(userTo, authUserId());
+    public void update(@RequestBody UserTo userTo, @AuthenticationPrincipal AuthUser authUser) {
+        log.info("update {} with id={}", userTo, authUser.id());
+        assureIdConsistent(userTo,authUser.id());
         service.update(userTo);
     }
 

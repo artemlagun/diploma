@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class RestaurantRestControllerTest extends AbstractControllerTest {
 
-    private static final String REST_URL = "/api/restaurants/";
+    private static final String REST_URL = "/api/restaurants";
 
     @Autowired
     private RestaurantService service;
@@ -27,12 +27,12 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(user1)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_MATCHER.contentJson(service.getAll()));
+                .andExpect(RESTAURANT_MATCHER.contentJson(service.getAllWithMenu()));
     }
 
     @Test
     void getMenuOfDay() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID + "/menu")
+        perform(MockMvcRequestBuilders.get(REST_URL + '/' + RESTAURANT1_ID + "/menu")
                 .with(userHttpBasic(user1)))
                 .andExpect(status().isOk())
                 .andDo(print())

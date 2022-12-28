@@ -6,7 +6,7 @@ import com.lunchvoting.topjava.diploma.to.VoteTo;
 import com.lunchvoting.topjava.diploma.util.VoteUtil;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
 import com.lunchvoting.topjava.diploma.web.AbstractControllerTest;
-import com.lunchvoting.topjava.diploma.web.json.JsonUtil;
+import com.lunchvoting.topjava.diploma.util.JsonUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
     private final ZoneId zoneId = ZoneId.systemDefault();
     private final Clock fixedClock = Clock.fixed(testTime.atZone(zoneId).toInstant(), zoneId);
 
-    private static final String REST_URL = "/api/admin/votes/";
+    private static final String REST_URL = "/api/admin/votes";
 
     @Autowired
     private VoteService service;
@@ -46,7 +46,7 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + VOTE1_ID)
+        perform(MockMvcRequestBuilders.get(REST_URL + '/' + VOTE1_ID)
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -56,7 +56,7 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + VOTE1_ID)
+        perform(MockMvcRequestBuilders.delete(REST_URL + '/' + VOTE1_ID)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
@@ -74,7 +74,7 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getByUserAndDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "by-user-date?userId=" + USER1_ID
+        perform(MockMvcRequestBuilders.get(REST_URL + "/by-user-date?userId=" + USER1_ID
                 + "&voteDate=" + LocalDate.of(2022, 11, 7))
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
@@ -84,7 +84,7 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getAllByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "by-date?voteDate="
+        perform(MockMvcRequestBuilders.get(REST_URL + "/by-date?voteDate="
                 + LocalDate.of(2022, 11, 7))
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
@@ -94,7 +94,7 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getByRestaurantAndDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID + "/by-date?voteDate="
+        perform(MockMvcRequestBuilders.get(REST_URL + '/' + RESTAURANT1_ID + "/by-date?voteDate="
                 + LocalDate.of(2022, 11, 7))
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
@@ -106,7 +106,7 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
     void createWithLocation() throws Exception {
         Vote newVote = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL
-                + "/?userId=" + USER1_ID + "&restaurantId=" + RESTAURANT1_ID)
+                + "?userId=" + USER1_ID + "&restaurantId=" + RESTAURANT1_ID)
                 .with(userHttpBasic(admin))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newVote)))
@@ -122,7 +122,7 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
     @Test
     void update() throws Exception {
         Vote updated = getUpdated();
-        perform(MockMvcRequestBuilders.put(REST_URL + VOTE1_ID + "?restaurantId=" + RESTAURANT1_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + '/' + VOTE1_ID + "?restaurantId=" + RESTAURANT1_ID)
                 .with(userHttpBasic(admin))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))

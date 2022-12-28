@@ -5,7 +5,7 @@ import com.lunchvoting.topjava.diploma.service.UserService;
 import com.lunchvoting.topjava.diploma.to.UserTo;
 import com.lunchvoting.topjava.diploma.util.UserUtil;
 import com.lunchvoting.topjava.diploma.web.AbstractControllerTest;
-import com.lunchvoting.topjava.diploma.web.json.JsonUtil;
+import com.lunchvoting.topjava.diploma.util.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

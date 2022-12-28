@@ -4,7 +4,7 @@ import com.lunchvoting.topjava.diploma.model.Restaurant;
 import com.lunchvoting.topjava.diploma.service.RestaurantService;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
 import com.lunchvoting.topjava.diploma.web.AbstractControllerTest;
-import com.lunchvoting.topjava.diploma.web.json.JsonUtil;
+import com.lunchvoting.topjava.diploma.util.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class RestaurantAdminRestControllerTest extends AbstractControllerTest {
 
-     private static final String REST_URL = "/api/admin/restaurants/";
+     private static final String REST_URL = "/api/admin/restaurants";
 
     @Autowired
     private RestaurantService service;
@@ -42,12 +42,12 @@ class RestaurantAdminRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_MATCHER.contentJson(service.getAll()));
+                .andExpect(RESTAURANT_MATCHER.contentJson(service.getAllWithMenu()));
     }
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID)
+        perform(MockMvcRequestBuilders.get(REST_URL + '/' + RESTAURANT1_ID)
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -57,7 +57,7 @@ class RestaurantAdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + RESTAURANT1_ID)
+        perform(MockMvcRequestBuilders.delete(REST_URL + '/' + RESTAURANT1_ID)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
@@ -66,7 +66,7 @@ class RestaurantAdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getMenuOfDay() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT1_ID + "/menu")
+        perform(MockMvcRequestBuilders.get(REST_URL + '/' + RESTAURANT1_ID + "/menu")
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andDo(print())

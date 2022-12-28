@@ -3,18 +3,18 @@ package com.lunchvoting.topjava.diploma.service;
 import com.lunchvoting.topjava.diploma.model.Role;
 import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Set;
 
 import static com.lunchvoting.topjava.diploma.testdata.UserTestData.*;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
- class UserServiceTest extends AbstractServiceTest {
+class UserServiceTest extends AbstractServiceTest {
 
     @Autowired
     protected UserService service;

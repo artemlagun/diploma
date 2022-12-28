@@ -5,7 +5,7 @@ import com.lunchvoting.topjava.diploma.service.VoteService;
 import com.lunchvoting.topjava.diploma.to.VoteTo;
 import com.lunchvoting.topjava.diploma.util.VoteUtil;
 import com.lunchvoting.topjava.diploma.web.AbstractControllerTest;
-import com.lunchvoting.topjava.diploma.web.json.JsonUtil;
+import com.lunchvoting.topjava.diploma.util.JsonUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,6 @@ import java.time.ZoneId;
 
 import static com.lunchvoting.topjava.diploma.TestUtil.userHttpBasic;
 import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.RESTAURANT1_ID;
-import static com.lunchvoting.topjava.diploma.testdata.UserTestData.USER1_ID;
 import static com.lunchvoting.topjava.diploma.testdata.UserTestData.user1;
 import static com.lunchvoting.topjava.diploma.testdata.VoteTestData.*;
 import static com.lunchvoting.topjava.diploma.testdata.VoteTestData.VOTE_MATCHER;
@@ -33,7 +32,7 @@ class VoteProfileRestControllerTest extends AbstractControllerTest {
     private final ZoneId zoneId = ZoneId.systemDefault();
     private final Clock fixedClock = Clock.fixed(testTime.atZone(zoneId).toInstant(), zoneId);
 
-    static final String REST_URL = "/api/profile/votes/";
+    static final String REST_URL = "/api/profile/votes";
 
     @Autowired
     private VoteService service;
@@ -73,7 +72,7 @@ class VoteProfileRestControllerTest extends AbstractControllerTest {
     @Test
     void update() throws Exception {
         Vote updated = getUpdated();
-        perform(MockMvcRequestBuilders.put(REST_URL + VOTE1_ID + "?restaurantId=" + RESTAURANT1_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + '/' + VOTE1_ID + "?restaurantId=" + RESTAURANT1_ID)
                 .with(userHttpBasic(user1))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))

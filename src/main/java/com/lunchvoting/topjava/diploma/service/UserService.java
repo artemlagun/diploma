@@ -1,6 +1,6 @@
 package com.lunchvoting.topjava.diploma.service;
 
-import com.lunchvoting.topjava.diploma.AuthorizedUser;
+import com.lunchvoting.topjava.diploma.AuthUser;
 import com.lunchvoting.topjava.diploma.model.User;
 import com.lunchvoting.topjava.diploma.repository.UserRepository;
 import com.lunchvoting.topjava.diploma.to.UserTo;
@@ -36,12 +36,12 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {
+    public AuthUser loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = repository.getByEmail(email.toLowerCase());
         if (user == null) {
             throw new UsernameNotFoundException("User " + email + " is not found");
         }
-        return new AuthorizedUser(user);
+        return new AuthUser(user);
     }
 
     public void delete(int id) {

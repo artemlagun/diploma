@@ -2,18 +2,15 @@ package com.lunchvoting.topjava.diploma.service;
 
 import com.lunchvoting.topjava.diploma.TimingExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.getRootCause;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringJUnitConfig(locations = {
-        "classpath:spring/spring-mvc.xml",
-        "classpath:spring/spring-db.xml"
-})
-@Sql(scripts = "classpath:db/data.sql", config = @SqlConfig(encoding = "UTF-8"))
+@SpringBootTest
+@Sql(scripts = "classpath:data.sql", config = @SqlConfig(encoding = "UTF-8"))
 @ExtendWith(TimingExtension.class)
 public abstract class AbstractServiceTest {
 

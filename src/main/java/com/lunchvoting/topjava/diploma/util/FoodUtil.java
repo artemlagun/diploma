@@ -2,12 +2,12 @@ package com.lunchvoting.topjava.diploma.util;
 
 import com.lunchvoting.topjava.diploma.model.Food;
 import com.lunchvoting.topjava.diploma.to.FoodTo;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
 import java.util.Collection;
 import java.util.List;
 
-@NoArgsConstructor
+@UtilityClass
 public class FoodUtil {
 
     public static List<FoodTo> getTos (Collection<Food> foods) {

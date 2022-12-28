@@ -25,14 +25,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class AdminRestControllerTest extends AbstractControllerTest {
 
-    private static final String REST_URL = "/api/admin/users/";
+    private static final String REST_URL = "/api/admin/users";
 
     @Autowired
     private UserService service;
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + ADMIN_ID)
+        perform(MockMvcRequestBuilders.get(REST_URL + '/' + ADMIN_ID)
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -42,7 +42,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getByEmail() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "by-email?email=" + user1.getEmail())
+        perform(MockMvcRequestBuilders.get(REST_URL + "/by-email?email=" + user1.getEmail())
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -51,7 +51,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + USER1_ID)
+        perform(MockMvcRequestBuilders.delete(REST_URL + '/' + USER1_ID)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
@@ -61,7 +61,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     void update() throws Exception {
         User updated = UserTestData.getUpdated();
-        perform(MockMvcRequestBuilders.put(REST_URL + USER1_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + '/' + USER1_ID)
                 .with(userHttpBasic(admin))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(updated, updated.getPassword())))
@@ -110,7 +110,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + NOT_FOUND)
+        perform(MockMvcRequestBuilders.get(REST_URL + '/' + NOT_FOUND)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
@@ -118,7 +118,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void deleteNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + NOT_FOUND)
+        perform(MockMvcRequestBuilders.delete(REST_URL + '/' + NOT_FOUND)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
@@ -129,7 +129,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
     void updateDuplicate() throws Exception {
         User updated = new User(user1);
         updated.setEmail("admin@gmail.com");
-        perform(MockMvcRequestBuilders.put(REST_URL + USER1_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + '/' + USER1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
                 .content(jsonWithPassword(updated, "password")))

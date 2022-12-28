@@ -1,5 +1,6 @@
 package com.lunchvoting.topjava.diploma.web.vote;
 
+import com.lunchvoting.topjava.diploma.AuthUser;
 import com.lunchvoting.topjava.diploma.service.VoteService;
 import com.lunchvoting.topjava.diploma.to.VoteTo;
 import com.lunchvoting.topjava.diploma.util.VoteUtil;
@@ -7,13 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
-
-import static com.lunchvoting.topjava.diploma.web.SecurityUtil.authUserId;
 
 @RestController
 @RequestMapping(value = VoteProfileRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -29,15 +29,15 @@ public class VoteProfileRestController {
     }
 
     @GetMapping()
-    public VoteTo get() {
-        log.info("get {}", authUserId());
-        return VoteUtil.createTo(service.getByUserAndDate(authUserId(), LocalDate.now()));
+    public VoteTo get(@AuthenticationPrincipal AuthUser authUser) {
+        log.info("get {}", authUser.id());
+        return VoteUtil.createTo(service.getByUserAndDate(authUser.id(), LocalDate.now()));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VoteTo> createWithLocation(@RequestParam int restaurantId) {
-        log.info("create vote from user {} for restaurant {}", authUserId(), restaurantId);
-        VoteTo created = VoteUtil.createTo(service.create(authUserId(), restaurantId));
+    public ResponseEntity<VoteTo> createWithLocation(@RequestParam int restaurantId, @AuthenticationPrincipal AuthUser authUser) {
+        log.info("create vote from user {} for restaurant {}", authUser.id(), restaurantId);
+        VoteTo created = VoteUtil.createTo(service.create(authUser.id(), restaurantId));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL)
                 .buildAndExpand(created.getId()).toUri();
