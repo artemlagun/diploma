@@ -13,7 +13,6 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNotFoundWithId;
 
@@ -30,9 +29,8 @@ public class FoodService {
     }
 
     public Food get(int id, int restaurantId) {
-        Food food = repository.findById(id).orElseThrow(() ->
+        return repository.findById(id).orElseThrow(() ->
                 new NotFoundException("Food " + id + " from restaurant " + restaurantId + " not found"));
-        return food != null && Objects.requireNonNull(food.getRestaurant().getId()) == restaurantId ? food : null;
     }
 
     @CacheEvict(value = "foods", allEntries = true)
@@ -59,7 +57,8 @@ public class FoodService {
     @Transactional
     public void update(Food food, int restaurantId) {
         Assert.notNull(food, "food shouldn't be null");
-        food.setRestaurant(restaurantRepository.findById(restaurantId).orElse(null));
+        food.setRestaurant(restaurantRepository.findById(restaurantId).orElseThrow(() ->
+                new NotFoundException("Restaurant " + restaurantId + " not found")));
         checkNotFoundWithId(repository.save(food), food.id());
     }
 
@@ -67,7 +66,8 @@ public class FoodService {
     @Transactional
     public Food create(Food food, int restaurantId) {
         Assert.notNull(food, "food shouldn't be null");
-        food.setRestaurant(restaurantRepository.findById(restaurantId).orElse(null));
+        food.setRestaurant(restaurantRepository.findById(restaurantId).orElseThrow(() ->
+                new NotFoundException("Restaurant " + restaurantId + " not found")));
         return repository.save(food);
     }
 }
