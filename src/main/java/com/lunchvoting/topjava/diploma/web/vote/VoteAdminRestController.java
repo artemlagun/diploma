@@ -1,5 +1,6 @@
 package com.lunchvoting.topjava.diploma.web.vote;
 
+import com.lunchvoting.topjava.diploma.model.Restaurant;
 import com.lunchvoting.topjava.diploma.service.VoteService;
 import com.lunchvoting.topjava.diploma.to.VoteTo;
 import com.lunchvoting.topjava.diploma.util.VoteUtil;
@@ -62,28 +63,28 @@ public class VoteAdminRestController {
         return VoteUtil.getTos(voteService.getAllByDate(voteDate));
     }
 
-    @GetMapping("/{restaurantId}/by-date")
-    public List<VoteTo> getByRestaurantAndDate(@PathVariable int restaurantId,
+    @GetMapping("/restaurant-by-date")
+    public List<VoteTo> getByRestaurantAndDate(@RequestParam int restaurantId,
                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                @RequestParam LocalDate voteDate) {
         log.info("getByUserAndDate");
         return VoteUtil.getTos(voteService.getByRestaurantAndDate(restaurantId, voteDate));
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VoteTo> createWithLocation(@RequestParam int userId, @RequestParam int restaurantId) {
-        log.info("create vote from user {} for restaurant {}", userId, restaurantId);
-        VoteTo created = VoteUtil.createTo(voteService.create(userId, restaurantId));
+    @PostMapping(value ="/users/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<VoteTo> createWithLocation(@PathVariable int userId, @RequestBody Restaurant restaurant) {
+        log.info("create vote from user {} for restaurant {}", userId, restaurant.id());
+        VoteTo created = VoteUtil.createTo(voteService.create(userId, restaurant.id()));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL)
+                .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable int id, @RequestParam int restaurantId) {
-        log.info("update vote {} for restaurant {}", id, restaurantId);
-        voteService.update(id, restaurantId);
+    public void update(@PathVariable int id, @RequestBody Restaurant restaurant) {
+        log.info("update vote {} for restaurant {}", id, restaurant.id());
+        voteService.update(id, restaurant.id());
     }
 }

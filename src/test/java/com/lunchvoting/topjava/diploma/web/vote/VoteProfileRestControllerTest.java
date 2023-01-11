@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import static com.lunchvoting.topjava.diploma.TestUtil.userHttpBasic;
-import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.RESTAURANT1_ID;
+import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.restaurant1;
 import static com.lunchvoting.topjava.diploma.testdata.UserTestData.user1;
 import static com.lunchvoting.topjava.diploma.testdata.VoteTestData.*;
 import static com.lunchvoting.topjava.diploma.testdata.VoteTestData.VOTE_MATCHER;
@@ -55,11 +55,10 @@ class VoteProfileRestControllerTest extends AbstractControllerTest {
     @Test
     void createWithLocation() throws Exception {
         Vote newVote = getNew();
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL
-                        + "?restaurantId=" + RESTAURANT1_ID)
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .with(userHttpBasic(user1))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newVote)))
+                .content(JsonUtil.writeValue(restaurant1)))
                 .andExpect(status().isCreated());
 
         VoteTo created = VOTE_TO_MATCHER.readFromJson(action);
@@ -72,7 +71,7 @@ class VoteProfileRestControllerTest extends AbstractControllerTest {
     @Test
     void update() throws Exception {
         Vote updated = getUpdated();
-        perform(MockMvcRequestBuilders.put(REST_URL + '/' + VOTE1_ID + "?restaurantId=" + RESTAURANT1_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + '/' + VOTE1_ID)
                 .with(userHttpBasic(user1))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))

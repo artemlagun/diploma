@@ -66,13 +66,13 @@ For windows use `Git Bash`
 `curl -s http://localhost:8080/api/admin/votes/by-date?voteDate=2022-11-07 --user admin@gmail.com:admin`
 
 #### getByRestaurantAndDate Votes from Restaurant 100004
-`curl -s http://localhost:8080/api/admin/votes/100004/by-date?voteDate=2022-11-07 --user admin@gmail.com:admin`
+`curl -s http://localhost:8080/api/admin/votes/restaurant-by-date?restaurantId=100004&voteDate=2022-11-07 --user admin@gmail.com:admin`
 
 #### create Votes
-`curl -s -X POST -d '{"restaurantId": "100004"}' -H 'Content-Type: application/json;charset=UTF-8' "http://localhost:8080/api/admin/votes?userId=100003&restaurantId=100004" --user admin@gmail.com:admin`
+`curl -s -X POST -d '{"id": "100004"}' -H 'Content-Type: application/json;charset=UTF-8' "http://localhost:8080/api/admin/votes/100003" --user admin@gmail.com:admin`
 
 #### update Votes 100023
-`curl -s -X PUT -d '{"restaurantId": "100004"}' -H 'Content-Type: application/json' http://localhost:8080/api/admin/votes/100023?restaurantId=100004 --user admin@gmail.com:admin`
+`curl -s -X PUT -d '{"id": "100004"}' -H 'Content-Type: application/json' http://localhost:8080/api/admin/votes/100023 --user admin@gmail.com:admin`
 
 #### delete Votes
 `curl -s -X DELETE http://localhost:8080/api/admin/votes/100025 --user admin@gmail.com:admin`
@@ -84,10 +84,10 @@ For windows use `Git Bash`
 `curl -s http://localhost:8080/api/profile/votes --user evahester@gmail.com:password`
 
 #### create Votes by User 100002
-`curl -s -X POST -d '{"restaurantId": "100004"}' -H 'Content-Type: application/json;charset=UTF-8' http://localhost:8080/api/profile/votes?restaurantId=100004 --user alicerussell@gmail.com:password`
+`curl -s -X POST -d '{"id": "100004"}' -H 'Content-Type: application/json;charset=UTF-8' http://localhost:8080/api/profile/votes --user alicerussell@gmail.com:password`
 
 #### update Votes 100022 by user 100000
-`curl -s -X PUT -d '{"restaurantId": "100005"}' -H 'Content-Type: application/json' http://localhost:8080/api/profile/votes/100022?restaurantId=100005 --user evahester@gmail.com:password`
+`curl -s -X PUT -d '{"id": "100005"}' -H 'Content-Type: application/json' http://localhost:8080/api/profile/votes/100022 --user evahester@gmail.com:password`
 <br>
 <br>
 >#### RestaurantAdminRestController

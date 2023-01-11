@@ -1,6 +1,7 @@
 package com.lunchvoting.topjava.diploma.web.vote;
 
 import com.lunchvoting.topjava.diploma.AuthUser;
+import com.lunchvoting.topjava.diploma.model.Restaurant;
 import com.lunchvoting.topjava.diploma.service.VoteService;
 import com.lunchvoting.topjava.diploma.to.VoteTo;
 import com.lunchvoting.topjava.diploma.util.VoteUtil;
@@ -35,9 +36,9 @@ public class VoteProfileRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VoteTo> createWithLocation(@RequestParam int restaurantId, @AuthenticationPrincipal AuthUser authUser) {
-        log.info("create vote from user {} for restaurant {}", authUser.id(), restaurantId);
-        VoteTo created = VoteUtil.createTo(service.create(authUser.id(), restaurantId));
+    public ResponseEntity<VoteTo> createWithLocation(@RequestBody Restaurant restaurant, @AuthenticationPrincipal AuthUser authUser) {
+        log.info("create vote from user {} for restaurant {}", authUser.id(), restaurant.id());
+        VoteTo created = VoteUtil.createTo(service.create(authUser.id(), restaurant.id()));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL)
                 .buildAndExpand(created.getId()).toUri();
@@ -46,8 +47,8 @@ public class VoteProfileRestController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable int id, @RequestParam int restaurantId) {
-        log.info("update vote {} for restaurant {}", id, restaurantId);
-        service.update(id, restaurantId);
+    public void update(@PathVariable int id, @RequestBody Restaurant restaurant) {
+        log.info("update vote {} for restaurant {}", id, restaurant.id());
+        service.update(id, restaurant.id());
     }
 }

@@ -19,6 +19,7 @@ import java.util.List;
 
 import static com.lunchvoting.topjava.diploma.TestUtil.userHttpBasic;
 import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.RESTAURANT1_ID;
+import static com.lunchvoting.topjava.diploma.testdata.RestaurantTestData.restaurant1;
 import static com.lunchvoting.topjava.diploma.testdata.UserTestData.USER1_ID;
 import static com.lunchvoting.topjava.diploma.testdata.UserTestData.admin;
 import static com.lunchvoting.topjava.diploma.testdata.UserTestData.user1;
@@ -94,8 +95,8 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getByRestaurantAndDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + '/' + RESTAURANT1_ID + "/by-date?voteDate="
-                + LocalDate.of(2022, 11, 7))
+        perform(MockMvcRequestBuilders.get(REST_URL + "/restaurant-by-date?restaurantId=" + RESTAURANT1_ID +
+                "&voteDate=" + LocalDate.of(2022, 11, 7))
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -105,11 +106,10 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
     @Test
     void createWithLocation() throws Exception {
         Vote newVote = getNew();
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL
-                + "?userId=" + USER1_ID + "&restaurantId=" + RESTAURANT1_ID)
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + "/users/" + USER1_ID)
                 .with(userHttpBasic(admin))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newVote)))
+                .content(JsonUtil.writeValue(restaurant1)))
                 .andExpect(status().isCreated());
 
         VoteTo created = VOTE_TO_MATCHER.readFromJson(action);
@@ -122,7 +122,7 @@ class VoteAdminRestControllerTest extends AbstractControllerTest {
     @Test
     void update() throws Exception {
         Vote updated = getUpdated();
-        perform(MockMvcRequestBuilders.put(REST_URL + '/' + VOTE1_ID + "?restaurantId=" + RESTAURANT1_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + '/' + VOTE1_ID)
                 .with(userHttpBasic(admin))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
