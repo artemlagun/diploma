@@ -1,8 +1,6 @@
 package com.lunchvoting.topjava.diploma.service;
 
-import com.lunchvoting.topjava.diploma.model.Food;
 import com.lunchvoting.topjava.diploma.model.Restaurant;
-import com.lunchvoting.topjava.diploma.repository.FoodRepository;
 import com.lunchvoting.topjava.diploma.repository.RestaurantRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNotFoundWithId;
@@ -22,11 +19,9 @@ public class RestaurantService {
     private static final Sort SORT_NAME = Sort.by(Sort.Direction.ASC, "name");
 
     private final RestaurantRepository repository;
-    private final FoodRepository foodRepository;
 
-    public RestaurantService(RestaurantRepository repository, FoodRepository foodRepository) {
+    public RestaurantService(RestaurantRepository repository) {
         this.repository = repository;
-        this.foodRepository = foodRepository;
     }
 
     public Restaurant get(int id) {
@@ -45,20 +40,13 @@ public class RestaurantService {
 
     @Cacheable("restaurants")
     public List<Restaurant> getAllWithMenu() {
-        List<Restaurant> restaurants = repository.findAll(SORT_NAME);
-        restaurants.forEach(restaurant -> restaurant.setMenu(foodRepository.getAll(restaurant.id())));
-        return restaurants;
+        return repository.getAllWithMenu();
     }
 
     @Transactional
     public Restaurant getMenuOfDay(int id) {
-        Restaurant restaurant = checkNotFoundWithId(repository.findById(id).orElse(null),id);
+        Restaurant restaurant = checkNotFoundWithId(repository.getMenuOfDay(id), id);
         Assert.notNull(restaurant, "restaurant shouldn't be null");
-        List<Food> menuOfDay = foodRepository.getAll(id)
-                .stream()
-                .filter(all -> all.getVoteDate().isEqual(LocalDate.now()))
-                .toList();
-        restaurant.setMenu(menuOfDay);
         return restaurant;
     }
 
