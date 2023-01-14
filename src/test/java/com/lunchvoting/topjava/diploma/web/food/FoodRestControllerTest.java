@@ -45,7 +45,7 @@ class FoodRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getAllByRestaurant() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + '/' +  RESTAURANT1_ID)
+        perform(MockMvcRequestBuilders.get(REST_URL + "/restaurant?restaurantId=" +  RESTAURANT1_ID)
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -54,7 +54,7 @@ class FoodRestControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + '/' + RESTAURANT1_ID + '/' + FOOD1_ID)
+        perform(MockMvcRequestBuilders.get(REST_URL + '/' + FOOD1_ID)
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -65,19 +65,30 @@ class FoodRestControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + '/' + RESTAURANT1_ID + '/' + FOOD1_ID)
+        perform(MockMvcRequestBuilders.delete(REST_URL + '/' + FOOD1_ID)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertThrows(NotFoundException.class, () -> service.get(FOOD1_ID, RESTAURANT1_ID));
+        assertThrows(NotFoundException.class, () -> service.get(RESTAURANT1_ID));
     }
 
     @Test
     void getAllByDate() throws Exception {
-        List<FoodTo> expected = FoodUtil.getTos(service.getAllByDate(RESTAURANT3_ID,
+        List<FoodTo> expected = FoodUtil.getTos(service.getAllByDate(LocalDate.of(2022, 11, 7)));
+        perform(MockMvcRequestBuilders.get(REST_URL + "/by-date?voteDate="
+                        + LocalDate.of(2022, 11, 7))
+                .with(userHttpBasic(admin)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(FOOD_TO_MATCHER.contentJson(expected));
+    }
+
+    @Test
+    void getAllByRestaurantAndDate() throws Exception {
+        List<FoodTo> expected = FoodUtil.getTos(service.getAllByRestaurantAndDate(RESTAURANT3_ID,
                 LocalDate.of(2022, 11, 7)));
-        perform(MockMvcRequestBuilders.get(REST_URL + '/' + RESTAURANT3_ID + '/' + "by-date?voteDate="
-                + LocalDate.of(2022, 11, 7))
+        perform(MockMvcRequestBuilders.get(REST_URL + "/by-restaurant-date?restaurantId=" + RESTAURANT3_ID +
+                        "&voteDate=" + LocalDate.of(2022, 11, 7))
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -87,7 +98,8 @@ class FoodRestControllerTest extends AbstractControllerTest {
     @Test
     void createWithLocation() throws Exception {
         Food newFood = getNew();
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + '/' + RESTAURANT1_ID)
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL +
+                        "/restaurant?restaurantId=" + RESTAURANT1_ID)
                 .with(userHttpBasic(admin))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newFood)))
@@ -97,19 +109,20 @@ class FoodRestControllerTest extends AbstractControllerTest {
         int newId = created.id();
         newFood.setId(newId);
         FOOD_TO_MATCHER.assertMatch(created, FoodUtil.createTo(newFood));
-        FOOD_MATCHER.assertMatch(service.get(newId, RESTAURANT1_ID), newFood);
+        FOOD_MATCHER.assertMatch(service.get(newId), newFood);
     }
 
     @Test
     void update() throws Exception {
         Food updated = getUpdated();
-        perform(MockMvcRequestBuilders.put(REST_URL + '/' + RESTAURANT1_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL +
+                        "/restaurant?restaurantId=" + RESTAURANT1_ID)
                 .with(userHttpBasic(admin))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
 
-        FOOD_MATCHER.assertMatch(service.get(FOOD1_ID, RESTAURANT1_ID), updated);
+        FOOD_MATCHER.assertMatch(service.get(FOOD1_ID), updated);
     }
 
     @Test

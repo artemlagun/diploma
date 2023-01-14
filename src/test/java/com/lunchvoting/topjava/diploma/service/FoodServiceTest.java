@@ -29,7 +29,7 @@ class FoodServiceTest extends AbstractServiceTest {
         Food newFood = getNew();
         newFood.setId(newId);
         FOOD_MATCHER.assertMatch(created, newFood);
-        FOOD_MATCHER.assertMatch(service.get(newId, RESTAURANT1_ID), newFood);
+        FOOD_MATCHER.assertMatch(service.get(newId), newFood);
     }
 
     @Test
@@ -41,29 +41,35 @@ class FoodServiceTest extends AbstractServiceTest {
 
     @Test
     void delete() {
-        service.delete(FOOD1_ID, RESTAURANT1_ID);
-        assertThrows(NotFoundException.class, () -> service.get(FOOD1_ID, RESTAURANT1_ID));
+        service.delete(FOOD1_ID);
+        assertThrows(NotFoundException.class, () -> service.get(FOOD1_ID));
     }
 
     @Test
     void deletedNotFound() {
-        assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND, RESTAURANT1_ID));
+        assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND));
     }
 
     @Test
     void get() {
-        Food food = service.get(FOOD1_ID, RESTAURANT1_ID);
+        Food food = service.get(FOOD1_ID);
         FOOD_MATCHER.assertMatch(food, food1);
     }
 
     @Test
     void getNotFound() {
-        assertThrows(NotFoundException.class, () -> service.get(NOT_FOUND, RESTAURANT1_ID));
+        assertThrows(NotFoundException.class, () -> service.get(NOT_FOUND));
     }
 
     @Test
     void getAllByDate() {
-        List<Food> allByDate = service.getAllByDate(RESTAURANT3_ID, LocalDate.of(2022, 11, 7));
+        List<Food> allByDate = service.getAllByDate(LocalDate.of(2022, 11, 7));
+        FOOD_MATCHER.assertMatch(allByDate, foodsByDate);
+    }
+
+    @Test
+    void getAllByRestaurantAndDate() {
+        List<Food> allByDate = service.getAllByRestaurantAndDate(RESTAURANT3_ID, LocalDate.of(2022, 11, 7));
         FOOD_MATCHER.assertMatch(allByDate, foodsByDate);
     }
 
@@ -71,7 +77,7 @@ class FoodServiceTest extends AbstractServiceTest {
     void update() {
         Food updated = getUpdated();
         service.update(updated, RESTAURANT1_ID);
-        FOOD_MATCHER.assertMatch(service.get(FOOD1_ID, RESTAURANT1_ID), getUpdated());
+        FOOD_MATCHER.assertMatch(service.get(FOOD1_ID), getUpdated());
     }
 
     @Test

@@ -39,35 +39,42 @@ public class FoodRestController {
         return FoodUtil.getTos(service.getAll());
     }
 
-    @GetMapping("/{restaurantId}")
-    public List<FoodTo> getAllByRestaurant(@PathVariable int restaurantId) {
+    @GetMapping("/restaurant")
+    public List<FoodTo> getAllByRestaurant(@RequestParam int restaurantId) {
         log.info("getAll for restaurant {}", restaurantId);
         return FoodUtil.getTos(service.getAllByRestaurant(restaurantId));
     }
 
-    @GetMapping("/{restaurantId}/{id}")
-    public FoodTo get(@PathVariable int id, @PathVariable int restaurantId) {
-        log.info("get food {} for restaurant {}", id, restaurantId);
-        return FoodUtil.createTo(service.get(id, restaurantId));
+    @GetMapping("/{id}")
+    public FoodTo get(@PathVariable int id) {
+        log.info("get food {}", id);
+        return FoodUtil.createTo(service.get(id));
     }
 
-    @DeleteMapping("/{restaurantId}/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id, @PathVariable int restaurantId) {
-        log.info("delete food {} for restaurant {}", id, restaurantId);
-        service.delete(id, restaurantId);
+    public void delete(@PathVariable int id) {
+        log.info("delete food {}", id);
+        service.delete(id);
     }
 
-    @GetMapping("/{restaurantId}/by-date")
-    public List<FoodTo> getAllByDate(@PathVariable int restaurantId,
-                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @GetMapping("/by-date")
+    public List<FoodTo> getAllByDate(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                      @RequestParam LocalDate voteDate) {
-        log.info("getAllByDate {} for restaurant {}", voteDate, restaurantId);
-        return FoodUtil.getTos(service.getAllByDate(restaurantId, voteDate));
+        log.info("getAllByDate {}", voteDate);
+        return FoodUtil.getTos(service.getAllByDate(voteDate));
     }
 
-    @PostMapping(value = "/{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FoodTo> createWithLocation(@Valid @RequestBody Food food, @PathVariable int restaurantId) {
+    @GetMapping("/by-restaurant-date")
+    public List<FoodTo> getAllByRestaurantAndDate(@RequestParam int restaurantId,
+                                                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                  @RequestParam LocalDate voteDate) {
+        log.info("getAll from restaurant {} by date {}", restaurantId, voteDate);
+        return FoodUtil.getTos(service.getAllByRestaurantAndDate(restaurantId, voteDate));
+    }
+
+    @PostMapping(value = "/restaurant", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FoodTo> createWithLocation(@Valid @RequestBody Food food, @RequestParam int restaurantId) {
         log.info("create food {} for restaurant {}", food, restaurantId);
         checkNew(food);
         FoodTo created = FoodUtil.createTo(service.create(food, restaurantId));
@@ -77,9 +84,9 @@ public class FoodRestController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @PutMapping(value = "/{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/restaurant", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Food food, @PathVariable int restaurantId) {
+    public void update(@Valid @RequestBody Food food, @RequestParam int restaurantId) {
         log.info("update food {} for restaurant {}", food, restaurantId);
         assureIdConsistent(food, food.id());
         service.update(food, restaurantId);

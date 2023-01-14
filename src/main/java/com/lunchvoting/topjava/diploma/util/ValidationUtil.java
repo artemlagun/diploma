@@ -14,7 +14,7 @@ import org.springframework.lang.NonNull;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
+import java.util.List;
 
 @UtilityClass
 public class ValidationUtil {
@@ -51,22 +51,25 @@ public class ValidationUtil {
         }
     }
 
-    public static <T> void checkExisted(Collection<T> objets, int id) {
+    public static <T> List<T> checkExisted(List<T> objets, int id) {
         if (objets.isEmpty()) {
             throw new NotFoundException("Entity with id=" + id + " not found");
         }
+        return objets;
     }
 
-    public static <T> void checkExisted(Collection<T> objets, LocalDate date) {
+    public static <T> List<T> checkExisted(List<T> objets, LocalDate date) {
         if (objets.isEmpty()) {
             throw new NotFoundException("Entities for this date " + date + " not found");
         }
+        return objets;
     }
 
-    public static <T> void checkExisted(Collection<T> objets, LocalDate date, int id) {
+    public static <T> List<T> checkExisted(List<T> objets, LocalDate date, int id) {
         if (objets.isEmpty()) {
             throw new NotFoundException("Entities from " + id + " for this date " + date + " not found");
         }
+        return objets;
     }
 
     public static void assureIdConsistent(HasId bean, int id) {

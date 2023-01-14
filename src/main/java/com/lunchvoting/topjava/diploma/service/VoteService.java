@@ -58,15 +58,13 @@ public class VoteService {
     public List<Vote> getAllByDate(LocalDate voteDate) {
         Assert.notNull(voteDate, "date shouldn't be null");
         List<Vote> votes = repository.getAllByDate(voteDate);
-        checkExisted(votes, voteDate);
-        return checkNotFound(votes, "date=" + voteDate);
+        return checkExisted(votes, voteDate);
     }
 
     public List<Vote> getByRestaurantAndDate(int restaurantId, LocalDate voteDate) {
         Assert.notNull(voteDate, "date shouldn't be null");
         List<Vote> votes = repository.getByRestaurantAndDate(restaurantId, voteDate);
-        checkExisted(votes, voteDate, restaurantId);
-        return checkNotFoundWithId(votes, restaurantId);
+        return checkExisted(votes, voteDate, restaurantId);
     }
 
     @Transactional

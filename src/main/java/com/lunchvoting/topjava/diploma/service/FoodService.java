@@ -29,14 +29,14 @@ public class FoodService {
         this.restaurantRepository = restaurantRepository;
     }
 
-    public Food get(int id, int restaurantId) {
+    public Food get(int id) {
         return repository.findById(id).orElseThrow(() ->
-                new NotFoundException("Food " + id + " from restaurant " + restaurantId + " not found"));
+                new NotFoundException("Food " + id + " not found"));
     }
 
     @CacheEvict(value = "foods", allEntries = true)
-    public void delete(int id, int restaurantId) {
-        checkNotFoundWithId(repository.delete(id, restaurantId) != 0, id);
+    public void delete(int id) {
+        checkNotFoundWithId(repository.delete(id) != 0, id);
     }
 
     @Cacheable("foods")
@@ -50,14 +50,16 @@ public class FoodService {
         return repository.getAll(restaurantId);
     }
 
-    public List<Food> getAllByDate(int restaurantId, LocalDate voteDate) {
+    public List<Food> getAllByDate(LocalDate voteDate) {
         Assert.notNull(voteDate, "voteDate shouldn't be null");
-        checkExisted(restaurantRepository, restaurantId);
-        List<Food> allByDate = repository.getAllByDate(restaurantId, voteDate);
-        if (allByDate.isEmpty()) {
-            throw new NotFoundException("Foods for this date " + voteDate + " not found");
-        }
-        return allByDate;
+        List<Food> foods = repository.getAllByDate(voteDate);
+        return checkExisted(foods, voteDate);
+    }
+
+    public List<Food> getAllByRestaurantAndDate(int restaurantId, LocalDate voteDate) {
+        Assert.notNull(voteDate, "voteDate shouldn't be null");
+        List<Food> foods = repository.getAllByRestaurantAndDate(restaurantId, voteDate);
+        return checkExisted(foods, voteDate, restaurantId);
     }
 
     @CacheEvict(value = "foods", allEntries = true)
