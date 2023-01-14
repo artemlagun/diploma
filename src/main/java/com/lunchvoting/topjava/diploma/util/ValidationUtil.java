@@ -9,10 +9,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.experimental.UtilityClass;
 import org.slf4j.Logger;
 import org.springframework.core.NestedExceptionUtils;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.NonNull;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 
 @UtilityClass
 public class ValidationUtil {
@@ -40,6 +42,30 @@ public class ValidationUtil {
     public static void checkNew(HasId bean) {
         if (!bean.isNew()) {
             throw new IllegalRequestDataException(bean + " must be new (id=null)");
+        }
+    }
+
+    public static <T, ID> void checkExisted(CrudRepository<T, ID> repository, ID id) {
+        if (!repository.existsById(id)) {
+            throw new NotFoundException("Entity with id=" + id + " not found");
+        }
+    }
+
+    public static <T> void checkExisted(Collection<T> objets, int id) {
+        if (objets.isEmpty()) {
+            throw new NotFoundException("Entity with id=" + id + " not found");
+        }
+    }
+
+    public static <T> void checkExisted(Collection<T> objets, LocalDate date) {
+        if (objets.isEmpty()) {
+            throw new NotFoundException("Entities for this date " + date + " not found");
+        }
+    }
+
+    public static <T> void checkExisted(Collection<T> objets, LocalDate date, int id) {
+        if (objets.isEmpty()) {
+            throw new NotFoundException("Entities from " + id + " for this date " + date + " not found");
         }
     }
 

@@ -108,7 +108,7 @@ For windows use `Git Bash`
 `curl -s -X POST -d '{"name": "Created restaurant"}' -H 'Content-Type: application/json;charset=UTF-8' http://localhost:8080/api/admin/restaurants --user admin@gmail.com:admin`
 
 #### update Restaurants
-`curl -s -X PUT -d '{"id": "100006", "name": "Udated restaurant"}' -H 'Content-Type: application/json' http://localhost:8080/api/admin/restaurants --user admin@gmail.com:admin`
+`curl -s -X PUT -d '{"id": "100006", "name": "Updated restaurant"}' -H 'Content-Type: application/json' http://localhost:8080/api/admin/restaurants --user admin@gmail.com:admin`
 
 #### delete Restaurants
 `curl -s -X DELETE http://localhost:8080/api/admin/restaurants/100004 --user admin@gmail.com:admin`

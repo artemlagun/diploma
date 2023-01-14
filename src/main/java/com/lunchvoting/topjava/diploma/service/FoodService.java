@@ -12,8 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.*;
 
+import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkExisted;
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
@@ -45,12 +46,18 @@ public class FoodService {
 
     @CacheEvict(value = "foods", allEntries = true)
     public List<Food> getAllByRestaurant(int restaurantId) {
+        checkExisted(restaurantRepository, restaurantId);
         return repository.getAll(restaurantId);
     }
 
     public List<Food> getAllByDate(int restaurantId, LocalDate voteDate) {
         Assert.notNull(voteDate, "voteDate shouldn't be null");
-        return repository.getAllByDate(restaurantId, voteDate);
+        checkExisted(restaurantRepository, restaurantId);
+        List<Food> allByDate = repository.getAllByDate(restaurantId, voteDate);
+        if (allByDate.isEmpty()) {
+            throw new NotFoundException("Foods for this date " + voteDate + " not found");
+        }
+        return allByDate;
     }
 
     @CacheEvict(value = "foods", allEntries = true)

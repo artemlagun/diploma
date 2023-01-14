@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 
+import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkExisted;
 import static com.lunchvoting.topjava.diploma.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
@@ -59,6 +60,7 @@ public class RestaurantService {
     @CacheEvict(value = "restaurants", allEntries = true)
     public void update(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant shouldn't be null");
+        checkExisted(repository, restaurant.id());
         checkNotFoundWithId(repository.save(restaurant), restaurant.id());
     }
 }

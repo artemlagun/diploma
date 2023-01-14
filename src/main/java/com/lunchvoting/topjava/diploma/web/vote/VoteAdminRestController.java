@@ -1,5 +1,6 @@
 package com.lunchvoting.topjava.diploma.web.vote;
 
+import com.lunchvoting.topjava.diploma.View;
 import com.lunchvoting.topjava.diploma.model.Restaurant;
 import com.lunchvoting.topjava.diploma.service.VoteService;
 import com.lunchvoting.topjava.diploma.to.VoteTo;
@@ -9,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -71,8 +73,10 @@ public class VoteAdminRestController {
         return VoteUtil.getTos(voteService.getByRestaurantAndDate(restaurantId, voteDate));
     }
 
-    @PostMapping(value ="/users/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VoteTo> createWithLocation(@PathVariable int userId, @RequestBody Restaurant restaurant) {
+    @PostMapping(value = "/users/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<VoteTo> createWithLocation(@PathVariable int userId,
+                                                     @Validated(View.Validated.class)
+                                                     @RequestBody Restaurant restaurant) {
         log.info("create vote from user {} for restaurant {}", userId, restaurant.id());
         VoteTo created = VoteUtil.createTo(voteService.create(userId, restaurant.id()));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -83,7 +87,7 @@ public class VoteAdminRestController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable int id, @RequestBody Restaurant restaurant) {
+    public void update(@PathVariable int id, @Validated(View.Validated.class) @RequestBody Restaurant restaurant) {
         log.info("update vote {} for restaurant {}", id, restaurant.id());
         voteService.update(id, restaurant.id());
     }

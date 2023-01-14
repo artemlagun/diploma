@@ -4,7 +4,7 @@ import com.lunchvoting.topjava.diploma.model.Vote;
 import com.lunchvoting.topjava.diploma.repository.RestaurantRepository;
 import com.lunchvoting.topjava.diploma.repository.UserRepository;
 import com.lunchvoting.topjava.diploma.repository.VoteRepository;
-import com.lunchvoting.topjava.diploma.util.exception.OutOfTimeException;
+import com.lunchvoting.topjava.diploma.util.exception.NotFoundException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +12,6 @@ import org.springframework.util.Assert;
 
 import java.time.Clock;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.List;
 
@@ -58,32 +57,42 @@ public class VoteService {
 
     public List<Vote> getAllByDate(LocalDate voteDate) {
         Assert.notNull(voteDate, "date shouldn't be null");
-        return checkNotFound(repository.getAllByDate(voteDate), "date=" + voteDate);
+        List<Vote> votes = repository.getAllByDate(voteDate);
+        checkExisted(votes, voteDate);
+        return checkNotFound(votes, "date=" + voteDate);
     }
 
     public List<Vote> getByRestaurantAndDate(int restaurantId, LocalDate voteDate) {
         Assert.notNull(voteDate, "date shouldn't be null");
-        return checkNotFoundWithId(repository.getByRestaurantAndDate(restaurantId, voteDate), restaurantId);
+        List<Vote> votes = repository.getByRestaurantAndDate(restaurantId, voteDate);
+        checkExisted(votes, voteDate, restaurantId);
+        return checkNotFoundWithId(votes, restaurantId);
     }
 
     @Transactional
     public Vote create(int userId, int restaurantId) {
-        Vote vote = new Vote(null, LocalDate.now(), userRepository.findById(userId).orElse(null),
-                restaurantRepository.findById(restaurantId).orElse(null));
+        votingTimeVerification(clock);
+        Vote vote = new Vote(null, LocalDate.now(),
+                userRepository
+                        .findById(userId)
+                        .orElseThrow(() -> new NotFoundException("User " + userId + " not found")),
+                restaurantRepository
+                        .findById(restaurantId)
+                        .orElseThrow(() -> new NotFoundException("Restaurant " + restaurantId + " not found")));
         Assert.notNull(vote, "vote shouldn't be null");
         checkNew(vote);
-        votingTimeVerification(clock);
         return repository.save(vote);
     }
 
     @Transactional
     public void update(int id, int restaurantId) {
-        Vote vote = repository.findById(id).orElseThrow(() -> new OutOfTimeException("Now " + LocalTime.now() +
-                ", sorry voting time expired. You could vote till 11:00:00"));
+        votingTimeVerification(clock);
+        Vote vote = repository.findById(id).orElseThrow(() -> new NotFoundException("Vote " + id + " not found"));
         Assert.notNull(vote, "vote shouldn't be null");
         assureIdConsistent(vote, vote.id());
-        votingTimeVerification(clock);
-        vote.setRestaurant(restaurantRepository.findById(restaurantId).orElse(null));
+        vote.setRestaurant(restaurantRepository
+                .findById(restaurantId)
+                .orElseThrow(() -> new NotFoundException("Restaurant " + restaurantId + " not found")));
         checkNotFoundWithId(repository.save(vote), vote.id());
     }
 }

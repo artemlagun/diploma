@@ -1,8 +1,11 @@
 package com.lunchvoting.topjava.diploma.model;
 
 import com.lunchvoting.topjava.diploma.HasId;
+import com.lunchvoting.topjava.diploma.View;
 import jakarta.persistence.*;
+import jakarta.validation.groups.Default;
 import org.hibernate.Hibernate;
+import org.hibernate.validator.constraints.Range;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
@@ -12,6 +15,7 @@ public abstract class AbstractBaseEntity implements HasId {
     @Id
     @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = START_SEQ)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
+    @Range(min = 100000, max = 100000000, groups = {View.Validated.class, Default.class})
     protected Integer id;
 
     protected AbstractBaseEntity() {

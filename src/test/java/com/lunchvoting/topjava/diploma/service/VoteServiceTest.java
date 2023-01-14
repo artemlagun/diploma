@@ -106,10 +106,4 @@ class VoteServiceTest extends AbstractServiceTest {
                 LocalDate.of(2022, 11, 7));
         VOTE_MATCHER.assertMatch(votesByRestaurantAndDate, vote3);
     }
-
-    @Test
-     void createWithException() throws Exception {
-        validateRootCause(ConstraintViolationException.class, () -> service.create(0, RESTAURANT1_ID));
-        validateRootCause(ConstraintViolationException.class, () -> service.create(USER1_ID, 0));
-    }
 }
