@@ -2,7 +2,6 @@ package com.lunchvoting.topjava.diploma.testdata;
 
 import com.lunchvoting.topjava.diploma.MatcherFactory;
 import com.lunchvoting.topjava.diploma.model.Restaurant;
-import com.lunchvoting.topjava.diploma.to.RestaurantTo;
 
 import java.util.List;
 
@@ -10,8 +9,7 @@ import static com.lunchvoting.topjava.diploma.model.AbstractBaseEntity.START_SEQ
 
 public class RestaurantTestData {
 
-    public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "menu", "votes");
-    public static final MatcherFactory.Matcher<RestaurantTo> RESTAURANT_TO_MATCHER = MatcherFactory.usingEqualsComparator(RestaurantTo.class);
+    public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "foods", "votes");
 
     public static final int NOT_FOUND = 10;
     public static final int RESTAURANT1_ID = START_SEQ + 4;

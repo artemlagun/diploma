@@ -22,7 +22,7 @@ public class Restaurant extends AbstractNamedEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @BatchSize(size = 7)
     @JsonManagedReference
-    private List<Food> menu;
+    private List<Food> foods;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("voteDate DESC")
@@ -43,7 +43,7 @@ public class Restaurant extends AbstractNamedEntity {
     public String toString() {
         return "Restaurant{" +
                 "id=" + id +
-                ", menu=" + menu +
+                ", menu=" + foods +
                 ", votes=" + votes +
                 ", name='" + name + '\'' +
                 '}';

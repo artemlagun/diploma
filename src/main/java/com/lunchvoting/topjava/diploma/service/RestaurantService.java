@@ -39,7 +39,6 @@ public class RestaurantService {
         return repository.findAll(SORT_NAME);
     }
 
-    @Cacheable("restaurants")
     public List<Restaurant> getAllWithMenu() {
         return repository.getAllWithMenu();
     }

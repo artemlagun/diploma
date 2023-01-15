@@ -66,7 +66,7 @@ class RestaurantServiceTest extends AbstractServiceTest {
 
     @Test
      void getMenuOfDay() {
-        List<Food> restaurantMenuOfDay = service.getMenuOfDay(RESTAURANT2_ID).getMenu();
+        List<Food> restaurantMenuOfDay = service.getMenuOfDay(RESTAURANT2_ID).getFoods();
         FOOD_MATCHER.assertMatch(restaurantMenuOfDay, FoodTestData.menuOfDay);
     }
 

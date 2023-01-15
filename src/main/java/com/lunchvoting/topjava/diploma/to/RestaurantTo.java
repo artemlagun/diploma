@@ -20,7 +20,7 @@ public class RestaurantTo extends BaseTo implements Serializable {
 
     private String name;
 
-    private List<Food> menu;
+    private List<Food> foods;
 
     @ConstructorProperties({"id", "name"})
     public RestaurantTo(Integer id, String name) {
@@ -29,10 +29,10 @@ public class RestaurantTo extends BaseTo implements Serializable {
     }
 
     @ConstructorProperties({"id", "name", "menu"})
-    public RestaurantTo(Integer id, String name, List<Food> menu) {
+    public RestaurantTo(Integer id, String name, List<Food> foods) {
         super(id);
         this.name = name;
-        this.menu = menu;
+        this.foods = foods;
     }
 
     @Override
@@ -40,11 +40,11 @@ public class RestaurantTo extends BaseTo implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RestaurantTo that = (RestaurantTo) o;
-        return name.equals(that.name) && Objects.equals(menu, that.menu);
+        return name.equals(that.name) && Objects.equals(foods, that.foods);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, menu);
+        return Objects.hash(name, foods);
     }
 }

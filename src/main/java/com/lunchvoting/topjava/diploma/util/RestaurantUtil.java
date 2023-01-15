@@ -23,6 +23,6 @@ public class RestaurantUtil {
     }
 
     public static RestaurantTo createToWithMenu(Restaurant restaurant) {
-        return new RestaurantTo(restaurant.getId(), restaurant.getName(), restaurant.getMenu());
+        return new RestaurantTo(restaurant.getId(), restaurant.getName(), restaurant.getFoods());
     }
 }
