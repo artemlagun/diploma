@@ -18,12 +18,12 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
     @Query("DELETE FROM Food f WHERE f.id=:id")
     int delete(@Param("id") int id);
 
-    @Query("SELECT f FROM Food f WHERE f.restaurant.id=:restaurantId ORDER BY f.voteDate DESC")
+    @Query("SELECT f FROM Food f WHERE f.restaurant.id=:restaurantId ORDER BY f.prepDate DESC")
     List<Food> getAll(@Param("restaurantId") int restaurantId);
 
-    @Query("SELECT f FROM Food f WHERE f.restaurant.id=:restaurantId AND f.voteDate=:voteDate ORDER BY f.voteDate, f.id")
-    List<Food> getAllByRestaurantAndDate(@Param("restaurantId") int restaurantId, @Param("voteDate") LocalDate voteDate);
+    @Query("SELECT f FROM Food f WHERE f.restaurant.id=:restaurantId AND f.prepDate=:prepDate ORDER BY f.prepDate, f.id")
+    List<Food> getAllByRestaurantAndDate(@Param("restaurantId") int restaurantId, @Param("prepDate") LocalDate prepDate);
 
-    @Query("SELECT f FROM Food f WHERE f.voteDate=:voteDate ORDER BY f.voteDate, f.id")
-    List<Food> getAllByDate(@Param("voteDate") LocalDate voteDate);
+    @Query("SELECT f FROM Food f WHERE f.prepDate=:prepDate ORDER BY f.prepDate, f.id")
+    List<Food> getAllByDate(@Param("prepDate") LocalDate prepDate);
 }

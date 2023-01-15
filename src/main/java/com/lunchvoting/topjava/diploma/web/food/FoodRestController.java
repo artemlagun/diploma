@@ -60,17 +60,17 @@ public class FoodRestController {
 
     @GetMapping("/by-date")
     public List<FoodTo> getAllByDate(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                     @RequestParam LocalDate voteDate) {
-        log.info("getAllByDate {}", voteDate);
-        return FoodUtil.getTos(service.getAllByDate(voteDate));
+                                     @RequestParam LocalDate prepDate) {
+        log.info("getAllByDate {}", prepDate);
+        return FoodUtil.getTos(service.getAllByDate(prepDate));
     }
 
     @GetMapping("/by-restaurant-date")
     public List<FoodTo> getAllByRestaurantAndDate(@RequestParam int restaurantId,
                                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                                  @RequestParam LocalDate voteDate) {
-        log.info("getAll from restaurant {} by date {}", restaurantId, voteDate);
-        return FoodUtil.getTos(service.getAllByRestaurantAndDate(restaurantId, voteDate));
+                                                  @RequestParam LocalDate prepDate) {
+        log.info("getAll from restaurant {} by date {}", restaurantId, prepDate);
+        return FoodUtil.getTos(service.getAllByRestaurantAndDate(restaurantId, prepDate));
     }
 
     @PostMapping(value = "/restaurant", consumes = MediaType.APPLICATION_JSON_VALUE)

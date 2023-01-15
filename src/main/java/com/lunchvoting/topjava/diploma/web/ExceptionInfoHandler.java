@@ -32,7 +32,7 @@ public class ExceptionInfoHandler {
     private static final Map<String, String> CONSTRAINTS_MAP = Map.of(
             "users_unique_email_idx", EXCEPTION_DUPLICATE_EMAIL,
             "restaurant_unique_idx", EXCEPTION_DUPLICATE_RESTAURANT,
-            "food_unique_restaurant_vote_date_description_idx", EXCEPTION_DUPLICATE_FOOD,
+            "food_unique_restaurant_prep_date_description_idx", EXCEPTION_DUPLICATE_FOOD,
             "vote_unique_user_vote_date_idx", EXCEPTION_DUPLICATE_VOTE);
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)

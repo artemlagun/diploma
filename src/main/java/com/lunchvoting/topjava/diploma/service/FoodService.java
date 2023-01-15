@@ -50,16 +50,16 @@ public class FoodService {
         return repository.getAll(restaurantId);
     }
 
-    public List<Food> getAllByDate(LocalDate voteDate) {
-        Assert.notNull(voteDate, "voteDate shouldn't be null");
-        List<Food> foods = repository.getAllByDate(voteDate);
-        return checkExisted(foods, voteDate);
+    public List<Food> getAllByDate(LocalDate prepDate) {
+        Assert.notNull(prepDate, "prepDate shouldn't be null");
+        List<Food> foods = repository.getAllByDate(prepDate);
+        return checkExisted(foods, prepDate);
     }
 
-    public List<Food> getAllByRestaurantAndDate(int restaurantId, LocalDate voteDate) {
-        Assert.notNull(voteDate, "voteDate shouldn't be null");
-        List<Food> foods = repository.getAllByRestaurantAndDate(restaurantId, voteDate);
-        return checkExisted(foods, voteDate, restaurantId);
+    public List<Food> getAllByRestaurantAndDate(int restaurantId, LocalDate prepDate) {
+        Assert.notNull(prepDate, "prepDate shouldn't be null");
+        List<Food> foods = repository.getAllByRestaurantAndDate(restaurantId, prepDate);
+        return checkExisted(foods, prepDate, restaurantId);
     }
 
     @CacheEvict(value = "foods", allEntries = true)

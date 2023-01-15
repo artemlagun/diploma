@@ -36,19 +36,19 @@ For windows use `Git Bash`
 `curl -s http://localhost:8080/api/admin/foods/100007 --user admin@gmail.com:admin`
 
 #### getAllByDate Foods
-`curl -s http://localhost:8080/api/admin/foods/by-date?voteDate=2022-11-07 --user admin@gmail.com:admin`
+`curl -s http://localhost:8080/api/admin/foods/by-date?prepDate=2022-11-07 --user admin@gmail.com:admin`
 
 #### getAllByRestaurant Foods from Restaurant 100004
 `curl -s http://localhost:8080/api/admin/foods/restaurant?restaurantId=100004 --user admin@gmail.com:admin`
 
 #### getAllByRestaurantAndDate Foods from Restaurant 100006
-`curl -s "http://localhost:8080/api/admin/foods/by-restaurant-date?restaurantId=100006&voteDate=2022-11-07" --user admin@gmail.com:admin`
+`curl -s "http://localhost:8080/api/admin/foods/by-restaurant-date?restaurantId=100006&prepDate=2022-11-07" --user admin@gmail.com:admin`
 
 #### create Foods in Restaurant 100006
-`curl -s -X POST -d '{"voteDate": "2022-12-07", "description": "Created food", "price": 9.99}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/api/admin/foods/restaurant?restaurantId=100006 --user admin@gmail.com:admin`
+`curl -s -X POST -d '{"prepDate": "2022-12-07", "description": "Created food", "price": 9.99}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/api/admin/foods/restaurant?restaurantId=100006 --user admin@gmail.com:admin`
 
 #### update Foods in Restaurant 100004
-`curl -s -X PUT -d '{"id": 100007, "voteDate": "2022-12-07", "description": "Updated food", "price": 7.77}' -H 'Content-Type: application/json' http://localhost:8080/api/admin/foods/restaurant?restaurantId=100004 --user admin@gmail.com:admin`
+`curl -s -X PUT -d '{"id": 100007, "prepDate": "2022-12-07", "description": "Updated food", "price": 7.77}' -H 'Content-Type: application/json' http://localhost:8080/api/admin/foods/restaurant?restaurantId=100004 --user admin@gmail.com:admin`
 
 #### delete Foods
 `curl -s -X DELETE http://localhost:8080/api/admin/foods/100008 --user admin@gmail.com:admin`

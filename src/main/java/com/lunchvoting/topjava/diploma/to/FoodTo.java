@@ -18,7 +18,7 @@ public class FoodTo extends BaseTo implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private LocalDate voteDate;
+    private LocalDate prepDate;
 
     private String description;
 
@@ -26,10 +26,10 @@ public class FoodTo extends BaseTo implements Serializable {
 
     private Integer restaurantId;
 
-    @ConstructorProperties({"id", "voteDate", "description", "price", "restaurantId"})
-    public FoodTo(Integer id, LocalDate voteDate, String description, BigDecimal price, Integer restaurantId) {
+    @ConstructorProperties({"id", "prepDate", "description", "price", "restaurantId"})
+    public FoodTo(Integer id, LocalDate prepDate, String description, BigDecimal price, Integer restaurantId) {
         super(id);
-        this.voteDate = voteDate;
+        this.prepDate = prepDate;
         this.description = description;
         this.price = price;
         this.restaurantId = restaurantId;
@@ -40,7 +40,7 @@ public class FoodTo extends BaseTo implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FoodTo foodTo = (FoodTo) o;
-        return voteDate.equals(foodTo.voteDate) &&
+        return prepDate.equals(foodTo.prepDate) &&
                 description.equals(foodTo.description) &&
                 price.equals(foodTo.price) &&
                 restaurantId.equals(foodTo.restaurantId);
@@ -48,6 +48,6 @@ public class FoodTo extends BaseTo implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(voteDate, description, price, restaurantId);
+        return Objects.hash(prepDate, description, price, restaurantId);
     }
 }

@@ -13,15 +13,15 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "foods", uniqueConstraints = {@UniqueConstraint(columnNames =
-        {"restaurant_id", "vote_date", "description"}, name = "food_unique_restaurant_vote_date_description_idx")})
+        {"restaurant_id", "prep_date", "description"}, name = "food_unique_restaurant_prep_date_description_idx")})
 @NoArgsConstructor
 @Getter
 @Setter
 public class Food extends AbstractBaseEntity {
 
-    @Column(name = "vote_date", nullable = false)
+    @Column(name = "prep_date", nullable = false)
     @NotNull
-    private LocalDate voteDate;
+    private LocalDate prepDate;
 
     @Column(name = "description", nullable = false)
     @NotBlank
@@ -37,13 +37,13 @@ public class Food extends AbstractBaseEntity {
     @JsonBackReference
     private Restaurant restaurant;
 
-    public Food(LocalDate voteDate, String description, BigDecimal price, Restaurant restaurant) {
-        this(null, voteDate, description, price, restaurant);
+    public Food(LocalDate prepDate, String description, BigDecimal price, Restaurant restaurant) {
+        this(null, prepDate, description, price, restaurant);
     }
 
-    public Food(Integer id, LocalDate voteDate, String description, BigDecimal price, Restaurant restaurant) {
+    public Food(Integer id, LocalDate prepDate, String description, BigDecimal price, Restaurant restaurant) {
         super(id);
-        this.voteDate = voteDate;
+        this.prepDate = prepDate;
         this.description = description;
         this.price = price;
         this.restaurant = restaurant;
@@ -53,7 +53,7 @@ public class Food extends AbstractBaseEntity {
     public String toString() {
         return "Food{" +
                 "id=" + id +
-                ", voteDate=" + voteDate +
+                ", voteDate=" + prepDate +
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", restaurant=" + restaurant +

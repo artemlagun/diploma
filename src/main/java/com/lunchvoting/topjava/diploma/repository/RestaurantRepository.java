@@ -17,7 +17,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
     @Query("DELETE FROM Restaurant r WHERE r.id=:id")
     int delete(@Param("id") int id);
 
-    @Query("SELECT r FROM Restaurant r JOIN FETCH r.menu m WHERE r.id=:id AND m.voteDate=current_date")
+    @Query("SELECT r FROM Restaurant r JOIN FETCH r.menu m WHERE r.id=:id AND m.prepDate=current_date")
     Restaurant getMenuOfDay(int id);
 
     @Query("SELECT r FROM Restaurant r JOIN FETCH r.menu")

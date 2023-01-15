@@ -22,7 +22,7 @@ VALUES ('Mayflower restaurant'),
        ('Chaf-if restaurant'),
        ('Florio''s italian restaurant');
 
-INSERT INTO FOODS (VOTE_DATE, DESCRIPTION, PRICE, RESTAURANT_ID)
+INSERT INTO FOODS (PREP_DATE, DESCRIPTION, PRICE, RESTAURANT_ID)
 VALUES (now(), 'Beef tips with rice', 5.75, 100004),
        (now(), 'Country fried steak', 6.25, 100004),
        (now(), 'Potato salad', 4.50, 100004),

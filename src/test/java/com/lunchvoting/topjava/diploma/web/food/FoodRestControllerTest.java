@@ -75,7 +75,7 @@ class FoodRestControllerTest extends AbstractControllerTest {
     @Test
     void getAllByDate() throws Exception {
         List<FoodTo> expected = FoodUtil.getTos(service.getAllByDate(LocalDate.of(2022, 11, 7)));
-        perform(MockMvcRequestBuilders.get(REST_URL + "/by-date?voteDate="
+        perform(MockMvcRequestBuilders.get(REST_URL + "/by-date?prepDate="
                         + LocalDate.of(2022, 11, 7))
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
@@ -88,7 +88,7 @@ class FoodRestControllerTest extends AbstractControllerTest {
         List<FoodTo> expected = FoodUtil.getTos(service.getAllByRestaurantAndDate(RESTAURANT3_ID,
                 LocalDate.of(2022, 11, 7)));
         perform(MockMvcRequestBuilders.get(REST_URL + "/by-restaurant-date?restaurantId=" + RESTAURANT3_ID +
-                        "&voteDate=" + LocalDate.of(2022, 11, 7))
+                        "&prepDate=" + LocalDate.of(2022, 11, 7))
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
